@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blocked Users - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/logo.jpg" />
+  <link rel="manifest" href="/manifest.json">
+  
+  <style>
+    :root {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #fff0f5;
+      --text: #333;
+      --gray: #777;
+      --border: #ddd;
+      --card-bg: #fff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--text);
+      transition: background-color 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+
+    body {
+      background-color: var(--bg);
+    }
+
+    /* Dark Mode - Apply to html element */
+    html.dark-mode {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #1a1a1a;
+      --text: #e0e0e0;
+      --gray: #999;
+      --border: #333;
+      --card-bg: #242424;
+    }
+
+    /* Dark Mode - Backup for body */
+    body.dark-mode {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #1a1a1a;
+      --text: #e0e0e0;
+      --gray: #999;
+      --border: #333;
+      --card-bg: #242424;
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      margin-bottom: 80px;
+    }
+
+    /* Header */
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .page-header h1 {
+      font-size: 1.8rem;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background-color: rgba(255, 105, 180, 0.15);
+      color: var(--pink);
+    }
+
+    /* Search Bar */
+    .search-container {
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 16px 12px 40px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background-color: var(--card-bg);
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .search-input::placeholder {
+      color: var(--gray);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray);
+      font-size: 1.2rem;
+      pointer-events: none;
+    }
+
+    /* Blocked Users List */
+    .blocked-users-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .blocked-user-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .blocked-user-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+      border-color: var(--pink);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--pink);
+      flex-shrink: 0;
+    }
+
+    .user-details {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .user-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .user-email {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+
+    .user-blocked-date {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-top: 2px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .btn-unblock {
+      background-color: var(--pink);
+      color: white;
+    }
+
+    .btn-unblock:hover {
+      background-color: var(--pink-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-view {
+      background-color: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-view:hover {
+      border-color: var(--pink);
+      color: var(--pink);
+      background-color: rgba(255, 105, 180, 0.05);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      color: var(--gray);
+      margin-bottom: 16px;
+    }
+
+    .empty-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .empty-text {
+      font-size: 0.95rem;
+      color: var(--gray);
+    }
+
+    /* Stats */
+    .stats-box {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      flex: 1;
+      padding: 16px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--pink);
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--gray);
+      text-transform: uppercase;
+    }
+
+    /* Loading State */
+    .loading {
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .spinner {
+      border: 4px solid var(--border);
+      border-top: 4px solid var(--pink);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background-color: #4caf50;
+      color: white;
+      padding: 16px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 2000;
+      animation: slideIn 0.3s ease;
+      max-width: 300px;
+    }
+
+    .toast.error {
+      background-color: #f44336;
+    }
+
+    .toast.warning {
+      background-color: #ff9800;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Confirmation Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 400px;
+      width: 90%;
+      border: 1px solid var(--border);
+    }
+
+    .modal-header {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .modal-body {
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .modal-actions .btn {
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 60px;
+      z-index: 100;
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 1.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item.active {
+      color: var(--pink);
+    }
+
+    .nav-item:hover {
+      color: var(--pink);
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .page-header {
+        gap: 12px;
+      }
+
+      .page-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .container {
+        padding: 16px;
+      }
+
+      .blocked-user-card {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .user-info {
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 12px;
+      }
+
+      .action-buttons {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .btn {
+        flex: 1;
+      }
+
+      .stats-box {
+        flex-direction: column;
+      }
+    }
+  </style>
+
+  <script>
+    // Apply dark mode IMMEDIATELY on page load
+    (function() {
+      const isDarkMode = localStorage.getItem('fastme_dark_mode') === 'true';
+      if (isDarkMode) {
+        document.documentElement.classList.add('dark-mode');
+        document.body.classList.add('dark-mode');
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <div class="page-header">
+    <button class="back-btn" id="backBtn" title="Go back">
+      <span class="material-icons">arrow_back</span>
+    </button>
+    <h1>Blocked Users</h1>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-box">
+    <div class="stat-card">
+      <div class="stat-number" id="blockedCount">0</div>
+      <div class="stat-label">Blocked</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="totalCount">0</div>
+      <div class="stat-label">Total Users</div>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="search-container">
+    <span class="material-icons search-icon">search</span>
+    <input 
+      type="text" 
+      class="search-input" 
+      id="searchInput" 
+      placeholder="Search blocked users by name or email..."
+    />
+  </div>
+
+  <!-- Blocked Users List -->
+  <div id="blockedUsersList" class="blocked-users-list"></div>
+
+  <!-- Empty State -->
+  <div id="emptyState" class="empty-state" style="display: none;">
+    <div class="empty-icon">😊</div>
+    <div class="empty-title">No Blocked Users</div>
+    <div class="empty-text">You haven't blocked anyone yet</div>
+  </div>
+
+  <!-- Loading State -->
+  <div id="loadingState" class="loading" style="display: none;">
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+    <a href="/provider/provider.html" class="nav-item ">
+      <span class="material-icons">home</span>
+    </a>
+    <a href="/provider/chat_list.html" class="nav-item" id="chat-nav" style="position: relative;">
+      <span class="material-icons">chat</span>
+    </a>
+    <a href="/provider/news.html" class="nav-item">
+      <span class="material-icons">trending_up</span>
+    </a>
+    <a href="/provider/profile.html" class="nav-item active">
+      <span class="material-icons">account_box</span>
+    </a>
+  </nav>
+
+<!-- Unblock Confirmation Modal -->
+<div class="modal" id="unblockModal">
+  <div class="modal-content">
+    <div class="modal-header">Unblock User?</div>
+    <div class="modal-body">
+      <p>Are you sure you want to unblock <strong id="unblockUserName">user</strong>?</p>
+      <p style="margin-top: 12px; font-size: 0.9rem; color: var(--gray);">
+        They will be able to see your profile and contact you again.
+      </p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-view" id="cancelUnblockBtn">Cancel</button>
+      <button class="btn btn-unblock" id="confirmUnblockBtn">Unblock</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast" style="display: none;"></div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient(
+    'https://bwugvwbkuynncfdgwqyg.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE',
+    { auth: { storage: localStorage, persistSession: true } }
+  );
+
+  let currentUserId = null;
+  let blockedUsers = [];
+  let selectedUserToUnblock = null;
+
+  // Elements
+  const blockedUsersList = document.getElementById('blockedUsersList');
+  const emptyState = document.getElementById('emptyState');
+  const loadingState = document.getElementById('loadingState');
+  const searchInput = document.getElementById('searchInput');
+  const backBtn = document.getElementById('backBtn');
+  const toast = document.getElementById('toast');
+  const blockedCount = document.getElementById('blockedCount');
+  const totalCount = document.getElementById('totalCount');
+  const unblockModal = document.getElementById('unblockModal');
+  const unblockUserName = document.getElementById('unblockUserName');
+  const cancelUnblockBtn = document.getElementById('cancelUnblockBtn');
+  const confirmUnblockBtn = document.getElementById('confirmUnblockBtn');
+
+  // Initialize
+  async function init() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      window.location.replace('/auth/login.html');
+      return;
+    }
+
+    currentUserId = session.user.id;
+
+    // Load blocked users
+    loadBlockedUsers();
+
+    // Setup event listeners
+    setupEventListeners();
+
+    // Real-time updates
+    setupRealtimeListeners();
+
+    // Listen for dark mode changes
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'fastme_dark_mode') {
+        const isDarkMode = e.newValue === 'true';
+        if (isDarkMode) {
+          document.documentElement.classList.add('dark-mode');
+          document.body.classList.add('dark-mode');
+        } else {
+          document.documentElement.classList.remove('dark-mode');
+          document.body.classList.remove('dark-mode');
+        }
+      }
+    });
+  }
+
+  async function loadBlockedUsers() {
+    try {
+      loadingState.style.display = 'flex';
+      blockedUsersList.innerHTML = '';
+
+      // Get blocked users
+      const { data: blocked, error: blockedError } = await supabase
+        .from('blocked_users')
+        .select('blocked_id, created_at')
+        .eq('blocker_id', currentUserId);
+
+      if (blockedError) throw blockedError;
+
+      if (!blocked || blocked.length === 0) {
+        blockedUsers = [];
+        showEmptyState();
+        loadingState.style.display = 'none';
+        return;
+      }
+
+      const blockedIds = blocked.map(b => b.blocked_id);
+
+      // Get profiles of blocked users
+      const { data: profiles, error: profileError } = await supabase
+        .from('profiles')
+        .select('id, full_name, email, avatar_url')
+        .in('id', blockedIds);
+
+      if (profileError) throw profileError;
+
+      // Combine data with block dates
+      blockedUsers = blocked.map(block => {
+        const profile = profiles?.find(p => p.id === block.blocked_id);
+        return {
+          ...profile,
+          blocked_at: block.created_at
+        };
+      });
+
+      renderBlockedUsers(blockedUsers);
+      updateStats();
+      loadingState.style.display = 'none';
+    } catch (err) {
+      console.error('Error loading blocked users:', err);
+      showToast('Failed to load blocked users', 'error');
+      loadingState.style.display = 'none';
+    }
+  }
+
+  function renderBlockedUsers(users) {
+    if (!users || users.length === 0) {
+      showEmptyState();
+      return;
+    }
+
+    emptyState.style.display = 'none';
+    blockedUsersList.innerHTML = '';
+
+    users.forEach(user => {
+      const card = createUserCard(user);
+      blockedUsersList.appendChild(card);
+    });
+  }
+
+  function createUserCard(user) {
+    const card = document.createElement('div');
+    card.className = 'blocked-user-card';
+
+    const avatar = user.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name || 'User')}&background=ff69b4&color=fff`;
+    const blockedDate = new Date(user.blocked_at).toLocaleDateString();
+
+    card.innerHTML = `
+      <div class="user-info">
+        <img class="user-avatar" src="${avatar}" alt="${user.full_name}" />
+        <div class="user-details">
+          <div class="user-name">${user.full_name || 'Unknown User'}</div>
+          <div class="user-email">${user.email || 'No email'}</div>
+          <div class="user-blocked-date">Blocked on ${blockedDate}</div>
+        </div>
+      </div>
+      <div class="action-buttons">
+        <button class="btn btn-view" data-user-id="${user.id}" data-view title="View profile">
+          <span class="material-icons">visibility</span>
+          <span>View</span>
+        </button>
+        <button class="btn btn-unblock" data-user-id="${user.id}" data-unblock title="Unblock user">
+          <span class="material-icons">lock_open</span>
+          <span>Unblock</span>
+        </button>
+      </div>
+    `;
+
+    // View Profile
+    card.querySelector('[data-view]').addEventListener('click', () => {
+      window.location.href = `/user/user_profile.html?id=${user.id}`;
+    });
+
+    // Unblock
+    card.querySelector('[data-unblock]').addEventListener('click', () => {
+      openUnblockModal(user);
+    });
+
+    return card;
+  }
+
+  function openUnblockModal(user) {
+    selectedUserToUnblock = user;
+    unblockUserName.textContent = user.full_name || 'this user';
+    unblockModal.classList.add('active');
+  }
+
+  async function unblockUser(userId) {
+    try {
+      const btn = confirmUnblockBtn;
+      btn.disabled = true;
+
+      const { error } = await supabase
+        .from('blocked_users')
+        .delete()
+        .eq('blocker_id', currentUserId)
+        .eq('blocked_id', userId);
+
+      if (error) throw error;
+
+      unblockModal.classList.remove('active');
+      showToast('User unblocked successfully');
+      
+      // Reload blocked users
+      await loadBlockedUsers();
+      
+      btn.disabled = false;
+    } catch (err) {
+      console.error('Error unblocking user:', err);
+      showToast(err.message || 'Failed to unblock user', 'error');
+      confirmUnblockBtn.disabled = false;
+    }
+  }
+
+  function updateStats() {
+    blockedCount.textContent = blockedUsers.length;
+    totalCount.textContent = blockedUsers.length > 0 ? 
+      Math.max(blockedUsers.length + 10, 100) : '0';
+  }
+
+  function showEmptyState() {
+    emptyState.style.display = 'block';
+    blockedUsersList.innerHTML = '';
+    blockedCount.textContent = '0';
+    totalCount.textContent = '0';
+  }
+
+  function showToast(message, type = 'success') {
+    toast.textContent = message;
+    toast.className = 'toast ' + (type !== 'success' ? type : '');
+    toast.style.display = 'block';
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 3000);
+  }
+
+  function setupEventListeners() {
+    // Back Button
+    backBtn.addEventListener('click', () => {
+      window.history.back();
+    });
+
+    // Search
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const filtered = blockedUsers.filter(user =>
+        (user.full_name && user.full_name.toLowerCase().includes(searchTerm)) ||
+        (user.email && user.email.toLowerCase().includes(searchTerm))
+      );
+      renderBlockedUsers(filtered);
+    });
+
+    // Unblock Modal
+    cancelUnblockBtn.addEventListener('click', () => {
+      unblockModal.classList.remove('active');
+      selectedUserToUnblock = null;
+    });
+
+    confirmUnblockBtn.addEventListener('click', () => {
+      if (selectedUserToUnblock) {
+        unblockUser(selectedUserToUnblock.id);
+      }
+    });
+
+    // Close modal when clicking outside
+    unblockModal.addEventListener('click', (e) => {
+      if (e.target === unblockModal) {
+        unblockModal.classList.remove('active');
+        selectedUserToUnblock = null;
+      }
+    });
+  }
+
+  function setupRealtimeListeners() {
+    // Listen for real-time changes
+    supabase
+      .channel('blocked-users-channel')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'blocked_users',
+          filter: `blocker_id=eq.${currentUserId}`
+        },
+        (payload) => {
+          loadBlockedUsers();
+        }
+      )
+      .subscribe();
+  }
+
+  // Initialize
+  init();
+</script>
+
+</body>
+</html>

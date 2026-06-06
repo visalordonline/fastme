@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FastMe - Contribution</title>
+    <link rel="icon" type="image/png" href="connect.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <!-- JSPDF for PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: row;
+            background-color: #f8fafc;
+        }
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+        }
+
+       /* Sidebar container */
+.sidebar {
+  width: 100px;
+  padding: 28px 12px;
+  border-radius: 0;
+  margin: 0;
+  background: #0f172a;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  transition: left .28s ease;
+}
+        .sidebar .brand {
+          width: 56px;
+          height: 56px;
+          border-radius: 12px;
+          background: linear-gradient(180deg,#9fb7bd,#6b8f98);
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color: #fff;
+          font-weight: 700;
+          font-size: 18px;
+          box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+          text-decoration: none;
+        }
+        .sidebar nav { width:100%; display:flex; flex-direction:column; align-items:center; gap:18px; margin-top:8px; }
+        .sidebar .nav-item {
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          gap:8px;
+          color: #fff;
+          text-decoration: none;
+          width: 100%;
+          padding: 8px 6px;
+          border-radius: 10px;
+          transition: transform .18s ease, box-shadow .18s ease, background .18s;
+          cursor: pointer;
+          text-align:center;
+          background: transparent;
+          border: none;
+        }
+        .sidebar .nav-item i { font-size: 22px; display:block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08)); }
+        .sidebar .nav-item span { font-size: 11px; font-weight: 700; letter-spacing: .6px; display:block; }
+        .sidebar .nav-item:hover, .sidebar .nav-item.active {
+          transform: translateY(-6px);
+          box-shadow: 0 12px 30px rgba(17,24,39,0.12);
+          background: rgba(255,255,255,0.06);
+        }
+        .sidebar .sidebar-close {
+          display: none;
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background: transparent;
+          color: #fff;
+          border: none;
+          font-size: 28px;
+          line-height: 1;
+          cursor: pointer;
+        }
+
+        #sidebarOverlay {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.35);
+          z-index: 99;
+        }
+        #sidebarOverlay.visible { display:block; }
+
+        .main-content {
+            flex: 1;
+            padding: 32px;
+            margin-left: calc(120px + 56px);
+            background-color: #f8fafc;
+            transition: margin-left 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: 70px 20px 20px 20px;
+            }
+            .sidebar { 
+                width: calc(100% - 32px);
+                left: -110%;
+                top: 12px;
+                margin: 12px;
+                height: calc(100% - 24px);
+                border-radius: 12px;
+                padding: 16px;
+              }
+            .sidebar.active { left: 12px; }
+            .sidebar .sidebar-close { display: block; }
+        }
+
+        .header-card {
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 28px;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .custom-table {
+            border: none;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .custom-table th {
+            background-color: #eef2ff !important;
+            color: #3730a3;
+            font-weight: 600;
+            border-bottom: 2px solid #c7d2fe;
+            padding: 16px 12px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .custom-table td {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 14px 10px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 14px;
+        }
+        .custom-table tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .deposit-cell {
+            position: relative;
+        }
+        .deposit-amount {
+            font-weight: 700;
+            font-size: 15px;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .deposit-buttons {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-add {
+            background: #10b981;
+            color: white;
+            padding: 6px 10px;
+            font-size: 11px;
+            min-width: 40px;
+            border-radius: 6px;
+        }
+        .btn-withdraw {
+            background: #ef4444;
+            color: white;
+            padding: 6px 10px;
+            font-size: 11px;
+            min-width: 40px;
+            border-radius: 6px;
+        }
+        .btn-delete {
+            background: #6b7280;
+            color: white;
+            padding: 6px 10px;
+            font-size: 11px;
+            min-width: 40px;
+            border-radius: 6px;
+        }
+        .btn-edit {
+            background: #6366f1;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .btn-edit:hover { background: #4f46e5; }
+
+        .position-cell {
+            background-color: #f0fdf4 !important;
+            border-left: 4px solid #10b981 !important;
+            font-weight: 600;
+        }
+        .tick-cell {
+            min-width: 70px;
+            padding: 10px 4px;
+        }
+        .tick-checked {
+            background-color: #d1fae5 !important;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .search-bar-wrapper {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .action-collapse {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .action-collapse.open {
+            max-height: 120px;
+        }
+
+        input[type="checkbox"] { accent-color: green; }
+
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+            pointer-events: none;
+        }
+        .btn-loading::after {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border: 3px solid transparent;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: button-loading-spinner 1s ease infinite;
+        }
+        @keyframes button-loading-spinner {
+            from { transform: rotate(0turn); }
+            to { transform: rotate(1turn); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mobile Hamburger Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open sidebar">
+        <i class="fas fa-bars text-xl"></i>
+    </button>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Main navigation">
+      <button class="sidebar-close" aria-label="Close sidebar">×</button>
+
+      <a class="brand" href="/admin.html" title="FastMe">FM</a>
+
+      <nav>
+        <a class="nav-item" href="/admin.html" title="Main Menu">
+          <i class="fas fa-home"></i>
+          <span>Main</span>
+        </a>
+        <a class="nav-item" href="/attendance/attendance.html" title="Staff Attendance">
+          <i class="fas fa-user-check"></i>
+          <span>STAFF</span>
+        </a>
+        <a class="nav-item" href="/students/student-management.html" title="Students">
+          <i class="fas fa-user-graduate"></i>
+          <span>STUDENTS</span>
+        </a>
+        <a class="nav-item" href="/teachers/teacher-management.html" title="Teachers">
+          <i class="fas fa-chalkboard-teacher"></i>
+          <span>TEACHERS</span>
+        </a>
+        <a class="nav-item" href="/exams.html" title="Exam">
+          <i class="fas fa-file-pdf"></i>
+          <span>EXAM</span>
+        </a>
+        <a class="nav-item" href="/contribution_page/contribution.html" title="Contribution">
+          <i class="fas fa-hand-holding-usd"></i>
+          <span>CONTRIBUTION</span>
+        </a>
+        <button class="nav-item logout-btn" id="logoutBtn" title="Logout" style="background:transparent;">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Mobile overlay -->
+    <div id="sidebarOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- MAIN CONTENT -->
+    <div id="app-container" class="hidden main-content">
+        <div class="header-card">
+            <h1 class="text-4xl font-bold text-indigo-700 mb-3">CONTRIBUTION BOOK</h1>
+            <div id="dashboard-name" class="text-xl font-semibold text-gray-800 mb-2">Welcome, Admin</div>
+            <div class="text-base text-gray-600 mb-6">I am the Admin</div>
+            <div class="action-buttons">
+                <button id="show-modal-btn" class="bg-blue-600 text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:bg-blue-700 transition">
+                    Add New Contributor
+                </button>
+                <button id="daily-incomes-btn" class="bg-teal-600 text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:bg-teal-700 transition">
+                    Daily Incomes
+                </button>
+                <a href="/profile.html" class="bg-indigo-600 text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:bg-indigo-700 transition flex items-center gap-3" id="profileBtn">
+                    <i class="fas fa-user"></i> <span id="userFirstName">Profile</span>
+                </a>
+            </div>
+        </div>
+
+        <div id="table-container">
+            <div class="search-container">
+                <div class="search-bar-wrapper">
+                    <input type="text" id="search-bar" placeholder="Search by Name or Reg No..." 
+                           class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-300 focus:border-blue-500 transition" />
+                </div>
+                <select id="search-month" class="px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    <option value="">All Months</option>
+                    <option>January</option><option>February</option><option>March</option>
+                    <option>April</option><option>May</option><option>June</option>
+                    <option>July</option><option>August</option><option>September</option>
+                    <option>October</option><option>November</option><option>December</option>
+                </select>
+            </div>
+
+            <div class="overflow-x-auto rounded-lg">
+                <table id="contributor-table-full" class="w-full custom-table">
+                    <thead id="table-head">
+                        <tr id="table-header-row">
+                            <th>Name</th>
+                            <th>Reg No</th>
+                            <th>Month</th>
+                            <th>Reg Amt</th>
+                            <th>Deposit</th>
+                            <th>1st Withdrawal</th>
+                            <th>2nd Withdrawal</th>
+                            <th>3rd Withdrawal</th>
+                            <th>Total Ticks</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contributor-table" class="bg-white"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- DAILY INCOMES MODAL -->
+    <div id="daily-incomes-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl mx-4 max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="p-8 border-b bg-teal-50 flex justify-between items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-teal-800">Transaction Statement</h2>
+                    <div id="daily-total" class="text-xl font-semibold text-teal-900 mt-2">Loading...</div>
+                </div>
+                <button id="close-daily-incomes" class="text-gray-500 hover:text-gray-800 transition">
+                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6 border-b bg-gray-50 flex flex-wrap gap-4 items-center justify-between">
+                <div class="flex gap-4 items-center">
+                    <label class="font-semibold text-gray-700">Filter:</label>
+                    <select id="transaction-filter" class="px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-300">
+                        <option value="all">All</option>
+                        <option value="add">Add Funds</option>
+                        <option value="withdraw">Withdraw</option>
+                        <option value="delete">Delete</option>
+                    </select>
+                </div>
+                <div class="flex gap-4 items-center">
+                    <input type="date" id="date-from" class="px-4 py-3 border border-gray-300 rounded-xl" />
+                    <span class="text-gray-600">to</span>
+                    <input type="date" id="date-to" class="px-4 py-3 border border-gray-300 rounded-xl" />
+                    <button id="download-report" class="bg-indigo-600 text-white px-6 py-3 rounded-xl hover:bg-indigo-700 font-semibold transition flex items-center gap-2">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                </div>
+            </div>
+            <div id="transaction-list" class="flex-1 overflow-y-auto p-6"></div>
+            <div class="p-6 bg-teal-50 border-t text-right font-bold text-xl" id="final-balance"></div>
+        </div>
+    </div>
+
+    <!-- ADD CONTRIBUTOR MODAL -->
+    <div id="contributor-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md mx-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800">Add New Contributor</h2>
+                <button id="contributor-modal-close" class="text-gray-500 hover:text-gray-800">
+                    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <form id="contributor-form" class="grid grid-cols-1 gap-6">
+                <input type="text" id="name" placeholder="Full Name" required class="px-5 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-300" />
+                <input type="text" id="reg-no" placeholder="Registration Number (Auto-generated)" readonly class="px-5 py-4 border border-gray-300 rounded-xl bg-gray-100 text-gray-700 font-semibold" />
+                <select id="month" required class="px-5 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    <option value="">Select Month</option>
+                    <option>January</option><option>February</option><option>March</option>
+                    <option>April</option><option>May</option><option>June</option>
+                    <option>July</option><option>August</option><option>September</option>
+                    <option>October</option><option>November</option><option>December</option>
+                </select>
+                <input type="number" id="reg-amount" placeholder="Registration Amount (₦)" required class="px-5 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-300" min="50" step="50" />
+                <input type="number" id="deposit" placeholder="Initial Deposit (₦)" required class="px-5 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-300" min="50" step="50" />
+                <button type="submit" class="bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition text-lg">Add Contributor</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CUSTOM INPUT MODAL (Add/Withdraw) -->
+    <div id="custom-input-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="custom-input-modal-title" class="text-2xl font-bold text-gray-800">Modal Title</h3>
+                <button id="custom-input-modal-close" class="text-gray-500 hover:text-gray-800">
+                    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="flex flex-col gap-6">
+                <input type="number" id="custom-input-modal-input" placeholder="Enter amount (Multiple of 50)" class="px-5 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-300" min="50" step="50" />
+                <button id="custom-input-modal-btn" class="bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition text-lg">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MESSAGE MODAL -->
+    <div id="message-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm mx-4 text-center">
+            <div class="flex justify-end mb-4">
+                <button id="message-modal-close" class="text-gray-500 hover:text-gray-800">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <h3 id="message-modal-title" class="text-2xl font-bold text-gray-800 mb-4">Message</h3>
+            <p id="message-modal-text" class="text-gray-700 text-lg"></p>
+        </div>
+    </div>
+
+    <!-- CONFIRMATION MODAL -->
+    <div id="confirmation-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="confirmation-modal-title" class="text-2xl font-bold text-gray-800">Confirm Action</h3>
+                <button id="confirmation-modal-close" class="text-gray-500 hover:text-gray-800">
+                    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <p id="confirmation-modal-text" class="text-gray-700 text-lg mb-8"></p>
+            <div class="flex justify-end gap-4">
+                <button id="confirmation-modal-no" class="px-8 py-3 bg-gray-500 text-white font-semibold rounded-xl hover:bg-gray-600 transition">Cancel</button>
+                <button id="confirmation-modal-yes" class="px-8 py-3 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // ---------- SUPABASE ----------
+    const { createClient } = supabase;
+    const supabaseUrl = 'https://zskfpfxaonwnfwhfwnlw.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpza2ZwZnhhb253bmZ3aGZ3bmx3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3OTExOTksImV4cCI6MjA3NTM2NzE5OX0.BmG-TMWWEk4W2qYava7NFfqDsMdPEloqRL6hOBvQiFo';
+    const db = createClient(supabaseUrl, supabaseKey);
+
+    // ---------- GLOBALS ----------
+    let allContributors = [];
+    let transactionLog = [];
+    let currentContributorId = null;
+    let isAddMode = false;
+    let maxTicks = 0;
+
+    // ---------- DOM ELEMENTS ----------
+    const appContainer = document.getElementById('app-container');
+    const contributorTableBody = document.getElementById('contributor-table');
+    const tableHeaderRow = document.getElementById('table-header-row');
+    const showModalBtn = document.getElementById('show-modal-btn');
+    const searchBar = document.getElementById('search-bar');
+    const searchMonth = document.getElementById('search-month');
+    const dashboardName = document.getElementById('dashboard-name');
+    const dailyIncomesBtn = document.getElementById('daily-incomes-btn');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    
+    // FIXED: Use class selector instead of id (there is no id="sidebar")
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarCloseBtn = document.querySelector('.sidebar-close');
+
+    // ---------- LOADING HELPER ----------
+    function setButtonLoading(button, loading = true) {
+        if (!button) return;
+        if (loading) {
+            button.classList.add('btn-loading');
+            button.disabled = true;
+        } else {
+            button.classList.remove('btn-loading');
+            button.disabled = false;
+        }
+    }
+
+    function resetRowButtons(row) {
+        if (!row) return;
+        row.querySelectorAll('.btn-add, .btn-withdraw, .btn-delete').forEach(btn => {
+            setButtonLoading(btn, false);
+        });
+    }
+
+    // ---------- MOBILE MENU TOGGLE ----------
+    mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        sidebar.classList.toggle('mobile-open');
+        sidebarOverlay.classList.toggle('visible');
+        if (sidebar.classList.contains('mobile-open')) {
+            document.documentElement.style.overflow = 'hidden';
+        } else {
+            document.documentElement.style.overflow = '';
+        }
+    });
+
+    sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('mobile-open');
+        sidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('visible');
+        document.documentElement.style.overflow = '';
+    });
+
+    if (sidebarCloseBtn) {
+        sidebarCloseBtn.addEventListener('click', () => {
+            sidebar.classList.remove('mobile-open');
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('visible');
+            document.documentElement.style.overflow = '';
+        });
+    }
+
+    // Close sidebar on outside click (mobile)
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 && 
+            !sidebar.contains(e.target) && 
+            !mobileMenuBtn.contains(e.target)) {
+            sidebar.classList.remove('mobile-open');
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('visible');
+            document.documentElement.style.overflow = '';
+        }
+    });
+
+    // ---------- AUTO GENERATE REG NO ----------
+    async function generateNextRegNo() {
+        try {
+            const { data, error } = await db
+                .from('contribution')
+                .select('reg_no')
+                .ilike('reg_no', 'FSR-%');
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) return 'FSR-1';
+
+            const numbers = data
+                .map(row => {
+                    const match = row.reg_no?.match(/^FSR-(\d+)$/);
+                    return match ? parseInt(match[1]) : 0;
+                })
+                .filter(n => n > 0);
+
+            if (numbers.length === 0) return 'FSR-1';
+
+            const maxNum = Math.max(...numbers);
+            return `FSR-${maxNum + 1}`;
+        } catch (err) {
+            console.error('Error generating Reg No:', err);
+            showMessage('ERROR', 'Could not generate Reg No.');
+            return 'FSR-1';
+        }
+    }
+
+    // ---------- MESSAGE & CONFIRMATION ----------
+    function showMessage(title, text) {
+        const modal = document.getElementById('message-modal');
+        document.getElementById('message-modal-title').textContent = title;
+        document.getElementById('message-modal-text').textContent = text;
+        modal.classList.remove('hidden');
+    }
+
+    function showConfirmation(title, text, onYes) {
+        const modal = document.getElementById('confirmation-modal');
+        document.getElementById('confirmation-modal-title').textContent = title;
+        document.getElementById('confirmation-modal-text').textContent = text;
+
+        const yesBtn = document.getElementById('confirmation-modal-yes');
+        const noBtn = document.getElementById('confirmation-modal-no');
+
+        // Clean previous listeners
+        yesBtn.replaceWith(yesBtn.cloneNode(true));
+        noBtn.replaceWith(noBtn.cloneNode(true));
+
+        document.getElementById('confirmation-modal-yes').onclick = async () => {
+            modal.classList.add('hidden');
+            await onYes();
+        };
+        document.getElementById('confirmation-modal-no').onclick = () => {
+            modal.classList.add('hidden');
+        };
+
+        modal.classList.remove('hidden');
+    }
+
+    // ---------- USER PROFILE ----------
+    async function loadUserProfile() {
+        try {
+            const { data: { user } } = await db.auth.getUser();
+            if (!user) return;
+            const { data } = await db.from('companies').select('fullname').eq('id', user.id).maybeSingle();
+            const firstName = data?.fullname?.split(' ')[0] || 'Admin';
+            document.getElementById('userFirstName').textContent = firstName;
+            dashboardName.textContent = `Welcome, ${firstName}`;
+        } catch (err) {
+            console.error('Profile load error:', err);
+        }
+    }
+
+    // ---------- AUTH CHECK ----------
+    async function checkAuth() {
+        const { data: { user } } = await db.auth.getUser();
+        if (!user) {
+            window.location.href = "../login.html";
+        } else {
+            await loadUserProfile();
+        }
+    }
+
+    // ---------- LOGOUT ----------
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await db.auth.signOut();
+        window.location.href = "../login.html";
+    });
+
+    // ---------- HELPERS ----------
+    function isValidAmount(amount) {
+        return Number.isInteger(amount) && amount >= 50 && amount % 50 === 0;
+    }
+
+    function calculateTicks(deposit, regAmount) {
+        return Math.min(Math.floor(deposit / regAmount), 365);
+    }
+
+    // ---------- CRUD OPERATIONS ----------
+    async function addContributor(data) {
+        const { data: { user } } = await db.auth.getUser();
+        if (!user) throw new Error("Not authenticated");
+        
+        const payload = { ...data, company_id: user.id };
+        const { data: inserted, error } = await db.from('contribution').insert([payload]).select();
+        if (error) throw error;
+
+        transactionLog.push({
+            type: 'Add Funds',
+            name: data.name,
+            amount: data.deposit,
+            date: new Date().toISOString().split('T')[0],
+            contributorId: inserted[0].id
+        });
+    }
+
+    async function updateContributor(id, updates) {
+        const { error } = await db.from('contribution').update(updates).eq('id', id);
+        if (error) throw error;
+    }
+
+    async function deleteContributor(id) {
+        const { data: { user } } = await db.auth.getUser();
+        if (!user) throw new Error("Not authenticated");
+        const { error } = await db.from('contribution').delete().eq('id', id).eq('company_id', user.id);
+        if (error) throw error;
+    }
+
+    // ---------- LOAD DATA ----------
+    async function loadContributors() {
+        try {
+            const { data: { user } } = await db.auth.getUser();
+            if (!user) return window.location.href = "../login.html";
+
+            const { data, error } = await db
+                .from('contribution')
+                .select('id, name, reg_no, month, reg_amount, deposit, total_ticks, withdrawal_1_amount, withdrawal_1_date, withdrawal_2_amount, withdrawal_2_date, withdrawal_3_amount, withdrawal_3_date, created_at')
+                .eq('company_id', user.id)
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            allContributors = data.map(c => ({
+                id: c.id,
+                name: c.name,
+                reg_no: c.reg_no,
+                month: c.month,
+                reg_amount: Number(c.reg_amount),
+                deposit: Number(c.deposit),
+                total_ticks: Number(c.total_ticks),
+                withdrawal_1_amount: Number(c.withdrawal_1_amount || 0),
+                withdrawal_1_date: c.withdrawal_1_date,
+                withdrawal_2_amount: Number(c.withdrawal_2_amount || 0),
+                withdrawal_2_date: c.withdrawal_2_date,
+                withdrawal_3_amount: Number(c.withdrawal_3_amount || 0),
+                withdrawal_3_date: c.withdrawal_3_date,
+                created_at: c.created_at
+            }));
+
+            transactionLog = [];
+            allContributors.forEach(c => {
+                if (c.deposit > 0) {
+                    transactionLog.push({ type: 'Add Funds', name: c.name, amount: c.deposit, date: c.created_at.split('T')[0] });
+                }
+                if (c.withdrawal_1_amount > 0) transactionLog.push({ type: 'Withdraw', name: c.name, amount: c.withdrawal_1_amount, date: c.withdrawal_1_date });
+                if (c.withdrawal_2_amount > 0) transactionLog.push({ type: 'Withdraw', name: c.name, amount: c.withdrawal_2_amount, date: c.withdrawal_2_date });
+                if (c.withdrawal_3_amount > 0) transactionLog.push({ type: 'Withdraw', name: c.name, amount: c.withdrawal_3_amount, date: c.withdrawal_3_date });
+            });
+
+            maxTicks = Math.min(365, Math.max(...allContributors.map(c => c.total_ticks), 0));
+            renderTable(allContributors);
+            updateTickColumns();
+        } catch (error) {
+            console.error('Load contributors error:', error);
+            showMessage('ERROR', 'Failed to load data');
+        }
+    }
+
+    function updateTickColumns() {
+        while (tableHeaderRow.children.length > 9) {
+            tableHeaderRow.removeChild(tableHeaderRow.lastChild);
+        }
+        for (let i = 1; i <= maxTicks; i++) {
+            const th = document.createElement('th');
+            th.className = 'tick-cell position-cell';
+            th.textContent = `Day ${i}`;
+            tableHeaderRow.appendChild(th);
+        }
+    }
+
+    function generateTickCells(contributor) {
+        let cells = '';
+        for (let i = 1; i <= maxTicks; i++) {
+            const checked = i <= contributor.total_ticks;
+            cells += `<td class="tick-cell ${checked ? 'tick-checked' : ''}"><input type="checkbox" ${checked ? 'checked disabled' : 'disabled'} /></td>`;
+        }
+        return cells;
+    }
+
+    function renderTable(contributors = allContributors) {
+        const colspan = 9 + maxTicks;
+        contributorTableBody.innerHTML = contributors.length === 0 
+            ? `<tr><td colspan="${colspan}" class="text-center py-12 text-gray-500 text-lg">No contributors found</td></tr>`
+            : contributors.map(c => `
+                <tr data-id="${c.id}">
+                    <td class="font-semibold text-gray-800">${c.name}</td>
+                    <td>${c.reg_no}</td>
+                    <td>${c.month}</td>
+                    <td>₦${c.reg_amount.toLocaleString()}</td>
+                    <td class="deposit-cell">
+                        <div class="deposit-amount">₦${c.deposit.toLocaleString()}</div>
+                        <div class="text-center mb-3">
+                            <button class="btn-edit" data-id="${c.id}">Edit</button>
+                        </div>
+                        <div class="action-collapse" id="actions-${c.id}">
+                            <div class="deposit-buttons">
+                                <button class="btn-add" data-id="${c.id}">+ Add</button>
+                                <button class="btn-withdraw" data-id="${c.id}">- Withdraw</button>
+                                <button class="btn-delete" data-id="${c.id}">Delete</button>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${c.withdrawal_1_amount ? `₦${c.withdrawal_1_amount.toLocaleString()}<br><small>(${c.withdrawal_1_date || 'N/A'})</small>` : '₦0'}</td>
+                    <td>${c.withdrawal_2_amount ? `₦${c.withdrawal_2_amount.toLocaleString()}<br><small>(${c.withdrawal_2_date || 'N/A'})</small>` : '₦0'}</td>
+                    <td>${c.withdrawal_3_amount ? `₦${c.withdrawal_3_amount.toLocaleString()}<br><small>(${c.withdrawal_3_date || 'N/A'})</small>` : '₦0'}</td>
+                    <td class="font-bold text-green-600 text-lg">${c.total_ticks}</td>
+                    ${generateTickCells(c)}
+                </tr>
+            `).join('');
+    }
+
+    function filterContributors() {
+        const term = searchBar.value.toLowerCase().trim();
+        const month = searchMonth.value;
+        let filtered = allContributors;
+
+        if (term) {
+            filtered = filtered.filter(c => 
+                c.name?.toLowerCase().includes(term) || 
+                c.reg_no?.toLowerCase().includes(term)
+            );
+        }
+        if (month) {
+            filtered = filtered.filter(c => c.month === month);
+        }
+
+        renderTable(filtered);
+    }
+
+    // ---------- DAILY INCOMES MODAL ----------
+    function showDailyIncomesModal() {
+        const modal = document.getElementById('daily-incomes-modal');
+        modal.classList.remove('hidden');
+
+        const closeBtn = document.getElementById('close-daily-incomes');
+        const filter = document.getElementById('transaction-filter');
+        const list = document.getElementById('transaction-list');
+        const dailyTotalEl = document.getElementById('daily-total');
+        const finalBalanceEl = document.getElementById('final-balance');
+        const dateFrom = document.getElementById('date-from');
+        const dateTo = document.getElementById('date-to');
+        const downloadBtn = document.getElementById('download-report');
+
+        const today = new Date().toISOString().split('T')[0];
+        dateTo.value = today;
+        dateFrom.value = new Date(Date.now() - 30*24*60*60*1000).toISOString().split('T')[0];
+
+        closeBtn.onclick = () => {
+            modal.classList.add('hidden');
+            setButtonLoading(dailyIncomesBtn, false);
+        };
+
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+                setButtonLoading(dailyIncomesBtn, false);
+            }
+        };
+
+        function renderTransactions() {
+            let filtered = [...transactionLog];
+            if (dateFrom.value) filtered = filtered.filter(t => t.date >= dateFrom.value);
+            if (dateTo.value) filtered = filtered.filter(t => t.date <= dateTo.value);
+            if (filter.value !== 'all') {
+                filtered = filtered.filter(t => t.type.toLowerCase().includes(filter.value.toLowerCase()));
+            }
+
+            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const grouped = {};
+            filtered.forEach(t => {
+                if (!grouped[t.date]) grouped[t.date] = [];
+                grouped[t.date].push(t);
+            });
+
+            let runningBalance = 0;
+            let html = '';
+            let todayTotal = 0;
+
+            Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a)).forEach(date => {
+                const dayTotal = grouped[date].reduce((sum, t) => 
+                    t.type === 'Add Funds' ? sum + t.amount : sum - t.amount, 0);
+                
+                if (date === today) todayTotal = dayTotal;
+
+                html += `<div class="mb-8">
+                    <div class="flex justify-between items-center py-3 px-4 bg-gray-100 rounded-xl font-bold text-base">
+                        <span>${formatDate(date)}</span>
+                        <span class="${dayTotal >= 0 ? 'text-green-600' : 'text-red-600'}">
+                            ${dayTotal >= 0 ? '+' : ''}₦${Math.abs(dayTotal).toLocaleString()}
+                        </span>
+                    </div>
+                    <div class="mt-3 space-y-2">`;
+
+                grouped[date].forEach(t => {
+                    const sign = t.type === 'Add Funds' ? '+' : '-';
+                    const color = t.type === 'Add Funds' ? 'text-green-600' : 'text-red-600';
+                    runningBalance += t.type === 'Add Funds' ? t.amount : -t.amount;
+
+                    html += `<div class="flex justify-between items-center py-3 px-4 hover:bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                        <div>
+                            <div class="font-semibold">${t.name}</div>
+                            <div class="text-sm text-gray-500">${t.type}</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold ${color}">${sign}₦${Math.abs(t.amount).toLocaleString()}</div>
+                            <div class="text-sm text-gray-500">Bal: ₦${runningBalance.toLocaleString()}</div>
+                        </div>
+                    </div>`;
+                });
+
+                html += `</div></div>`;
+            });
+
+            dailyTotalEl.textContent = `Today's Total: ${todayTotal >= 0 ? '+' : ''}₦${Math.abs(todayTotal).toLocaleString()}`;
+            dailyTotalEl.className = `text-xl font-semibold ${todayTotal >= 0 ? 'text-green-600' : 'text-red-600'} mt-2`;
+            finalBalanceEl.textContent = `Final Balance: ₦${runningBalance.toLocaleString()}`;
+            finalBalanceEl.className = `p-6 bg-teal-50 border-t text-right font-bold text-xl ${runningBalance >= 0 ? 'text-teal-700' : 'text-red-700'}`;
+            list.innerHTML = html || `<div class="text-center text-gray-500 py-12 text-lg">No transactions found</div>`;
+        }
+
+        filter.onchange = dateFrom.onchange = dateTo.onchange = renderTransactions;
+        renderTransactions();
+
+        downloadBtn.onclick = () => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(20);
+            doc.text("FASTME CONTRIBUTION", 105, 20, { align: "center" });
+            doc.setFontSize(14);
+            doc.text("Transaction Statement", 105, 30, { align: "center" });
+
+            const from = dateFrom.value ? formatDate(dateFrom.value) : "Start";
+            const to = dateTo.value ? formatDate(dateTo.value) : "Now";
+            doc.setFontSize(11);
+            doc.text(`Period: ${from} to ${to}`, 105, 40, { align: "center" });
+
+            const tableData = [];
+            let balance = 0;
+            const filteredTx = transactionLog.filter(t => {
+                if (dateFrom.value && t.date < dateFrom.value) return false;
+                if (dateTo.value && t.date > dateTo.value) return false;
+                if (filter.value !== 'all' && !t.type.toLowerCase().includes(filter.value)) return false;
+                return true;
+            }).sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            filteredTx.forEach(t => {
+                const amount = t.type === 'Add Funds' ? t.amount : -t.amount;
+                balance += amount;
+                tableData.push([
+                    formatDate(t.date),
+                    t.name,
+                    t.type,
+                    `₦${t.amount.toLocaleString()}`,
+                    t.type === 'Add Funds' ? '+' : '-',
+                    `₦${balance.toLocaleString()}`
+                ]);
+            });
+
+            doc.autoTable({
+                head: [['Date', 'Name', 'Description', 'Amount', '±', 'Balance']],
+                body: tableData,
+                startY: 50,
+                theme: 'grid',
+                headStyles: { fillColor: [13, 110, 253] },
+            });
+
+            doc.save(`FastMe_Statement_${from.replace(/ /g, '_')}_to_${to.replace(/ /g, '_')}.pdf`);
+        };
+    }
+
+    function formatDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-GB', { 
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+        });
+    }
+
+    // ---------- EVENT LISTENERS ----------
+    document.addEventListener('DOMContentLoaded', async () => {
+        appContainer.classList.remove('hidden');
+        await checkAuth();
+        await loadContributors();
+
+        // Toggle action buttons
+        contributorTableBody.addEventListener('click', e => {
+            if (e.target.classList.contains('btn-edit')) {
+                const id = e.target.dataset.id;
+                document.getElementById(`actions-${id}`).classList.toggle('open');
+            }
+        });
+
+        // Table action buttons (+ Add / Withdraw / Delete)
+        document.addEventListener('click', async e => {
+            const target = e.target;
+            if (!target.dataset?.id) return;
+
+            const id = parseInt(target.dataset.id);
+            const row = target.closest('tr');
+
+            if (target.classList.contains('btn-add')) {
+                setButtonLoading(target, true);
+                isAddMode = true;
+                currentContributorId = id;
+                const contrib = allContributors.find(c => c.id === id);
+                if (contrib) {
+                    document.getElementById('custom-input-modal-title').textContent = `Add Funds – ${contrib.name}`;
+                    document.getElementById('custom-input-modal-input').value = '';
+                    document.getElementById('custom-input-modal-btn').textContent = 'Add Funds';
+                    document.getElementById('custom-input-modal').classList.remove('hidden');
+                }
+                setButtonLoading(target, false);
+            }
+            else if (target.classList.contains('btn-withdraw')) {
+                setButtonLoading(target, true);
+                isAddMode = false;
+                currentContributorId = id;
+                const contrib = allContributors.find(c => c.id === id);
+                if (contrib) {
+                    document.getElementById('custom-input-modal-title').textContent = `Withdraw – ${contrib.name}`;
+                    document.getElementById('custom-input-modal-input').value = '';
+                    document.getElementById('custom-input-modal-btn').textContent = 'Withdraw';
+                    document.getElementById('custom-input-modal').classList.remove('hidden');
+                }
+                setButtonLoading(target, false);
+            }
+            else if (target.classList.contains('btn-delete')) {
+                setButtonLoading(target, true);
+                const contrib = allContributors.find(c => c.id === id);
+                if (contrib) {
+                    showConfirmation(
+                        'Delete Contributor',
+                        `Are you sure you want to delete ${contrib.name}?`,
+                        async () => {
+                            try {
+                                await deleteContributor(id);
+                                await loadContributors();
+                                showMessage('SUCCESS', `${contrib.name} deleted`);
+                            } catch (err) {
+                                showMessage('ERROR', 'Delete failed');
+                            } finally {
+                                resetRowButtons(row);
+                            }
+                        }
+                    );
+                }
+            }
+        });
+
+        // Add New Contributor
+        showModalBtn.addEventListener('click', async () => {
+            setButtonLoading(showModalBtn, true);
+            try {
+                document.getElementById('contributor-form').reset();
+                const nextRegNo = await generateNextRegNo();
+                document.getElementById('reg-no').value = nextRegNo;
+                document.getElementById('contributor-modal').classList.remove('hidden');
+            } catch (err) {
+                showMessage('ERROR', 'Failed to prepare form');
+            } finally {
+                setButtonLoading(showModalBtn, false);
+            }
+        });
+
+        // Daily Incomes
+        dailyIncomesBtn.addEventListener('click', () => {
+            setButtonLoading(dailyIncomesBtn, true);
+            showDailyIncomesModal();
+        });
+
+        // Add Contributor Form
+        document.getElementById('contributor-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            setButtonLoading(submitBtn, true);
+
+            const regAmount = Number(document.getElementById('reg-amount').value);
+            const deposit = Number(document.getElementById('deposit').value);
+
+            if (!isValidAmount(regAmount) || !isValidAmount(deposit)) {
+                showMessage('ERROR', 'Amounts must be multiples of 50');
+                setButtonLoading(submitBtn, false);
+                return;
+            }
+
+            const ticks = calculateTicks(deposit, regAmount);
+            if (ticks > 365) {
+                showMessage('ERROR', `Maximum deposit: ₦${(365 * regAmount).toLocaleString()}`);
+                setButtonLoading(submitBtn, false);
+                return;
+            }
+
+            try {
+                const payload = {
+                    name: document.getElementById('name').value.trim(),
+                    reg_no: document.getElementById('reg-no').value.trim(),
+                    month: document.getElementById('month').value,
+                    reg_amount: regAmount,
+                    deposit: deposit,
+                    total_ticks: ticks
+                };
+                await addContributor(payload);
+                await loadContributors();
+                showMessage('SUCCESS', `${payload.name} added (${ticks} ticks)`);
+                document.getElementById('contributor-modal').classList.add('hidden');
+                document.getElementById('contributor-form').reset();
+            } catch (err) {
+                showMessage('ERROR', 'Failed to add contributor');
+                console.error(err);
+            } finally {
+                setButtonLoading(submitBtn, false);
+            }
+        });
+
+        // Confirm Add/Withdraw
+        document.getElementById('custom-input-modal-btn').addEventListener('click', async () => {
+            const btn = document.getElementById('custom-input-modal-btn');
+            setButtonLoading(btn, true);
+
+            const amount = Number(document.getElementById('custom-input-modal-input').value);
+            const contrib = allContributors.find(c => c.id === currentContributorId);
+
+            if (!contrib || !isValidAmount(amount)) {
+                showMessage('ERROR', 'Invalid amount (must be multiple of 50)');
+                setButtonLoading(btn, false);
+                return;
+            }
+
+            try {
+                if (isAddMode) {
+                    const newDeposit = contrib.deposit + amount;
+                    const newTicks = calculateTicks(newDeposit, contrib.reg_amount);
+                    if (newTicks > 365) {
+                        const max = (365 - contrib.total_ticks) * contrib.reg_amount;
+                        showMessage('ERROR', `Max add: ₦${max.toLocaleString()}`);
+                        return;
+                    }
+                    await updateContributor(currentContributorId, { 
+                        deposit: newDeposit, 
+                        total_ticks: newTicks 
+                    });
+                    transactionLog.push({
+                        type: 'Add Funds',
+                        name: contrib.name,
+                        amount,
+                        date: new Date().toISOString().split('T')[0]
+                    });
+                    showMessage('SUCCESS', `Added ₦${amount.toLocaleString()} → ${newTicks} ticks`);
+                } else {
+                    if (amount > contrib.deposit) {
+                        showMessage('ERROR', `Cannot withdraw more than ₦${contrib.deposit.toLocaleString()}`);
+                        return;
+                    }
+                    const newDeposit = contrib.deposit - amount;
+                    const newTicks = calculateTicks(newDeposit, contrib.reg_amount);
+                    const today = new Date().toISOString().split('T')[0];
+                    let updateFields = { deposit: newDeposit, total_ticks: newTicks };
+
+                    if (!contrib.withdrawal_1_amount) {
+                        updateFields.withdrawal_1_amount = amount;
+                        updateFields.withdrawal_1_date = today;
+                    } else if (!contrib.withdrawal_2_amount) {
+                        updateFields.withdrawal_2_amount = amount;
+                        updateFields.withdrawal_2_date = today;
+                    } else if (!contrib.withdrawal_3_amount) {
+                        updateFields.withdrawal_3_amount = amount;
+                        updateFields.withdrawal_3_date = today;
+                    } else {
+                        showMessage('ERROR', 'All withdrawal slots used');
+                        return;
+                    }
+
+                    await updateContributor(currentContributorId, updateFields);
+                    transactionLog.push({
+                        type: 'Withdraw',
+                        name: contrib.name,
+                        amount,
+                        date: today
+                    });
+                    showMessage('SUCCESS', `Withdrawn ₦${amount.toLocaleString()}`);
+                }
+
+                await loadContributors();
+                document.getElementById('custom-input-modal').classList.add('hidden');
+            } catch (err) {
+                showMessage('ERROR', 'Operation failed');
+                console.error(err);
+            } finally {
+                setButtonLoading(btn, false);
+            }
+        });
+
+        // Close modals
+        document.querySelectorAll('[id$="-close"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modalId = btn.id.replace('-close', '');
+                const modal = document.getElementById(modalId);
+                if (modal) modal.classList.add('hidden');
+                if (modalId === 'daily-incomes-modal') {
+                    setButtonLoading(dailyIncomesBtn, false);
+                }
+            });
+        });
+
+        // Click outside to close modals
+        const modalIds = ['contributor-modal', 'custom-input-modal', 'message-modal', 'confirmation-modal', 'daily-incomes-modal'];
+        modalIds.forEach(id => {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.addEventListener('click', e => {
+                    if (e.target === modal) {
+                        modal.classList.add('hidden');
+                        if (id === 'daily-incomes-modal') {
+                            setButtonLoading(dailyIncomesBtn, false);
+                        }
+                    }
+                });
+            }
+        });
+
+        // Search & filter
+        searchBar.addEventListener('input', filterContributors);
+        searchMonth.addEventListener('change', filterContributors);
+    });
+</script>
+
+<!-- Smartsupp Live Chat -->
+<script type="text/javascript">
+    var _smartsupp = _smartsupp || {};
+    _smartsupp.key = 'b4049ec129d5b569c222ac3de6a0d9607f922d29';
+    window.smartsupp||(function(d) {
+      var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+      c.type='text/javascript';c.charset='utf-8';c.async=true;
+      c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+    })(document);
+</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    window.supabase = createClient(
+      'https://bwugvwbkuynncfdgwqyg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE',
+      { auth: { storage: localStorage, persistSession: true } }
+    );
+  </script>
+
+  <style>
+    :root {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #fff0f5;
+      --text: #333;
+      --gray: #555;
+      --bubble-mine: #ff69b4;
+      --bubble-other: #f0f0f0;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: white;
+      padding: 14px 16px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .back-btn {
+      color: var(--pink-dark);
+      font-size: 28px;
+    }
+
+    .chat-header-info {
+      flex: 1;
+    }
+
+    .chat-partner-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .chat-partner-status {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    .chat-container {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: linear-gradient(to bottom, #fff0f5 0%, #ffffff 100%);
+    }
+
+    .message {
+      max-width: 78%;
+      padding: 10px 14px;
+      border-radius: 20px;
+      line-height: 1.4;
+      font-size: 0.95rem;
+      position: relative;
+    }
+
+    .message.mine {
+      align-self: flex-end;
+      background: var(--bubble-mine);
+      color: white;
+      border-bottom-right-radius: 6px;
+    }
+
+    .message.other {
+      align-self: flex-start;
+      background: var(--bubble-other);
+      color: var(--text);
+      border-bottom-left-radius: 6px;
+    }
+
+    .message-time {
+      font-size: 0.7rem;
+      opacity: 0.7;
+      margin-top: 4px;
+      text-align: right;
+    }
+
+    .input-area {
+      background: white;
+      padding: 12px 16px;
+      border-top: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #messageInput {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 24px;
+      font-size: 1rem;
+      outline: none;
+      resize: none;
+      min-height: 44px;
+      max-height: 120px;
+    }
+
+    #sendBtn {
+      background: var(--pink);
+      color: white;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 24px;
+    }
+
+    #sendBtn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    /* Bottom Navigation - same as profile */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0; right: 0;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      z-index: 1000;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      border-radius: 12px;
+    }
+
+    .nav-item.active, .nav-item:hover {
+      color: var(--pink-dark);
+      background: var(--pink-light);
+    }
+
+    .material-icons { font-size: 28px; margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+
+  <!-- Chat Header -->
+  <header>
+    <a href="profile.html" class="back-btn material-icons">arrow_back</a>
+    <div class="chat-header-info">
+      <div class="chat-partner-name">Sarah Johnson</div>
+      <div class="chat-partner-status">Online • Last seen recently</div>
+    </div>
+    <span class="material-icons" style="font-size: 28px; color: var(--pink-dark);">more_vert</span>
+  </header>
+
+  <!-- Messages Container -->
+  <div class="chat-container" id="chatContainer">
+    <!-- Messages will be added here dynamically -->
+    <div class="message other">
+      Hey! Are you available for the event tomorrow?
+      <div class="message-time">10:32 AM</div>
+    </div>
+
+    <div class="message mine">
+      Yes, I'm free! What time should I be there?
+      <div class="message-time">10:35 AM</div>
+    </div>
+
+    <div class="message other">
+      Great! Let's meet at 2 PM at the main entrance 😊
+      <div class="message-time">10:36 AM</div>
+    </div>
+  </div>
+
+  <!-- Message Input Area -->
+  <div class="input-area">
+    <input type="text" id="messageInput" placeholder="Type a message..." />
+    <button id="sendBtn" disabled>send</button>
+  </div>
+
+  <!-- Bottom Navigation (same as profile) -->
+  <nav class="bottom-nav">
+    <a href="provider.html" class="nav-item">
+      <span class="material-icons">favorite</span>
+      <span class="nav-text">Requests</span>
+    </a>
+    <a href="history.html" class="nav-item">
+      <span class="material-icons">history</span>
+      <span class="nav-text">History</span>
+    </a>
+    <a href="chat.html" class="nav-item active">
+      <span class="material-icons">chat_bubble</span>
+      <span class="nav-text">Chat</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <span class="material-icons">person</span>
+      <span class="nav-text">Profile</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    const supabase = window.supabase;
+
+    // Simple chat simulation (replace with real Supabase Realtime later)
+    const chatContainer = document.getElementById('chatContainer');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    // Enable/disable send button based on input
+    messageInput.addEventListener('input', () => {
+      sendBtn.disabled = !messageInput.value.trim();
+    });
+
+    // Send message on button click or Enter key
+    function sendMessage() {
+      const text = messageInput.value.trim();
+      if (!text) return;
+
+      // Create message bubble
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'message mine';
+      msgDiv.innerHTML = `
+        ${text}
+        <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+      `;
+      chatContainer.appendChild(msgDiv);
+
+      // Scroll to bottom
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+
+      // Clear input
+      messageInput.value = '';
+      sendBtn.disabled = true;
+
+      // Simulate reply (for demo)
+      setTimeout(() => {
+        const replyDiv = document.createElement('div');
+        replyDiv.className = 'message other';
+        replyDiv.innerHTML = `
+          Got it! See you tomorrow 😄
+          <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+        `;
+        chatContainer.appendChild(replyDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }, 1200);
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // Optional: Check auth (redirect if not logged in)
+    async function checkAuth() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        window.location.replace('/login.html');
+      }
+    }
+    checkAuth();
+  </script>
+</body>
+</html>

@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    window.supabase = createClient(
+      'https://bwugvwbkuynncfdgwqyg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE',
+      { auth: { storage: localStorage, persistSession: true } }
+    );
+  </script>
+
+  <style>
+    :root {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #fff0f5;
+      --text: #333;
+      --gray: #555;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    .cover-photo {
+      height: 220px;
+      background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cover-edit {
+      position: absolute;
+      bottom: 12px;
+      right: 16px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    #coverInput { display: none; }
+
+    .profile-header {
+      text-align: center;
+      margin-top: -70px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .avatar-container {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 12px;
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid white;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+
+    .avatar-edit {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      background: white;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      color: var(--pink-dark);
+    }
+
+    #avatarInput { display: none; }
+
+    h1 {
+      font-size: 2.1rem;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .role-badge {
+      background: var(--pink-light);
+      color: var(--pink-dark);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    main {
+      padding: 24px 20px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .section {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+.cover-photo {
+  position: relative;  /* already there, good */
+  overflow: hidden;
+}
+
+.cover-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;  /* keep this – prevents img from stealing clicks */
+}
+
+.cover-edit {
+  position: absolute;
+  bottom: 12px;
+  right: 16px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 10;              /* ← add this: bring label above the image */
+  pointer-events: auto;     /* ← ensure clicks go through */
+  font-size: 24px;          /* make icon bigger/visible if font partially failed */
+  color: #e0459a;           /* force color in case font issue */
+}
+    .section h3 {
+      color: var(--pink-dark);
+      margin-bottom: 16px;
+      font-size: 1.35rem;
+    }
+
+    .bio-display {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text);
+      min-height: 60px;
+      white-space: pre-wrap;
+    }
+
+    .bio-edit-area {
+      display: none;
+    }
+
+    .bio-edit-area.show { display: block; }
+
+    .bio-display.hide { display: none; }
+
+    .bio-actions {
+      margin-top: 12px;
+      text-align: right;
+    }
+
+    .edit-icon {
+      background: none;
+      border: none;
+      color: var(--pink);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-row:last-child { border-bottom: none; }
+
+    .info-label { color: var(--gray); font-weight: 500; }
+    .info-value { font-weight: 600; color: var(--text); }
+
+    .edit-mode .info-value {
+      display: none;
+    }
+
+    .edit-mode .edit-field {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      margin-top: 4px;
+      font-size: 1rem;
+    }
+
+    .edit-field { display: none; }
+
+    .rating-box {
+      text-align: center;
+      padding: 28px 20px;
+      background: linear-gradient(135deg, white, var(--pink-light));
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(255,105,180,0.12);
+    }
+
+    .stars {
+      font-size: 3rem;
+      color: #ffc107;
+      margin: 12px 0;
+    }
+
+    .rating-number {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--pink-dark);
+    }
+
+    .rating-count {
+      color: var(--gray);
+      font-size: 1rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--pink);
+      color: white;
+    }
+
+    .btn-primary:hover { background: var(--pink-dark); }
+
+    .btn-save {
+      background: #4caf50;
+      color: white;
+    }
+
+    .btn-cancel {
+      background: #f44336;
+      color: white;
+      margin-left: 10px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0; right: 0;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      z-index: 1000;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      border-radius: 12px;
+    }
+
+    .nav-item.active, .nav-item:hover {
+      color: var(--pink-dark);
+      background: var(--pink-light);
+    }
+
+    .material-icons { font-size: 28px; margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+
+  <div class="cover-photo" id="coverPhoto">
+  <input type="file" id="coverInput" accept="image/*" hidden />
+  <label for="coverInput" class="cover-edit material-icons">photo_camera</label>
+  <img src="https://images.unsplash.com/photo-1557683316-973673baf926?w=1200" alt="Cover" />
+</div>
+
+  <header class="profile-header">
+    <div class="avatar-container">
+      <img id="avatar" src="https://ui-avatars.com/api/?name=User&background=ff69b4&color=fff" alt="Avatar" class="avatar" />
+      <label for="avatarInput" class="avatar-edit material-icons">edit</label>
+      <input type="file" id="avatarInput" accept="image/*" hidden />
+    </div>
+    <h1 id="fullName">Loading...</h1>
+    <div class="role-badge" id="roleBadge">Loading...</div>
+  </header>
+
+  <main>
+
+    <!-- Bio Section -->
+    <div class="section">
+      <div class="bio-display" id="bioDisplay">No bio yet. Tell others about yourself...</div>
+      <div class="bio-edit-area" id="bioEditArea">
+        <textarea id="bioInput" maxlength="300" placeholder="Write something about yourself..."></textarea>
+        <div class="bio-actions">
+          <button class="btn btn-save" id="saveBioBtn">Save</button>
+          <button class="btn btn-cancel" id="cancelBioBtn">Cancel</button>
+        </div>
+      </div>
+      <button class="edit-icon material-icons" id="editBioBtn">edit</button>
+    </div>
+
+    <!-- Personal Info -->
+    <div class="section" id="infoSection">
+      <h3>Personal Information</h3>
+      <div class="info-row">
+        <span class="info-label">Full Name</span>
+        <span class="info-value" id="displayFullName">—</span>
+        <input type="text" class="edit-field" id="editFullName" placeholder="Full Name" />
+      </div>
+      <div class="info-row">
+        <span class="info-label">Email</span>
+        <span class="info-value" id="email">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Phone</span>
+        <span class="info-value" id="phone">—</span>
+        <input type="tel" class="edit-field" id="editPhone" placeholder="Phone Number" />
+      </div>
+      <div class="info-row">
+        <span class="info-label">Date of Birth</span>
+        <span class="info-value" id="dob">—</span>
+        <input type="date" class="edit-field" id="editDob" />
+      </div>
+      <div class="info-row">
+        <span class="info-label">Account Type</span>
+        <span class="info-value" id="accountType">—</span>
+      </div>
+
+      <div style="margin-top: 20px; text-align: center;">
+        <button class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
+        <button class="btn btn-save" id="saveProfileBtn" style="display:none;">Save Changes</button>
+        <button class="btn btn-cancel" id="cancelProfileBtn" style="display:none;">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Rating -->
+    <div class="rating-box">
+      <h3>Your Rating</h3>
+      <div class="stars" id="stars">★★★★★</div>
+      <div class="rating-number" id="averageRating">4.8</div>
+      <div class="rating-count" id="ratingCount">Based on 42 reviews</div>
+    </div>
+
+  </main>
+<!-- ... existing Personal Info content ... -->
+
+<div style="margin-top: 20px; text-align: center;">
+  <button class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
+  <button class="btn btn-save" id="saveProfileBtn" style="display:none;">Save Changes</button>
+  <button class="btn btn-cancel" id="cancelProfileBtn" style="display:none;">Cancel</button>
+</div>
+
+<!-- Add this new block for Log Out -->
+<div style="margin-top: 40px; text-align: center;">
+  <button class="btn btn-cancel" id="logoutBtn">Log Out</button>
+</div>
+  <nav class="bottom-nav">
+    <a href="provider.html" class="nav-item active">
+      <span class="material-icons">favorite</span>
+      <span class="nav-text">Requests</span>
+    </a>
+    <a href="history.html" class="nav-item">
+      <span class="material-icons">history</span>
+      <span class="nav-text">History</span>
+    </a>
+    <a href="news.html" class="nav-item">
+      <span class="material-icons">campaign</span>
+      <span class="nav-text">News</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <span class="material-icons">person</span>
+      <span class="nav-text">Profile</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    const supabase = window.supabase;
+
+    // Elements
+    const els = {
+      avatar: document.getElementById('avatar'),
+      fullName: document.getElementById('fullName'),
+      roleBadge: document.getElementById('roleBadge'),
+      displayFullName: document.getElementById('displayFullName'),
+      email: document.getElementById('email'),
+      phone: document.getElementById('phone'),
+      dob: document.getElementById('dob'),
+      accountType: document.getElementById('accountType'),
+      bioDisplay: document.getElementById('bioDisplay'),
+      bioInput: document.getElementById('bioInput'),
+      editBioBtn: document.getElementById('editBioBtn'),
+      saveBioBtn: document.getElementById('saveBioBtn'),
+      cancelBioBtn: document.getElementById('cancelBioBtn'),
+      bioEditArea: document.getElementById('bioEditArea'),
+      editProfileBtn: document.getElementById('editProfileBtn'),
+      saveProfileBtn: document.getElementById('saveProfileBtn'),
+      cancelProfileBtn: document.getElementById('cancelProfileBtn'),
+      infoSection: document.getElementById('infoSection'),
+      editFullName: document.getElementById('editFullName'),
+      editPhone: document.getElementById('editPhone'),
+      editDob: document.getElementById('editDob'),
+      avatarInput: document.getElementById('avatarInput'),
+      coverInput: document.getElementById('coverInput')
+    };
+
+    let currentUserId = null;
+
+   async function loadProfile() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return window.location.replace('/login.html');
+
+  currentUserId = session.user.id;
+  const user = session.user;
+
+  // Select only columns you KNOW exist – or use safe query
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('full_name, phone, date_of_birth, account_type, bio, avatar_url, email, cover_url')
+    .eq('id', currentUserId)
+    .single();
+
+  // If query failed (400 or no row), profile will be null
+  const fullName = profile?.full_name || user.user_metadata?.full_name || user.email?.split('@')[0] || 'User';
+  const avatarUrl = profile?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=ff69b4&color=fff`;
+  const coverUrl = profile?.cover_url || 'https://images.unsplash.com/photo-1557683316-973673baf926?w=1200';
+
+  // Safe assignments with fallbacks
+  els.avatar.src = avatarUrl;
+  els.fullName.textContent = fullName;
+  els.roleBadge.textContent = profile?.account_type || user.user_metadata?.account_type || 'Member';
+
+  if (els.displayFullName) els.displayFullName.textContent = fullName;
+  if (els.email) els.email.textContent = profile?.email || user.email || '—';
+  if (els.phone) els.phone.textContent = profile?.phone || '—';
+  if (els.dob) {
+    els.dob.textContent = profile?.date_of_birth 
+      ? new Date(profile.date_of_birth).toLocaleDateString() 
+      : '—';
+  }
+  if (els.accountType) els.accountType.textContent = profile?.account_type || 'User';
+
+  // Bio
+  const bioText = profile?.bio || 'No bio yet. Tell others about yourself...';
+  if (els.bioDisplay) els.bioDisplay.textContent = bioText;
+  if (els.bioInput) els.bioInput.value = profile?.bio || '';
+
+  // Cover
+  const coverImg = document.querySelector('.cover-photo img');
+  if (coverImg) coverImg.src = coverUrl;
+
+  // Fake rating...
+  const rating = (Math.random() * 1 + 4).toFixed(1);
+  if (els.averageRating) els.averageRating.textContent = rating;
+  if (els.stars) {
+    els.stars.textContent = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
+  }
+  if (els.ratingCount) {
+    els.ratingCount.textContent = `Based on ${Math.floor(Math.random()*80 + 20)} reviews`;
+  }
+}
+
+    // ── Edit Bio ───────────────────────────────────────
+    els.editBioBtn.addEventListener('click', () => {
+      els.bioDisplay.classList.add('hide');
+      els.bioEditArea.classList.add('show');
+      els.editBioBtn.style.display = 'none';
+    });
+
+    els.cancelBioBtn.addEventListener('click', () => {
+      els.bioDisplay.classList.remove('hide');
+      els.bioEditArea.classList.remove('show');
+      els.editBioBtn.style.display = 'block';
+    });
+
+    els.saveBioBtn.addEventListener('click', async () => {
+      const bio = els.bioInput.value.trim();
+      if (bio.length > 300) return alert('Bio too long (max 300 chars)');
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({ bio })
+        .eq('id', currentUserId);
+
+      if (error) return alert('Failed to save bio');
+
+      els.bioDisplay.textContent = bio || 'No bio yet...';
+      els.bioDisplay.classList.remove('hide');
+      els.bioEditArea.classList.remove('show');
+      els.editBioBtn.style.display = 'block';
+      alert('Bio saved!');
+    });
+
+    // ── Edit Profile (name, phone, dob) ─────────────────
+    els.editProfileBtn.addEventListener('click', () => {
+      els.infoSection.classList.add('edit-mode');
+      els.editProfileBtn.style.display = 'none';
+      els.saveProfileBtn.style.display = 'inline-block';
+      els.cancelProfileBtn.style.display = 'inline-block';
+
+      els.editFullName.value = els.displayFullName.textContent;
+      els.editPhone.value = els.phone.textContent === '—' ? '' : els.phone.textContent;
+      els.editDob.value = els.dob.textContent === '—' ? '' : new Date(els.dob.textContent).toISOString().split('T')[0];
+    });
+
+    els.cancelProfileBtn.addEventListener('click', () => {
+      els.infoSection.classList.remove('edit-mode');
+      els.editProfileBtn.style.display = 'inline-block';
+      els.saveProfileBtn.style.display = 'none';
+      els.cancelProfileBtn.style.display = 'none';
+    });
+
+    els.saveProfileBtn.addEventListener('click', async () => {
+      const updates = {
+        full_name: els.editFullName.value.trim() || null,
+        phone: els.editPhone.value.trim() || null,
+        date_of_birth: els.editDob.value || null
+      };
+
+      const { error } = await supabase
+        .from('profiles')
+        .update(updates)
+        .eq('id', currentUserId);
+
+      if (error) return alert('Failed to save profile');
+
+      // Update display
+      els.displayFullName.textContent = updates.full_name || '—';
+      els.fullName.textContent = updates.full_name || els.fullName.textContent;
+      els.phone.textContent = updates.phone || '—';
+      els.dob.textContent = updates.date_of_birth ? new Date(updates.date_of_birth).toLocaleDateString() : '—';
+
+      els.infoSection.classList.remove('edit-mode');
+      els.editProfileBtn.style.display = 'inline-block';
+      els.saveProfileBtn.style.display = 'none';
+      els.cancelProfileBtn.style.display = 'none';
+
+      alert('Profile updated!');
+    });
+
+    // ── Avatar Upload ───────────────────────────────────
+    els.avatarInput.addEventListener('change', async e => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      if (file.size > 4*1024*1024) return alert('Image too large (max 4MB)');
+
+      const ext = file.name.split('.').pop();
+      const path = `avatars/${currentUserId}.${ext}`;
+
+      const { error: uploadErr } = await supabase.storage
+        .from('avatars')
+        .upload(path, file, { upsert: true });
+
+      if (uploadErr) return alert('Upload failed: ' + uploadErr.message);
+
+      const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path);
+
+      els.avatar.src = publicUrl;
+
+      await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', currentUserId);
+      alert('Avatar updated!');
+    });
+
+    // ── Cover Upload ────────────────────────────────────
+    els.coverInput.addEventListener('change', async e => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      if (file.size > 6*1024*1024) return alert('Cover image too large (max 6MB)');
+
+      const ext = file.name.split('.').pop();
+      const path = `covers/${currentUserId}.${ext}`;
+
+      const { error } = await supabase.storage
+        .from('covers')
+        .upload(path, file, { upsert: true });
+
+      if (error) return alert('Failed: ' + error.message);
+
+      const { data: { publicUrl } } = supabase.storage.from('covers').getPublicUrl(path);
+
+      document.querySelector('.cover-photo img').src = publicUrl;
+
+      await supabase.from('profiles').update({ cover_url: publicUrl }).eq('id', currentUserId);
+      alert('Cover photo updated!');
+    });
+
+    // Load profile when page opens
+    loadProfile();
+    // ── Log Out ──────────────────────────────────────────
+els.logoutBtn = document.getElementById('logoutBtn');  // Add to your els object if you want consistency
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  if (!confirm('Are you sure you want to log out?')) return;
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error('Logout error:', error);
+    alert('Logout failed: ' + error.message);
+    return;
+  }
+
+  // Optional: Clear any local data if needed
+  // localStorage.clear();  // ← only if you want to wipe everything
+
+  alert('Logged out successfully!');
+  window.location.replace('login.html');  // Redirect to login (change if your login page is named differently)
+});
+  </script>
+</body>
+</html>

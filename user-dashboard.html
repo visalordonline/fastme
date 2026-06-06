@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Providers - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    window.supabase = createClient(
+      'https://bwugvwbkuynncfdgwqyg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE',
+      { auth: { storage: localStorage, persistSession: true } }
+    );
+  </script>
+
+  <style>
+    :root {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #fff0f5;
+      --text: #333;
+      --gray: #555;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+      color: white;
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(255,105,180,0.3);
+    }
+
+    header h1 {
+      margin: 0 0 12px 0;
+      font-size: 1.8rem;
+    }
+
+    main {
+      padding: 20px 16px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .provider-card {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: transform 0.2s;
+    }
+
+    .provider-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .provider-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--pink-light);
+    }
+
+    .provider-info {
+      flex: 1;
+    }
+
+    .provider-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-right: 8px;
+    }
+
+    .role-hookup { background: #ff69b4; color: white; }
+    .role-tb     { background: #c084fc; color: white; }
+
+    .bio-preview {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .request-btn {
+      background: var(--pink);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .request-btn:hover {
+      background: var(--pink-dark);
+      transform: scale(1.05);
+    }
+
+    .request-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--gray);
+      font-size: 1.1rem;
+    }
+
+    .location-section {
+      background: rgba(255,255,255,0.9);
+      border-radius: 16px;
+      padding: 16px;
+      margin: 16px auto;
+      max-width: 720px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .address-display {
+      font-weight: 600;
+      color: var(--pink-dark);
+      font-size: 1.15rem;
+      margin: 0 0 12px 0;
+    }
+
+    .edit-btn {
+      background: none;
+      border: 1px solid var(--pink);
+      color: var(--pink);
+      padding: 6px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .edit-btn:hover {
+      background: var(--pink-light);
+    }
+
+    .autocomplete-container {
+      position: relative;
+      margin: 12px 0 20px 0;
+    }
+
+    #address-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    #address-input:focus {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(255,105,180,0.15);
+    }
+
+    #suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ddd;
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      max-height: 240px;
+      overflow-y: auto;
+      z-index: 20;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      display: none;
+    }
+
+    .suggestion-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid #f5f5f5;
+      font-size: 0.95rem;
+    }
+
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    .suggestion-item:hover {
+      background: var(--pink-light);
+    }
+
+    .manual-coords {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid #eee;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    .manual-coords input {
+      width: 48%;
+      padding: 10px;
+      margin: 8px 1% 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .manual-coords button {
+      background: var(--pink);
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 500;
+      margin-top: 12px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0; right: 0;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      z-index: 1000;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      border-radius: 12px;
+    }
+
+    .nav-item.active, .nav-item:hover {
+      color: var(--pink-dark);
+      background: var(--pink-light);
+    }
+
+    .material-icons { font-size: 28px; margin-bottom: 4px; }
+    .nav-text { font-weight: 500; }
+
+    .floating-chat {
+      position: fixed;
+      bottom: 90px;
+      right: 16px;
+      width: 64px;
+      height: 64px;
+      background: var(--pink);
+      color: white;
+      border-radius: 50%;
+      box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1100;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .floating-chat:hover {
+      background: var(--pink-dark);
+      transform: scale(1.08) translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255, 105, 180, 0.5);
+    }
+
+    .floating-chat .material-icons {
+      font-size: 32px;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Find Your Match</h1>
+  </header>
+
+  <div class="location-section" id="user-location">
+    <p style="font-weight:500; color:#e0459a; margin: 0 0 12px 0;">
+      📍 Loading your location...
+    </p>
+  </div>
+
+  <main>
+    <div id="providers-list">
+      <div class="empty-state">
+        <p>Loading providers... 💖</p>
+      </div>
+    </div>
+  </main>
+
+  <button class="floating-chat" onclick="window.location.href='chat.html'" aria-label="Open messages">
+    <span class="material-icons">chat_bubble</span>
+  </button>
+
+  <nav class="bottom-nav">
+    <a href="provider.html" class="nav-item active">
+      <span class="material-icons">favorite</span>
+      <span class="nav-text">Requests</span>
+    </a>
+    <a href="history.html" class="nav-item">
+      <span class="material-icons">history</span>
+      <span class="nav-text">History</span>
+    </a>
+    <a href="news.html" class="nav-item">
+      <span class="material-icons">campaign</span>
+      <span class="nav-text">News</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <span class="material-icons">person</span>
+      <span class="nav-text">Profile</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    const supabase = window.supabase;
+    const locationDiv = document.getElementById('user-location');
+    const providersList = document.getElementById('providers-list');
+
+    let userLocation = {
+      lat: null,
+      lng: null,
+      address: 'Unknown location'
+    };
+
+    async function checkAuthAndLoad() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        window.location.replace('/login.html');
+        return;
+      }
+      const currentUserId = session.user.id;
+
+      await loadSavedLocation(currentUserId);
+      await tryGetCurrentLocation(currentUserId);
+      await loadProviders(currentUserId);
+    }
+
+    async function loadSavedLocation(userId) {
+      const { data } = await supabase
+        .from('profiles')
+        .select('latitude, longitude')
+        .eq('id', userId)
+        .single();
+
+      if (data && data.latitude != null && data.longitude != null) {
+        userLocation.lat = data.latitude;
+        userLocation.lng = data.longitude;
+        userLocation.address = await getReadableAddress(data.latitude, data.longitude);
+        renderLocationDisplay();
+      }
+    }
+
+    async function tryGetCurrentLocation(userId) {
+      if (userLocation.lat !== null) return; // already have saved location
+
+      if (!navigator.geolocation) {
+        startEditing();
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          userLocation.lat = position.coords.latitude;
+          userLocation.lng = position.coords.longitude;
+          userLocation.address = await getReadableAddress(userLocation.lat, userLocation.lng);
+
+          await saveUserLocation(userId);
+          renderLocationDisplay();
+        },
+        () => {
+          startEditing();
+        },
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 30000 }
+      );
+    }
+
+    async function getReadableAddress(lat, lng) {
+      try {
+        const response = await fetch(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
+        );
+        if (!response.ok) throw new Error();
+        const data = await response.json();
+
+        const parts = [
+          data.city || data.locality,
+          data.principalSubdivision,
+          data.countryName
+        ].filter(Boolean);
+
+        return parts.join(', ') || `Coordinates: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+      } catch {
+        return `Near ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+      }
+    }
+
+    function renderLocationDisplay() {
+      locationDiv.innerHTML = `
+        <p class="address-display">📍 ${userLocation.address}</p>
+        <button class="edit-btn" onclick="startEditing()">Edit location</button>
+      `;
+    }
+
+    window.startEditing = function() {
+      locationDiv.innerHTML = `
+        <p style="font-weight:600; color:var(--pink-dark); margin-bottom:16px;">Update your location</p>
+
+        <div class="autocomplete-container">
+          <input 
+            id="address-input" 
+            type="text" 
+            placeholder="Search for your address (e.g. Port Harcourt, GRA Phase 2)" 
+            autocomplete="off"
+          />
+          <div id="suggestions"></div>
+        </div>
+
+        <div class="manual-coords">
+          <div>Or enter coordinates manually:</div>
+          <input id="lat-input" type="number" step="any" placeholder="Latitude (e.g. 4.815554)" />
+          <input id="lng-input" type="number" step="any" placeholder="Longitude (e.g. 7.049844)" />
+          <button onclick="saveManualCoordinates()">Save Coordinates</button>
+        </div>
+      `;
+
+      setupAddressAutocomplete();
+    };
+
+    function setupAddressAutocomplete() {
+      const input = document.getElementById('address-input');
+      const suggestionsDiv = document.getElementById('suggestions');
+
+      let timeoutId = null;
+
+      input.addEventListener('input', () => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(async () => {
+          const query = input.value.trim();
+          if (query.length < 2) {
+            suggestionsDiv.innerHTML = '';
+            suggestionsDiv.style.display = 'none';
+            return;
+          }
+
+          try {
+            const res = await fetch(
+              `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=7&lang=en`
+            );
+            const data = await res.json();
+
+            suggestionsDiv.innerHTML = '';
+            if (data.features && data.features.length > 0) {
+              data.features.forEach((feature) => {
+                const props = feature.properties;
+                const name = props.name || props.street || props.housenumber || '';
+                const city = props.city || props.locality || '';
+                const state = props.state || props.region || '';
+                const country = props.country || '';
+
+                const fullAddress = [name, city, state, country]
+                  .filter(Boolean)
+                  .join(', ');
+
+                if (!fullAddress) return;
+
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.textContent = fullAddress;
+                item.onclick = () => {
+                  userLocation.address = fullAddress;
+                  userLocation.lat = feature.geometry.coordinates[1];
+                  userLocation.lng = feature.geometry.coordinates[0];
+
+                  saveUserLocation(); // async, no await needed in UI thread
+                  renderLocationDisplay();
+                };
+                suggestionsDiv.appendChild(item);
+              });
+              suggestionsDiv.style.display = 'block';
+            } else {
+              suggestionsDiv.style.display = 'none';
+            }
+          } catch (err) {
+            console.error('Autocomplete failed:', err);
+            suggestionsDiv.style.display = 'none';
+          }
+        }, 400); // debounce 400ms
+      });
+
+      // Hide suggestions on outside click
+      document.addEventListener('click', (e) => {
+        if (!input.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+          suggestionsDiv.style.display = 'none';
+        }
+      });
+    }
+
+    window.saveManualCoordinates = async () => {
+      const lat = parseFloat(document.getElementById('lat-input').value);
+      const lng = parseFloat(document.getElementById('lng-input').value);
+
+      if (isNaN(lat) || isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+        alert('Please enter valid latitude (-90 to 90) and longitude (-180 to 180).');
+        return;
+      }
+
+      userLocation.lat = lat;
+      userLocation.lng = lng;
+      userLocation.address = await getReadableAddress(lat, lng);
+
+      const { data: { session } } = await supabase.auth.getSession();
+      await saveUserLocation(session.user.id);
+      renderLocationDisplay();
+    };
+
+    async function saveUserLocation(userId = null) {
+      if (!userId) {
+        const { data: { session } } = await supabase.auth.getSession();
+        userId = session.user.id;
+      }
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          latitude: userLocation.lat,
+          longitude: userLocation.lng,
+          location_updated_at: new Date().toISOString()
+        })
+        .eq('id', userId);
+
+      if (error) {
+        console.error('Failed to save location:', error);
+      }
+    }
+
+    async function loadProviders(currentUserId) {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, full_name, avatar_url, account_type, bio')
+        .in('account_type', ['Hookup', 'TB'])
+        .neq('id', currentUserId)
+        .order('full_name', { ascending: true });
+
+      if (error) {
+        console.error('Providers load error:', error);
+        providersList.innerHTML = `<p style="color:#e0459a; text-align:center; padding:40px;">Error loading providers – please try again</p>`;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        providersList.innerHTML = `<div class="empty-state"><p>No providers available right now 💔<br>Check back later!</p></div>`;
+        return;
+      }
+
+      let html = '';
+      data.forEach(provider => {
+        const roleClass = provider.account_type === 'Hookup' ? 'role-hookup' : 'role-tb';
+        const bioPreview = provider.bio
+          ? provider.bio.substring(0, 80) + (provider.bio.length > 80 ? '...' : '')
+          : 'No bio yet';
+
+        html += `
+          <div class="provider-card">
+            <img
+              class="provider-avatar"
+              src="${provider.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(provider.full_name)}&background=ff69b4&color=fff`}"
+              alt="${provider.full_name}"
+              onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(provider.full_name)}&background=ff69b4&color=fff'"
+            />
+            <div class="provider-info">
+              <div class="provider-name">${provider.full_name}</div>
+              <span class="role-badge ${roleClass}">${provider.account_type}</span>
+              <div class="bio-preview">${bioPreview}</div>
+            </div>
+            <button
+              class="request-btn"
+              onclick="sendRequest('${provider.id}', '${provider.full_name.replace(/'/g, "\\'")}')"
+            >
+              Request 💌
+            </button>
+          </div>
+        `;
+      });
+      providersList.innerHTML = html;
+    }
+
+    window.sendRequest = async (providerId, providerName) => {
+      if (!confirm(`Send booking request to ${providerName}?`)) return;
+
+      const { data: { session } } = await supabase.auth.getSession();
+      const userId = session.user.id;
+
+      const { error } = await supabase
+        .from('bookings')
+        .insert({
+          user_id: userId,
+          provider_id: providerId,
+          status: 'pending',
+          type: 'booking',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        });
+
+      if (error) {
+        alert('Failed to send request: ' + (error.message || 'Unknown error'));
+        return;
+      }
+
+      alert(`Request sent to ${providerName}! 💕\nThey will see it in their Requests tab.`);
+    };
+
+    // Start the page
+    checkAuthAndLoad();
+  </script>
+</body>
+</html>

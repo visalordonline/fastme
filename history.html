@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booking History - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    window.supabase = createClient(
+      'https://bwugvwbkuynncfdgwqyg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE',
+      { auth: { storage: localStorage, persistSession: true } }
+    );
+  </script>
+
+  <style>
+    :root {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #fff0f5;
+      --text: #333;
+      --gray: #555;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+      color: white;
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(255,105,180,0.3);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    main {
+      padding: 20px 16px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .history-card {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      border-left: 5px solid var(--pink);
+    }
+
+    .history-card h3 {
+      color: var(--pink-dark);
+      margin: 0 0 10px 0;
+      font-size: 1.2rem;
+    }
+
+    .history-card p {
+      margin: 6px 0;
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    .status-pending  { background: #fff3cd; color: #856404; }
+    .status-accepted { background: #d4edda; color: #155724; }
+    .status-rejected { background: #f8d7da; color: #721c24; }
+    .status-completed{ background: #cce5ff; color: #004085; }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--gray);
+      font-size: 1.1rem;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0; right: 0;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      z-index: 1000;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      border-radius: 12px;
+    }
+
+    .nav-item.active, .nav-item:hover {
+      color: var(--pink-dark);
+      background: var(--pink-light);
+    }
+
+    .material-icons { font-size: 28px; margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>My Booking History</h1>
+  </header>
+
+  <main>
+    <div id="history-list">
+      <div class="empty-state">
+        <p>No bookings yet 💔<br>When you make a request, it'll appear here!</p>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="provider.html" class="nav-item active">
+      <span class="material-icons">favorite</span>
+      <span class="nav-text">Requests</span>
+    </a>
+    <a href="history.html" class="nav-item">
+      <span class="material-icons">history</span>
+      <span class="nav-text">History</span>
+    </a>
+    <a href="news.html" class="nav-item">
+      <span class="material-icons">campaign</span>
+      <span class="nav-text">News</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <span class="material-icons">person</span>
+      <span class="nav-text">Profile</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    const supabase = window.supabase;
+    const historyList = document.getElementById('history-list');
+
+    // Protect page – redirect if not logged in
+    async function checkAuthAndLoad() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        window.location.replace('/login.html');
+        return;
+      }
+
+      const userId = session.user.id;
+      await loadHistory(userId);
+    }
+
+    async function loadHistory(userId) {
+      const { data, error } = await supabase
+        .from('bookings')
+        .select('*')
+        .eq('user_id', userId)              // ← client/user who made the booking
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('History load error:', error);
+        historyList.innerHTML = `
+          <p style="color:#e0459a; text-align:center; padding:40px;">
+            Error loading history – please try again
+          </p>`;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        historyList.innerHTML = `
+          <div class="empty-state">
+            <p>No bookings yet 💔<br>Make a request and it'll appear here!</p>
+          </div>`;
+        return;
+      }
+
+      let html = '';
+      data.forEach(booking => {
+        const statusClass = `status-${booking.status}`;
+        const statusText = booking.status.charAt(0).toUpperCase() + booking.status.slice(1);
+
+        html += `
+          <div class="history-card">
+            <h3>${booking.type || 'Booking Request'}</h3>
+            <p><strong>Provider ID:</strong> ${booking.provider_id.substring(0,8)}...</p>
+            <p><strong>Requested on:</strong> ${new Date(booking.created_at).toLocaleString()}</p>
+            ${booking.updated_at ? `<p><strong>Updated:</strong> ${new Date(booking.updated_at).toLocaleString()}</p>` : ''}
+            <p><strong>Status:</strong> 
+              <span class="status-badge ${statusClass}">${statusText}</span>
+            </p>
+          </div>
+        `;
+      });
+
+      historyList.innerHTML = html;
+    }
+
+    // Load on page open
+    checkAuthAndLoad();
+
+    // Optional: refresh on focus (good for realtime feel)
+    window.addEventListener('focus', () => checkAuthAndLoad());
+  </script>
+</body>
+</html>

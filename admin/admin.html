@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Admin Dashboard - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/logo.jpg" />
+
+  <style>
+    :root {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #fff0f5;
+      --text: #333;
+      --gray: #777;
+      --success: #4caf50;
+      --danger: #f44336;
+      --warning: #ff9800;
+    }
+
+    * {
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    input, textarea, select {
+      -webkit-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--bg), #ffffff);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: white;
+      padding: 16px 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h2 {
+      color: var(--pink-dark);
+      font-size: 1.5rem;
+    }
+
+    header .actions {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    header #adminEmail {
+      font-size: 0.95rem;
+      color: var(--gray);
+    }
+
+    #logoutBtn {
+      padding: 10px 16px;
+      background: var(--danger);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.25s;
+    }
+
+    #logoutBtn:hover {
+      background: #d32f2f;
+      transform: translateY(-2px);
+    }
+
+    /* Main */
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Login Screen */
+    .login-box {
+      max-width: 400px;
+      margin: 80px auto;
+      background: white;
+      padding: 40px 30px;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(255, 105, 180, 0.2);
+      text-align: center;
+    }
+
+    .login-box h1 {
+      font-size: 1.8rem;
+      color: var(--pink-dark);
+      margin-bottom: 8px;
+    }
+
+    .login-box .subtitle {
+      color: var(--gray);
+      margin-bottom: 24px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.25s;
+    }
+
+    .login-box input:focus {
+      outline: none;
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
+    }
+
+    #adminLoginBtn {
+      width: 100%;
+      padding: 14px;
+      background: var(--pink);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #adminLoginBtn:hover:not(:disabled) {
+      background: var(--pink-dark);
+      transform: translateY(-2px);
+    }
+
+    #adminLoginBtn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Dashboard */
+    .dashboard-box {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    /* Tab Navigation */
+    .tab-nav {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid #e0e0e0;
+      background: #f9f9f9;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 16px 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.25s;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 105, 180, 0.05);
+      color: var(--pink);
+    }
+
+    .tab-btn.active {
+      color: var(--pink-dark);
+      border-bottom-color: var(--pink);
+    }
+
+    .tab-btn .material-icons {
+      font-size: 1.2rem;
+    }
+
+    /* Tab Content */
+    .tab-content {
+      display: none;
+      padding: 32px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .tab-content h2 {
+      font-size: 1.6rem;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .tab-content .subtitle {
+      color: var(--gray);
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+    }
+
+    /* Stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, var(--pink-light), rgba(255, 105, 180, 0.1));
+      padding: 20px;
+      border-radius: 12px;
+      border-left: 4px solid var(--pink);
+    }
+
+    .stat-card h3 {
+      font-size: 2rem;
+      color: var(--pink-dark);
+      margin-bottom: 8px;
+    }
+
+    .stat-card p {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    thead {
+      background: #f5f5f5;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    th {
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 105, 180, 0.03);
+    }
+
+    /* Actions */
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      white-space: nowrap;
+    }
+
+    .btn-enable {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-enable:hover {
+      background: #388e3c;
+    }
+
+    .btn-disable {
+      background: var(--warning);
+      color: white;
+    }
+
+    .btn-disable:hover {
+      background: #f57c00;
+    }
+
+    .btn-delete {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-delete:hover {
+      background: #d32f2f;
+    }
+
+    /* Loader */
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--pink);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+      display: none;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Popup */
+    .popup {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 300px;
+      background: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+      z-index: 10000;
+      opacity: 0;
+      transition: all 0.4s ease;
+      text-align: center;
+      font-weight: 500;
+      pointer-events: none;
+    }
+
+    .popup.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .popup.success {
+      border-left: 5px solid var(--success);
+      color: #2e7d32;
+    }
+
+    .popup.error {
+      border-left: 5px solid var(--danger);
+      color: #c62828;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 32px;
+      border-radius: 16px;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-content h2 {
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .modal-content p {
+      color: var(--gray);
+      margin-bottom: 24px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-cancel {
+      flex: 1;
+      padding: 12px;
+      background: #f0f0f0;
+      color: var(--text);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.25s;
+    }
+
+    .btn-cancel:hover {
+      background: #e0e0e0;
+    }
+
+    /* Hidden */
+    .hidden {
+      display: none !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      main {
+        padding: 16px;
+      }
+
+      .tab-nav {
+        overflow-x: auto;
+      }
+
+      .tab-btn {
+        min-width: 100px;
+        font-size: 0.85rem;
+        padding: 12px 16px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      table {
+        font-size: 0.8rem;
+      }
+
+      th, td {
+        padding: 8px 12px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .action-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app-content">
+    <!-- Popup -->
+    <div id="popup" class="popup"></div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+      <div class="modal-content">
+        <h2 id="modalTitle">Confirm Action</h2>
+        <p id="modalMessage">Are you sure?</p>
+        <div class="modal-buttons">
+          <button class="btn-cancel" id="cancelBtn">Cancel</button>
+          <button class="btn-delete" id="confirmBtn">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header class="hidden" id="adminHeader">
+      <div>
+        <h2 style="margin: 0; color: var(--pink-dark)">🎛️ Admin Panel</h2>
+      </div>
+      <div class="actions">
+        <span id="adminEmail"></span>
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Login Screen -->
+      <div class="login-box" id="loginScreen">
+        <div style="margin-bottom: 24px;">
+          <img src="/logo.jpg" alt="Logo" style="width: 90px; height: 90px; border-radius: 20px;">
+        </div>
+        <h1>Admin Login</h1>
+        <p class="subtitle">Restricted access</p>
+
+        <input type="email" id="adminEmailInput" placeholder="Admin Email" />
+        <input type="password" id="adminPassword" placeholder="Password" />
+
+        <button id="adminLoginBtn" style="width: 100%;">Login</button>
+        <div class="loader" id="loginLoader"></div>
+      </div>
+
+      <!-- Dashboard -->
+      <div class="dashboard-box hidden" id="dashboardScreen">
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+          <button class="tab-btn active" data-tab="users">
+            <span class="material-icons">people</span>
+            Users
+          </button>
+          <button class="tab-btn" data-tab="bookings">
+            <span class="material-icons">calendar_today</span>
+            Bookings
+          </button>
+          <button class="tab-btn" data-tab="reports">
+            <span class="material-icons">flag</span>
+            Reports
+          </button>
+          <button class="tab-btn" data-tab="reviews">
+            <span class="material-icons">star</span>
+            Reviews
+          </button>
+          <button class="tab-btn" data-tab="posts">
+            <span class="material-icons">post_add</span>
+            Posts
+          </button>
+        </div>
+
+        <!-- TAB 1: USERS -->
+        <div class="tab-content active" id="users">
+          <h2>👥 Registered Users</h2>
+          <p class="subtitle">Manage all users and providers</p>
+
+          <div class="stats" id="userStats"></div>
+
+          <div class="loader" id="usersLoader"></div>
+
+          <table id="usersTable">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Full Name</th>
+                <th>Role</th>
+                <th>Phone</th>
+                <th>DOB</th>
+                <th>Gender</th>
+                <th>Join Intent</th>
+                <th>Joined</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersBody"></tbody>
+          </table>
+
+          <p style="margin-top: 32px; color: #888; font-size: 0.9rem;">
+            Total users: <strong id="totalCount">0</strong>
+          </p>
+        </div>
+
+        <!-- TAB 2: BOOKINGS -->
+        <div class="tab-content" id="bookings">
+          <h2>📅 Booking Activities</h2>
+          <p class="subtitle">View and manage all bookings</p>
+
+          <div class="stats" id="bookingStats"></div>
+
+          <div class="loader" id="bookingsLoader"></div>
+
+          <!-- Booking Filters -->
+          <div style="margin-bottom: 20px; display: flex; gap: 12px;">
+            <select id="statusFilter" style="padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Poppins', sans-serif;">
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="accepted">Accepted</option>
+              <option value="rejected">Rejected</option>
+              <option value="fulfilled">Fulfilled</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+
+          <table id="bookingsTable">
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>User Email</th>
+                <th>Provider Email</th>
+                <th>Service</th>
+                <th>Budget</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsBody"></tbody>
+          </table>
+        </div>
+
+        <!-- TAB 3: REPORTS -->
+        <div class="tab-content" id="reports">
+          <h2>🚩 User Reports</h2>
+          <p class="subtitle">Manage reported users and content</p>
+
+          <div class="loader" id="reportsLoader"></div>
+
+          <table id="reportsTable">
+            <thead>
+              <tr>
+                <th>Report ID</th>
+                <th>Reported User</th>
+                <th>Reporter</th>
+                <th>Reason</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reportsBody"></tbody>
+          </table>
+        </div>
+
+        <!-- TAB 4: REVIEWS -->
+        <div class="tab-content" id="reviews">
+          <h2>⭐ User Reviews</h2>
+          <p class="subtitle">View and moderate reviews</p>
+
+          <div class="loader" id="reviewsLoader"></div>
+
+          <table id="reviewsTable">
+            <thead>
+              <tr>
+                <th>Review ID</th>
+                <th>Provider</th>
+                <th>Reviewer</th>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reviewsBody"></tbody>
+          </table>
+        </div>
+
+        <!-- TAB 5: POSTS -->
+        <div class="tab-content" id="posts">
+          <h2>📝 User Posts</h2>
+          <p class="subtitle">Manage community posts</p>
+
+          <div class="loader" id="postsLoader"></div>
+
+          <table id="postsTable">
+            <thead>
+              <tr>
+                <th>Post ID</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Created</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="postsBody"></tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://bwugvwbkuynncfdgwqyg.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE';
+    const serviceRoleKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjM2OTY1NywiZXhwIjoyMDg3OTQ1NjU3fQ.Ym9ZLP1n8YueBSf0N_2sjw566nATlfq3HUVnZUClyuw';
+
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true, storage: localStorage }
+    });
+
+    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
+      auth: { autoRefreshToken: false, persistSession: false }
+    });
+
+    let confirmCallback = null;
+
+    // ==================== POPUP ====================
+    function showPopup(msg, type = 'success') {
+      const p = document.getElementById('popup');
+      p.textContent = msg;
+      p.className = `popup ${type} show`;
+      setTimeout(() => p.classList.remove('show'), 4500);
+    }
+
+    // ==================== MODAL ====================
+    function showConfirm(title, message, callback) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalMessage').textContent = message;
+      document.getElementById('confirmModal').classList.add('show');
+      confirmCallback = callback;
+    }
+
+    document.getElementById('cancelBtn').addEventListener('click', () => {
+      document.getElementById('confirmModal').classList.remove('show');
+      confirmCallback = null;
+    });
+
+    document.getElementById('confirmBtn').addEventListener('click', () => {
+      if (confirmCallback) {
+        confirmCallback();
+        document.getElementById('confirmModal').classList.remove('show');
+        confirmCallback = null;
+      }
+    });
+
+    // ==================== TAB SWITCHING ====================
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabName = btn.getAttribute('data-tab');
+
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+        btn.classList.add('active');
+        document.getElementById(tabName).classList.add('active');
+
+        if (tabName === 'users') loadAllUsers();
+        else if (tabName === 'bookings') loadBookings();
+        else if (tabName === 'reports') loadReports();
+        else if (tabName === 'reviews') loadReviews();
+        else if (tabName === 'posts') loadPosts();
+      });
+    });
+
+    // ==================== SESSION CHECK ====================
+    function checkAdminSession() {
+      const adminLogged = localStorage.getItem('adminLogged') === 'true';
+      const adminEmail = localStorage.getItem('adminEmail');
+
+      if (adminLogged && adminEmail) {
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('dashboardScreen').classList.remove('hidden');
+        document.getElementById('adminHeader').classList.remove('hidden');
+        document.getElementById('adminEmail').textContent = adminEmail;
+        loadAllUsers();
+      }
+    }
+
+    // ==================== LOAD ALL USERS ====================
+    async function loadAllUsers() {
+      const loader = document.getElementById('usersLoader');
+      const tbody = document.getElementById('usersBody');
+      const countEl = document.getElementById('totalCount');
+      const statDiv = document.getElementById('userStats');
+
+      tbody.innerHTML = '';
+      loader.style.display = 'block';
+
+      try {
+        const { data, error } = await supabaseAdmin.auth.admin.listUsers();
+        if (error) throw error;
+
+        const users = data.users;
+        const totalUsers = users.length;
+        const activeUsers = users.filter(u => !u.user_metadata?.disabled).length;
+        const disabledUsers = users.filter(u => u.user_metadata?.disabled).length;
+        const providers = users.filter(u => u.user_metadata?.role === 'creator').length;
+
+        countEl.textContent = totalUsers;
+
+        statDiv.innerHTML = `
+          <div class="stat-card">
+            <h3>${totalUsers}</h3>
+            <p>Total Users</p>
+          </div>
+          <div class="stat-card">
+            <h3>${activeUsers}</h3>
+            <p>Active Users</p>
+          </div>
+          <div class="stat-card">
+            <h3>${disabledUsers}</h3>
+            <p>Disabled Users</p>
+          </div>
+          <div class="stat-card">
+            <h3>${providers}</h3>
+            <p>Providers</p>
+          </div>
+        `;
+
+        if (users.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;color:#999;">No users found</td></tr>';
+          return;
+        }
+
+        users.forEach(user => {
+          const meta = user.user_metadata || {};
+          const row = document.createElement('tr');
+
+          const role = meta.role || 'user';
+          const name = meta.full_name || '—';
+          const phone = meta.phone || '—';
+          const dob = meta.date_of_birth || '—';
+          const gender = meta.gender || '—';
+          const joinIntent = meta.join_intent ? meta.join_intent.replace(/_/g, ' ') : '—';
+          const joined = new Date(user.created_at).toLocaleDateString();
+          const isDisabled = meta.disabled === true;
+          const status = isDisabled ? '🔴 Disabled' : '🟢 Active';
+
+          row.innerHTML = `
+            <td>${user.email || '—'}</td>
+            <td>${name}</td>
+            <td><strong>${role}</strong></td>
+            <td>${phone}</td>
+            <td>${dob}</td>
+            <td>${gender}</td>
+            <td>${joinIntent}</td>
+            <td>${joined}</td>
+            <td>${status}</td>
+            <td>
+              <div class="actions">
+                ${isDisabled
+                  ? `<button class="action-btn btn-enable" onclick="enableUser('${user.id}', '${user.email}')">Enable</button>`
+                  : `<button class="action-btn btn-disable" onclick="disableUser('${user.id}', '${user.email}')">Disable</button>`
+                }
+                <button class="action-btn btn-delete" onclick="deleteUser('${user.id}', '${user.email}')">Delete</button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+
+      } catch (err) {
+        showPopup('Could not load users: ' + err.message, 'error');
+        console.error(err);
+      } finally {
+        loader.style.display = 'none';
+      }
+    }
+
+    // ==================== LOAD BOOKINGS (CORRECTED) ====================
+// ==================== LOAD BOOKINGS (FIXED) ====================
+async function loadBookings() {
+  const loader = document.getElementById('bookingsLoader');
+  const tbody = document.getElementById('bookingsBody');
+  const statDiv = document.getElementById('bookingStats');
+  const statusFilter = document.getElementById('statusFilter')?.value || '';
+
+  tbody.innerHTML = '';
+  loader.style.display = 'block';
+
+  try {
+    let query = supabase
+      .from('bookings')
+      .select(`
+        *,
+        user:profiles!user_id (
+          id, full_name, email, role, avatar_url
+        ),
+        provider:profiles!provider_id (
+          id, full_name, email, role, avatar_url
+        )
+      `)
+      .order('created_at', { ascending: false })
+      .limit(200);
+
+    if (statusFilter) {
+      query = query.eq('status', statusFilter);
+    }
+
+    const { data: bookings, error } = await query;
+
+    if (error) {
+      console.error('Bookings query error:', error);
+      throw error;
+    }
+
+    // Stats
+    const total = bookings.length;
+    const pending = bookings.filter(b => b.status === 'pending').length;
+    const accepted = bookings.filter(b => b.status === 'accepted').length;
+    const fulfilled = bookings.filter(b => b.status === 'fulfilled').length;
+
+    statDiv.innerHTML = `
+      <div class="stat-card">
+        <h3>${total}</h3>
+        <p>Total Bookings</p>
+      </div>
+      <div class="stat-card">
+        <h3>${pending}</h3>
+        <p>Pending</p>
+      </div>
+      <div class="stat-card">
+        <h3>${accepted}</h3>
+        <p>Accepted</p>
+      </div>
+      <div class="stat-card">
+        <h3>${fulfilled}</h3>
+        <p>Fulfilled</p>
+      </div>
+    `;
+
+    if (!bookings || bookings.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:60px;color:#999;">
+        No bookings found yet.<br><small>People haven't booked anyone or table is empty.</small>
+      </td></tr>`;
+      return;
+    }
+
+    bookings.forEach(booking => {
+      const row = document.createElement('tr');
+      
+      const user = booking.user || {};
+      const provider = booking.provider || {};
+
+      row.innerHTML = `
+        <td><small>${booking.id?.substring(0, 8)}...</small></td>
+        <td>${user.full_name || user.email || 'Unknown User'}</td>
+        <td>
+          ${provider.full_name || provider.email || 'Unknown Provider'}
+          <small style="color:#e0459a;display:block;">${provider.role || ''}</small>
+        </td>
+        <td>${booking.service || '—'}</td>
+        <td>₦${booking.budget || 0}</td>
+        <td><strong style="color:${getStatusColor(booking.status)}">${booking.status}</strong></td>
+        <td>${new Date(booking.created_at).toLocaleDateString()}</td>
+        <td>${new Date(booking.updated_at || booking.created_at).toLocaleDateString()}</td>
+        <td>
+          <div class="actions">
+            <button class="action-btn btn-delete" onclick="deleteBooking('${booking.id}')">Delete</button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+
+  } catch (err) {
+    console.error('Load bookings failed:', err);
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:red;">
+      Error loading bookings: ${err.message}
+    </td></tr>`;
+  } finally {
+    loader.style.display = 'none';
+  }
+}
+
+// Helper function
+function getStatusColor(status) {
+  if (status === 'accepted') return '#4caf50';
+  if (status === 'pending') return '#ff9800';
+  if (status === 'fulfilled') return '#2196f3';
+  if (status === 'cancelled' || status === 'rejected') return '#f44336';
+  return '#777';
+}
+
+    // ==================== LOAD REPORTS ====================
+    async function loadReports() {
+      const loader = document.getElementById('reportsLoader');
+      const tbody = document.getElementById('reportsBody');
+
+      tbody.innerHTML = '';
+      loader.style.display = 'block';
+
+      try {
+        const { data, error } = await supabase
+          .from('reports')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(100);
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#999;">No reports found</td></tr>';
+          return;
+        }
+
+        data.forEach(report => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td><small>${report.id.substring(0, 8)}...</small></td>
+            <td>${report.reported_user_id ? report.reported_user_id.substring(0, 8) : '—'}</td>
+            <td>${report.reporter_id ? report.reporter_id.substring(0, 8) : '—'}</td>
+            <td>${report.reason || '—'}</td>
+            <td>${(report.description || '—').substring(0, 50)}...</td>
+            <td>${report.status || 'pending'}</td>
+            <td>${new Date(report.created_at).toLocaleDateString()}</td>
+            <td>
+              <div class="actions">
+                <button class="action-btn btn-delete" onclick="deleteReport('${report.id}')">Delete</button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+
+      } catch (err) {
+        console.error('Reports error:', err);
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#999;">Error loading reports</td></tr>';
+      } finally {
+        loader.style.display = 'none';
+      }
+    }
+
+    // ==================== LOAD REVIEWS ====================
+    async function loadReviews() {
+      const loader = document.getElementById('reviewsLoader');
+      const tbody = document.getElementById('reviewsBody');
+
+      tbody.innerHTML = '';
+      loader.style.display = 'block';
+
+      try {
+        const { data, error } = await supabase
+          .from('reviews')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(100);
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#999;">No reviews found</td></tr>';
+          return;
+        }
+
+        data.forEach(review => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td><small>${review.id.substring(0, 8)}...</small></td>
+            <td>${review.provider_id ? review.provider_id.substring(0, 8) : '—'}</td>
+            <td>${review.reviewer_id ? review.reviewer_id.substring(0, 8) : '—'}</td>
+            <td>⭐ ${review.rating || 0}</td>
+            <td>${(review.comment || '—').substring(0, 50)}...</td>
+            <td>${new Date(review.created_at).toLocaleDateString()}</td>
+            <td>
+              <div class="actions">
+                <button class="action-btn btn-delete" onclick="deleteReview('${review.id}')">Delete</button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+
+      } catch (err) {
+        console.error('Reviews error:', err);
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#999;">Error loading reviews</td></tr>';
+      } finally {
+        loader.style.display = 'none';
+      }
+    }
+
+    // ==================== LOAD POSTS ====================
+    async function loadPosts() {
+      const loader = document.getElementById('postsLoader');
+      const tbody = document.getElementById('postsBody');
+
+      tbody.innerHTML = '';
+      loader.style.display = 'block';
+
+      try {
+        const { data, error } = await supabase
+          .from('posts')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(100);
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#999;">No posts found</td></tr>';
+          return;
+        }
+
+        data.forEach(post => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td><small>${post.id.substring(0, 8)}...</small></td>
+            <td>${post.user_id ? post.user_id.substring(0, 8) : '—'}</td>
+            <td>${(post.title || '—').substring(0, 30)}</td>
+            <td>${(post.content || '—').substring(0, 40)}...</td>
+            <td>${new Date(post.created_at).toLocaleDateString()}</td>
+            <td>${post.status || 'published'}</td>
+            <td>
+              <div class="actions">
+                <button class="action-btn btn-delete" onclick="deletePost('${post.id}')">Delete</button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+
+      } catch (err) {
+        console.error('Posts error:', err);
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#999;">Error loading posts</td></tr>';
+      } finally {
+        loader.style.display = 'none';
+      }
+    }
+
+    // ==================== USER ACTIONS ====================
+    window.disableUser = (userId, email) => {
+      showConfirm('Disable User', `Disable ${email}?`, async () => {
+        try {
+          const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
+            user_metadata: { disabled: true }
+          });
+          if (error) throw error;
+          showPopup('User disabled', 'success');
+          loadAllUsers();
+        } catch (err) {
+          console.error('Disable user error:', err);
+          showPopup('Error: ' + (err.message || 'Could not disable user'), 'error');
+        }
+      });
+    };
+
+    window.enableUser = (userId, email) => {
+      showConfirm('Enable User', `Enable ${email}?`, async () => {
+        try {
+          const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
+            user_metadata: { disabled: false }
+          });
+          if (error) throw error;
+          showPopup('User enabled', 'success');
+          loadAllUsers();
+        } catch (err) {
+          console.error('Enable user error:', err);
+          showPopup('Error: ' + (err.message || 'Could not enable user'), 'error');
+        }
+      });
+    };
+
+    window.deleteUser = (userId, email) => {
+      showConfirm('Delete User', `Permanently delete ${email}? This cannot be undone!`, async () => {
+        try {
+          const { error } = await supabaseAdmin.auth.admin.deleteUser(userId);
+
+          if (error) {
+            console.error('Full error details:', error);
+            throw new Error(error.message || error);
+          }
+
+          showPopup('User deleted', 'success');
+          loadAllUsers();
+        } catch (err) {
+          console.error('Delete user error details:', err);
+          showPopup('Error: ' + (err.message || 'Could not delete user'), 'error');
+        }
+      });
+    };
+
+    // ==================== BOOKING ACTIONS ====================
+    window.deleteBooking = async (bookingId) => {
+      showConfirm('Delete Booking', 'Delete this booking?', async () => {
+        try {
+          const { error } = await supabase.from('bookings').delete().eq('id', bookingId);
+          if (error) throw error;
+          showPopup('Booking deleted', 'success');
+          loadBookings();
+        } catch (err) {
+          console.error('Delete booking error:', err);
+          showPopup('Error deleting booking', 'error');
+        }
+      });
+    };
+
+    // ==================== REPORT ACTIONS ====================
+    window.deleteReport = async (reportId) => {
+      showConfirm('Delete Report', 'Delete this report?', async () => {
+        try {
+          const { error } = await supabase.from('reports').delete().eq('id', reportId);
+          if (error) throw error;
+          showPopup('Report deleted', 'success');
+          loadReports();
+        } catch (err) {
+          console.error('Delete report error:', err);
+          showPopup('Error deleting report', 'error');
+        }
+      });
+    };
+
+    // ==================== REVIEW ACTIONS ====================
+    window.deleteReview = async (reviewId) => {
+      showConfirm('Delete Review', 'Delete this review?', async () => {
+        try {
+          const { error } = await supabase.from('reviews').delete().eq('id', reviewId);
+          if (error) throw error;
+          showPopup('Review deleted', 'success');
+          loadReviews();
+        } catch (err) {
+          console.error('Delete review error:', err);
+          showPopup('Error deleting review', 'error');
+        }
+      });
+    };
+
+    // ==================== POST ACTIONS ====================
+    window.deletePost = async (postId) => {
+      showConfirm('Delete Post', 'Delete this post?', async () => {
+        try {
+          const { error } = await supabase.from('posts').delete().eq('id', postId);
+          if (error) throw error;
+          showPopup('Post deleted', 'success');
+          loadPosts();
+        } catch (err) {
+          console.error('Delete post error:', err);
+          showPopup('Error deleting post', 'error');
+        }
+      });
+    };
+
+    // ==================== LOGIN ====================
+    document.getElementById('adminLoginBtn').addEventListener('click', async () => {
+      const email = document.getElementById('adminEmailInput').value.trim();
+      const password = document.getElementById('adminPassword').value.trim();
+      const btn = document.getElementById('adminLoginBtn');
+      const loader = document.getElementById('loginLoader');
+
+      if (!email || !password) return showPopup('Enter email and password', 'error');
+
+      btn.disabled = true;
+      loader.style.display = 'block';
+
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+        if (error) throw error;
+
+        if (data.user.user_metadata.account_type !== 'Admin') {
+          throw new Error('Not authorized as admin');
+        }
+
+        localStorage.setItem('adminLogged', 'true');
+        localStorage.setItem('adminEmail', data.user.email);
+
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('dashboardScreen').classList.remove('hidden');
+        document.getElementById('adminHeader').classList.remove('hidden');
+        document.getElementById('adminEmail').textContent = data.user.email;
+
+        showPopup('Welcome, Admin!');
+        loadAllUsers();
+
+      } catch (err) {
+        showPopup(err.message || 'Login failed', 'error');
+      } finally {
+        btn.disabled = false;
+        loader.style.display = 'none';
+      }
+    });
+
+    // ==================== LOGOUT ====================
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      if (confirm('Logout?')) {
+        localStorage.removeItem('adminLogged');
+        localStorage.removeItem('adminEmail');
+        await supabase.auth.signOut();
+        location.reload();
+      }
+    });
+
+    // ==================== STATUS FILTER ====================
+    document.getElementById('statusFilter')?.addEventListener('change', () => {
+      loadBookings();
+    });
+
+    // ==================== INIT ====================
+    checkAdminSession();
+  </script>
+
+</body>
+</html>

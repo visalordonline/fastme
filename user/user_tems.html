@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/logo.jpg" />
+
+
+  <style>
+    :root {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #fff0f5;
+      --text: #333;
+      --gray: #555;
+      --light-gray: #f5f5f5;
+    }
+
+    
+* {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  margin:0; padding:0; box-sizing:border-box;
+}
+
+/* Allow typing + selection in inputs */
+input, textarea {
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+    html, body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 20px;
+      padding-bottom: 120px;
+    }
+
+    /* Header */
+    .policy-header {
+      background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+      border-radius: 20px;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 30px rgba(255,105,180,0.3);
+    }
+
+    .policy-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .policy-header p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
+
+    .last-updated {
+      font-size: 0.9rem;
+      margin-top: 12px;
+      opacity: 0.8;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Table of Contents */
+    .toc {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      border-left: 5px solid var(--pink);
+    }
+
+    .toc h2 {
+      color: var(--pink-dark);
+      margin-bottom: 16px;
+      font-size: 1.3rem;
+    }
+
+    .toc ol {
+      margin-left: 20px;
+    }
+
+    .toc li {
+      margin-bottom: 10px;
+    }
+
+    .toc a {
+      color: var(--pink);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .toc a:hover {
+      color: var(--pink-dark);
+      text-decoration: underline;
+    }
+
+    /* Policy Sections */
+    .policy-section {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+
+    .policy-section h2 {
+      color: var(--pink-dark);
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--pink-light);
+      scroll-margin-top: 100px;
+    }
+
+    .policy-section h3 {
+      color: var(--pink);
+      font-size: 1.2rem;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+
+    .policy-section p {
+      margin-bottom: 14px;
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    .policy-section ul, .policy-section ol {
+      margin-left: 24px;
+      margin-bottom: 14px;
+    }
+
+    .policy-section li {
+      margin-bottom: 8px;
+      line-height: 1.7;
+    }
+
+    /* Highlight Box */
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(255,105,180,0.1), rgba(224,69,154,0.05));
+      border-left: 4px solid var(--pink);
+      padding: 16px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      font-weight: 500;
+      color: var(--pink-dark);
+    }
+
+    /* Warning Box */
+    .warning-box {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .warning-box p {
+      margin: 0;
+      font-weight: 500;
+      color: #856404;
+    }
+
+    /* Bottom Navigation */
+/* ════════════════════════════════════════════════
+   NAVIGATION BAR STYLING
+   ════════════════════════════════════════════════ */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  z-index: 80;
+  width: 100%;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+  gap: 4px;
+}
+
+.nav-item:hover {
+  background: rgba(255, 105, 180, 0.1);
+  color: #ff69b4;
+}
+
+.nav-item.active,
+.nav-item:active {
+  color: #ff69b4;
+  background: #fce4ec;
+}
+
+.nav-item .material-icons {
+  font-size: 28px;
+  margin-bottom: 2px;
+}
+
+.nav-item span:not(.material-icons) {
+  font-size: 0.65rem;
+  white-space: nowrap;
+}
+
+/* Nav Badge (notification counter) */
+.nav-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #f44336;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border: 1.5px solid white;
+  animation: badgePop 0.3s ease;
+  z-index: 10;
+}
+
+.nav-badge.removing {
+  animation: badgeShrink 0.3s ease forwards;
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes badgeShrink {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+/* Ensure page content doesn't hide behind nav */
+body {
+  padding-bottom: 90px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 480px) {
+  .bottom-nav {
+    height: 70px;
+  }
+
+  .nav-item {
+    padding: 4px 8px;
+  }
+
+  .nav-item .material-icons {
+    font-size: 24px;
+  }
+
+  .nav-item span:not(.material-icons) {
+    font-size: 0.6rem;
+  }
+
+  body {
+    padding-bottom: 80px;
+  }
+}
+
+/* For larger screens (optional - hide on desktop) */
+@media (min-width: 768px) {
+  
+
+  body {
+    padding-bottom: 0;
+  }
+}
+
+/* Smooth transitions */
+.nav-item {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Icon styling */
+.nav-icon {
+  width: 30px;
+  height: 30px;
+}
+
+    .material-icons {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    /* Back Button */
+    .back-btn {
+      background: white;
+      border: 2px solid var(--pink-light);
+      color: var(--pink-dark);
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 30px;
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover {
+      background: var(--pink-light);
+      border-color: var(--pink);
+    }
+
+    .back-btn .material-icons {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .policy-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .policy-section {
+        padding: 20px;
+      }
+
+      .policy-section h2 {
+        font-size: 1.3rem;
+      }
+
+      .policy-section h3 {
+        font-size: 1.05rem;
+      }
+    }
+        .nav-icon { width: 30px; height: 30px; object-fit: contain; margin-bottom: 4px; }
+
+  </style>
+</head>
+  <body>
+<div id="app-content">
+<div id="app-content">
+
+  <div class="container">
+    <button class="back-btn" onclick="window.history.back()">
+      <span class="material-icons">arrow_back</span>
+      Back
+    </button>
+
+    <div class="policy-header">
+      <h1>Terms of Service</h1>
+      <p>Fastme - Social Connection Platform</p>
+      <div class="last-updated">Last Updated: March 11, 2026</div>
+    </div>
+
+        <!-- Table of Contents 
+    <div class="toc">
+      <h2>📋 Table of Contents</h2>
+      <ol>
+        <li><a href="#agreement">Agreement to Terms</a></li>
+        <li><a href="#use-license">Use License</a></li>
+        <li><a href="#user-conduct">User Conduct & Responsibilities</a></li>
+        <li><a href="#prohibited">Prohibited Activities</a></li>
+        <li><a href="#content">User-Generated Content</a></li>
+        <li><a href="#ip">Intellectual Property Rights</a></li>
+        <li><a href="#disclaimers">Disclaimers</a></li>
+        <li><a href="#limitation">Limitation of Liability</a></li>
+        <li><a href="#indemnification">Indemnification</a></li>
+        <li><a href="#termination">Termination</a></li>
+        <li><a href="#modifications">Modifications to Service</a></li>
+        <li><a href="#disputes">Dispute Resolution</a></li>
+        <li><a href="#contact">Contact Information</a></li>
+      </ol>
+    </div>
+-  ->
+
+    <!- Section 1 -->
+    <div class="policy-section" id="agreement">
+      <h2>1. Agreement to Terms</h2>
+      <p>By accessing and using Fastme ("Service," "Platform," "we," "us," or "our"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to any portion of these Terms, you may not use our Service.</p>
+      
+      <p><strong>You must be at least 18 years old to use Fastme.</strong> By using the Service, you represent and warrant that you meet this age requirement and have the legal capacity to enter into this agreement.</p>
+
+      <div class="highlight-box">
+        <p>These Terms, along with our Privacy Policy, constitute the entire agreement between you and Fastme regarding your use of the Service.</p>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="policy-section" id="use-license">
+      <h2>2. Use License</h2>
+      <p>Fastme grants you a limited, non-exclusive, non-transferable, revocable license to access and use the Service for account_boxal, non-commercial purposes, subject to these Terms.</p>
+
+      <p>You may not:</p>
+      <ul>
+        <li>Reproduce, distribute, or transmit the Service or its content</li>
+        <li>Modify, translate, or create derivative works</li>
+        <li>Reverse-engineer, decompile, or disassemble the Service</li>
+        <li>Use the Service for commercial purposes without permission</li>
+        <li>Remove or obscure any proprietary notices</li>
+      </ul>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="policy-section" id="user-conduct">
+      <h2>3. User Conduct & Responsibilities</h2>
+
+      <h3>3.1 Account Registration</h3>
+      <p>You are responsible for maintaining the confidentiality of your account and password. You agree to:</p>
+      <ul>
+        <li>Provide accurate, truthful information during registration</li>
+        <li>Update your profile information as needed</li>
+        <li>Notify us immediately of any unauthorized access</li>
+        <li>Accept responsibility for all activities under your account</li>
+      </ul>
+
+      <h3>3.2 Accuracy of Information</h3>
+      <p>You represent and warrant that all information you provide is true, accurate, current, and complete. We reserve the right to suspend or terminate accounts with false or misleading information.</p>
+
+      <h3>3.3 Your Responsibility</h3>
+      <p>You are solely responsible for your use of the Service and any consequences thereof. You agree to comply with all applicable laws and regulations in your jurisdiction.</p>
+
+      <div class="warning-box">
+        <p>⚠️ Fastme is not responsible for actions taken by other users. Please exercise caution when interacting with strangers online.</p>
+      </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="policy-section" id="prohibited">
+      <h2>4. Prohibited Activities</h2>
+      <p>You agree not to engage in any of the following prohibited activities:</p>
+
+      <h3>Harmful & Illegal Conduct</h3>
+      <ul>
+        <li>Violating any applicable law, regulation, or third-party right</li>
+        <li>Harassment, threats, stalking, or abuse of other users</li>
+        <li>Sexual harassment, sexual exploitation, or child exploitation</li>
+        <li>Scams, fraud, phishing, or catfishing</li>
+        <li>Violence, illegal activities, or incitement to violence</li>
+      </ul>
+
+      <h3>Content Violations</h3>
+      <ul>
+        <li>Posting obscene, pornographic, or extremely explicit content</li>
+        <li>Sharing hate speech, discrimination, or bigotry</li>
+        <li>Posting graphic violence or gore</li>
+        <li>Uploading non-consensual intimate images</li>
+        <li>Spam, commercial solicitation, or advertising</li>
+      </ul>
+
+      <h3>Technical Violations</h3>
+      <ul>
+        <li>Hacking, malware, viruses, or code injection</li>
+        <li>Bot usage, automated scraping, or unauthorized automation</li>
+        <li>DDoS attacks or service disruption</li>
+        <li>Attempting to bypass security measures</li>
+      </ul>
+
+      <h3>Imaccount_boxation & Deception</h3>
+      <ul>
+        <li>Imaccount_boxating another account_box, organization, or Fastme staff</li>
+        <li>Creating fake or misleading profiles</li>
+        <li>Misrepresenting affiliation or identity</li>
+      </ul>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="policy-section" id="content">
+      <h2>5. User-Generated Content</h2>
+
+      <h3>5.1 Your Rights</h3>
+      <p>You retain all rights to content you create and upload to Fastme ("User Content"). You are responsible for the legality, accuracy, and appropriateness of your User Content.</p>
+
+      <h3>5.2 License Grant</h3>
+      <p>By uploading User Content, you grant Fastme a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, display, and distribute your content for the purpose of operating, improving, and promoting the Service.</p>
+
+      <h3>5.3 Removal of Content</h3>
+      <p>We reserve the right to remove, hide, or restrict any User Content that violates these Terms or applicable laws without notice. Repeated violations may result in account termination.</p>
+
+      <h3>5.4 No Obligation to Monitor</h3>
+      <p>Fastme is not obligated to monitor, review, or edit User Content. However, we may take action if content violates these Terms.</p>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="policy-section" id="ip">
+      <h2>6. Intellectual Property Rights</h2>
+      <p>The Service, including all original content, features, functionality, software, and design (collectively, "Fastme Content") is owned by Fastme or its licensors and protected by copyright, trademark, and other intellectual property laws.</p>
+
+      <p>You may not copy, modify, reproduce, or distribute Fastme Content without written permission. Fastme Content is provided "as-is" for account_boxal, non-commercial use only.</p>
+
+      <h3>6.1 Trademark</h3>
+      <p>"Fastme" and related logos are trademarks of Fastme Inc. You may not use these marks without written permission.</p>
+    </div>
+
+    <!-- Section 7 -->
+    <div class="policy-section" id="disclaimers">
+      <h2>7. Disclaimers</h2>
+
+      <h3>7.1 "As-Is" Provision</h3>
+      <p>The Service is provided on an "AS-IS" and "AS AVAILABLE" basis. Fastme disclaims all warranties, express or implied, including merchantability, fitness for a particular purpose, and non-infringement.</p>
+
+      <h3>7.2 No Guarantee of Results</h3>
+      <p>Fastme does not guarantee that you will meet someone, establish a relationship, or achieve any particular outcome through the Service.</p>
+
+      <h3>7.3 User Interactions</h3>
+      <p>Fastme is not responsible for the conduct of any user, including fraud, harassment, violence, or other harmful actions. Users are solely responsible for verifying information about other users.</p>
+
+      <h3>7.4 Technical Issues</h3>
+      <p>We do not guarantee uninterrupted service, timely features updates, or error-free operation. We disclaim liability for downtime, bugs, or technical failures.</p>
+    </div>
+
+    <!-- Section 8 -->
+    <div class="policy-section" id="limitation">
+      <h2>8. Limitation of Liability</h2>
+      <p><strong>To the maximum extent permitted by law, Fastme shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, data, use, or goodwill, arising from your use of the Service, even if we have been advised of the possibility of such damages.</strong></p>
+
+      <p>In jurisdictions that do not allow limitation of liability, Fastme's total liability is limited to the amount you paid Fastme in the past 12 months.</p>
+
+      <div class="warning-box">
+        <p>⚠️ Some jurisdictions do not allow disclaimers of implied warranties or limitations of liability. These disclaimers may not apply to you.</p>
+      </div>
+    </div>
+
+    <!-- Section 9 -->
+    <div class="policy-section" id="indemnification">
+      <h2>9. Indemnification</h2>
+      <p>You agree to defend, indemnify, and hold harmless Fastme and its officers, directors, employees, and agents from any claims, damages, or costs (including legal fees) arising from:</p>
+      <ul>
+        <li>Your violation of these Terms</li>
+        <li>Your violation of any applicable law or third-party right</li>
+        <li>Your User Content</li>
+        <li>Your use of the Service</li>
+        <li>Your interactions with other users</li>
+      </ul>
+    </div>
+
+    <!-- Section 10 -->
+    <div class="policy-section" id="termination">
+      <h2>10. Termination</h2>
+
+      <h3>10.1 Termination by You</h3>
+      <p>You may terminate your account at any time by deleting your profile through your account settings. Upon termination, your account will be deactivated, though some data may be retained for legal or operational purposes.</p>
+
+      <h3>10.2 Termination by Fastme</h3>
+      <p>Fastme may terminate or suspend your account immediately, without notice, if you:</p>
+      <ul>
+        <li>Violate these Terms</li>
+        <li>Engage in illegal activities</li>
+        <li>Harass, threaten, or abuse other users</li>
+        <li>Engage in fraud or deception</li>
+        <li>Violate intellectual property rights</li>
+      </ul>
+
+      <h3>10.3 Effect of Termination</h3>
+      <p>Upon termination, your right to use the Service ceases immediately. You remain bound by the terms of this agreement, including indemnification and limitation of liability.</p>
+    </div>
+
+    <!-- Section 11 -->
+    <div class="policy-section" id="modifications">
+      <h2>11. Modifications to Service</h2>
+      <p>Fastme reserves the right to modify, suspend, or discontinue the Service (or any part thereof) at any time with or without notice. We shall not be liable for any such modifications or discontinuation.</p>
+
+      <p>We may update these Terms periodically. Your continued use of the Service following such updates constitutes acceptance of the revised Terms.</p>
+    </div>
+
+    <!-- Section 12 -->
+    <div class="policy-section" id="disputes">
+      <h2>12. Dispute Resolution</h2>
+
+      <h3>12.1 Governing Law</h3>
+      <p>These Terms are governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to its conflict of law principles.</p>
+
+      <h3>12.2 Arbitration</h3>
+      <p>Any dispute arising from or related to these Terms or the Service shall be resolved by binding arbitration rather than in court. By using Fastme, you agree to arbitration and waive your right to a jury trial.</p>
+
+      <h3>12.3 Class Action Waiver</h3>
+      <p>You agree that any arbitration or legal proceeding is conducted on an individual basis, not as a class action or representative proceeding.</p>
+
+      <h3>12.4 Exceptions</h3>
+      <p>Notwithstanding the above, you may pursue claims in small claims court if eligible, and Fastme may pursue injunctive relief in any court of competent jurisdiction to prevent harm or IP infringement.</p>
+    </div>
+
+    <!-- Section 13 -->
+    <div class="policy-section" id="contact">
+      <h2>13. Contact Information</h2>
+      <p>If you have questions about these Terms of Service, please contact us:</p>
+
+      <div class="highlight-box">
+        <p>
+          <strong>📧 Email:</strong> legal@fastme.org<br>
+          <strong>💬 Support:</strong> support@fastme.org<br>
+          <strong>🏢 Company:</strong> Fastme Inc.<br>
+          <strong>📍 Address:</strong> [Your Company Address]<br>
+          <strong>📞 Phone:</strong> +1 (555) 000-0000
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="policy-section" style="text-align: center; margin-top: 40px;">
+      <p style="margin: 0; font-size: 0.9rem; color: var(--gray);">
+        © 2026 Fastme Inc. All rights reserved.<br>
+        These Terms of Service were last updated on March 11, 2026.
+      </p>
+    </div>
+  </div>
+
+    <nav class="bottom-nav">
+    <!-- 1. Home / Dashboard -->
+    <a href="/user/user-dashboard" class="nav-item"  >
+      <span class="material-icons">home</span>
+    </a>
+
+    <!-- 2. Chat / Messages (your current "post.png" looks like it's meant to be chat) -->
+      <a href="/user/user_chat-list.html" class="nav-item" id="chat-nav" data-link>
+
+      <span class="material-icons">chat</span>
+      <!-- Optional badge for unread messages -->
+      <!-- <span class="badge">3</span> -->
+    </a>
+
+    <!-- 3. News / Feed -->
+  <a href="/user/user_news.html" class="nav-item" data-link>
+
+      <span class="material-icons">trending_up</span>
+      <!-- Alternative popular options: -->
+      <!-- feed, article, rss_feed, public, trending_up -->
+    </a>
+
+    <!-- 4. Profile -->
+  <a href="/user/user_profile.html" class="nav-item" data-link>
+      <span class="material-icons">account_box</span>
+      <!-- Better alternatives: account_circle, manage_accounts, account_box -->
+    </a>
+  </nav>
+
+
+  <script>
+    // Smooth scrolling for TOC links
+    document.querySelectorAll('.toc a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Back button functionality
+    document.querySelector('.back-btn').addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '/user/user_profile.html';
+      }
+    });
+  </script>
+</body>
+</html>

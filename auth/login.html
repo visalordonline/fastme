@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8022660006281675"
+     crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Login - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/logo.jpg" />
+
+
+  </div>
+<script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    window.supabase = createClient(
+      'https://bwugvwbkuynncfdgwqyg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE',
+      { auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true, storage: localStorage } }
+    );
+  </script>
+
+  <style>
+    :root { --pink: #ff69b4; --pink-dark: #e0459a; --pink-light: #ffe4f0; --bg: #fff0f5; --text: #333; --gray: #777; }
+
+* {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  margin:0; padding:0; box-sizing:border-box;
+}
+
+/* Allow typing + selection in inputs */
+input, textarea {
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+    body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, var(--bg), #ffffff); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    
+    .login-box { background: white; padding: 40px 30px; border-radius: 24px; box-shadow: 0 10px 40px rgba(255,105,180,0.2); width: 100%; max-width: 420px; text-align: center; }
+    
+    .logo-container { margin-bottom: 20px; }
+    .logo-container img { width: 80px; height: 80px; border-radius: 20px; object-fit: cover; box-shadow: 0 4px 12px rgba(255,105,180,0.3); }
+
+    h1 { font-size: 1.8rem; color: var(--pink-dark); margin-bottom: 8px; }
+    .subtitle { color: var(--gray); margin-bottom: 32px; font-size: 0.95rem; }
+
+    .input-group { position: relative; margin-bottom: 20px; }
+    input { width: 100%; padding: 14px 16px; border: 2px solid #ddd; border-radius: 12px; font-size: 1rem; transition: all 0.25s; }
+    input:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255,105,180,0.15); }
+
+    .password-toggle { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--gray); font-size: 1.3rem; }
+
+    .btn-login { width: 100%; padding: 14px; background: var(--pink); color: white; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.25s; margin-top: 12px; }
+    .btn-login:hover:not(:disabled) { background: var(--pink-dark); transform: translateY(-2px); }
+    .btn-login:disabled { background: #ccc; cursor: not-allowed; }
+
+    .error-msg { color: #d32f2f; font-size: 0.9rem; margin-top: 8px; min-height: 1.2em; }
+    .links { margin-top: 24px; font-size: 0.95rem; }
+    .links a { color: var(--pink-dark); text-decoration: none; font-weight: 500; }
+
+    .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--pink); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 12px auto; display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .popup { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); min-width: 280px; background: white; padding: 16px 24px; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.25); z-index: 10000; opacity: 0; transition: all 0.4s ease; text-align: center; font-weight: 500; }
+    .popup.show { opacity: 1; }
+    .popup.success { border-left: 5px solid #4caf50; color: #2e7d32; }
+    .popup.error { border-left: 5px solid #f44336; color: #c62828; }
+  </style>
+</head>
+  <body>
+<div id="app-content">
+<div id="app-content">
+
+  <div class="login-box">
+    <div class="logo-container">
+      <img src="/logo.jpg" alt="Fastme Logo">
+    </div>
+    <h1>Welcome Back</h1>
+    <p class="subtitle">Sign in to your Fastme account</p>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <input type="email" id="email" placeholder="Email" required autocomplete="email" />
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" placeholder="Password" 
+        required autocomplete="current-password" />
+        <span class="material-icons password-toggle" id="togglePassword">visibility_off</span>
+      </div>
+      <div class="error-msg" id="errorMsg"></div>
+      <button type="submit" class="btn-login" id="loginBtn">Login</button>
+      <div class="loader" id="loader"></div>
+    </form>
+
+    <div class="links">
+      <a href="/auth/forgotten_password">Forgot password?</a><br><br>
+      Don't have an account? <a href="/auth/signup">Sign Up</a>
+    </div>
+  </div>
+
+  <div id="popup" class="popup"></div>
+
+  </div>
+<script type="module">
+    const supabase = window.supabase;
+    const form = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+    const loginBtn = document.getElementById('loginBtn');
+    const loader = document.getElementById('loader');
+    const errorMsg = document.getElementById('errorMsg');
+
+    // ✅ CHECK IF USER IS ALREADY LOGGED IN
+    async function checkExistingSession() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session) {
+          console.log('User already logged in:', session.user.id);
+          // Redirect to appropriate page based on role
+          redirectBasedOnRole(session);
+        }
+      } catch (error) {
+        console.error('Error checking session:', error);
+      }
+    }
+
+    // Run session check when page loads
+    checkExistingSession();
+
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.type === 'password' ? 'text' : 'password';
+      passwordInput.type = type;
+      togglePassword.textContent = type === 'password' ? 'visibility_off' : 'visibility';
+    });
+
+    function showPopup(message, type = 'success') {
+      const popup = document.getElementById('popup');
+      popup.textContent = message;
+      popup.className = `popup ${type} show`;
+      setTimeout(() => popup.classList.remove('show'), 4000);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginBtn.disabled = true;
+      loader.style.display = 'block';
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: emailInput.value.trim(),
+        password: passwordInput.value.trim()
+      });
+
+      if (error) {
+        errorMsg.textContent = error.message;
+        showPopup(error.message, 'error');
+        loginBtn.disabled = false;
+        loader.style.display = 'none';
+      } else {
+        showPopup('Login successful!');
+        redirectBasedOnRole(data.session);
+      }
+    });
+
+    async function redirectBasedOnRole(session) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('gender, join_intent')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      console.log('Profile data:', profile);
+
+      // ✅ CORRECTED LOGIC: Check if they're a provider
+      // Provider = Woman + Be found by others
+      const isProvider = profile?.gender === 'female' && profile?.join_intent === 'be_found';
+
+      console.log('Is Provider:', isProvider, { gender: profile?.gender, intent: profile?.join_intent });
+
+      if (isProvider) {
+        console.log('Redirecting to PROVIDER page');
+        window.location.replace('/provider/news.html');
+      } else {
+        console.log('Redirecting to USER page');
+        window.location.replace('/user/user_news.html');
+      }
+    }
+  </script>
+</body>
+</html>

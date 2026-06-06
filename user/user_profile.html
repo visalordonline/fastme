@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/logo.jpg" />
+  <link rel="stylesheet" href="/profile.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/darkmode.css">
+  <script>
+    (function() {
+      const isDarkMode = localStorage.getItem('fastme_dark_mode') === 'true';
+      if (isDarkMode) {
+        document.documentElement.classList.add('dark-mode');
+        document.body.classList.add('dark-mode');
+      }
+    })();
+  </script>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    window.supabase = createClient(
+      'https://bwugvwbkuynncfdgwqyg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE',
+      { auth: { storage: localStorage, persistSession: true } }
+    );
+  </script>
+  <style>
+    :root {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #fff0f5;
+      --text: #333;
+      --gray: #777;
+      --border: #ddd;
+      --card-bg: #fff;
+    }
+
+    body.dark-mode {
+      --bg: #1a1a1a;
+      --text: #e0e0e0;
+      --gray: #999;
+      --border: #333;
+      --card-bg: #242424;
+    }
+
+    .nav-icon { width: 30px; height: 30px; }
+
+    /* Dropdown Menu Styles */
+    .menu-dropdown-item {
+      position: relative;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .dropdown-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      font-family: 'Poppins', sans-serif;
+      width: 100%;
+      text-align: left;
+    }
+
+    .dropdown-toggle:hover {
+      background: rgba(255, 105, 180, 0.05);
+      color: var(--pink);
+    }
+
+    .dropdown-toggle .material-icons {
+      font-size: 1.2rem;
+    }
+
+    .dropdown-toggle .chevron {
+      margin-left: auto;
+      font-size: 1rem;
+      transition: transform 0.2s ease;
+    }
+
+    .dropdown-toggle.active .chevron {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: static;
+      background: var(--card-bg);
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      max-width: none;
+      z-index: 1000;
+      display: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    .dropdown-menu.active {
+      display: block;
+    }
+
+    .dropdown-menu a,
+    .dropdown-menu button {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 16px;
+      padding-left: 40px;
+      border: none;
+      background: none;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .dropdown-menu a:hover,
+    .dropdown-menu button:hover {
+      background: rgba(255, 105, 180, 0.05);
+      color: var(--pink);
+    }
+
+    .dropdown-menu .material-icons {
+      font-size: 1.1rem;
+      color: var(--pink);
+    }
+
+    .dropdown-menu span {
+      flex: 1;
+    }
+
+    /* Standalone Button Style */
+    .standalone-menu-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--pink);
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      text-align: left;
+    }
+
+    .standalone-menu-item:hover {
+      background: rgba(255, 105, 180, 0.05);
+      color: var(--pink-dark);
+      transform: scale(1.02);
+    }
+
+    .standalone-menu-item .material-icons {
+      font-size: 1.2rem;
+    }
+
+    /* Logout styling */
+    .logout-menu-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #e74c3c;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .logout-menu-item:hover {
+      background: rgba(232, 57, 70, 0.05);
+      color: #c62828;
+    }
+
+    .logout-menu-item .material-icons {
+      font-size: 1.2rem;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 400px;
+      width: 90%;
+      border: 1px solid var(--border);
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .modal-header h2,
+    .modal-header h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text);
+      flex: 1;
+      margin: 0;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: var(--gray);
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      color: var(--pink);
+      transform: rotate(90deg);
+    }
+
+    .modal-body {
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-primary {
+      background-color: var(--pink);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--pink-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text);
+      border: 2px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--pink);
+      color: var(--pink);
+    }
+
+    .btn-danger {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #d32f2f;
+    }
+
+    .btn-cancel {
+      background-color: transparent;
+      color: var(--text);
+      border: 2px solid var(--border);
+    }
+
+    .btn-cancel:hover {
+      border-color: var(--pink);
+      color: var(--pink);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background-color: #4caf50;
+      color: white;
+      padding: 16px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 2000;
+      animation: slideIn 0.3s ease;
+      max-width: 300px;
+      font-weight: 500;
+    }
+
+    .toast.error {
+      background-color: #f44336;
+    }
+
+    .toast.warning {
+      background-color: #ff9800;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .report-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .report-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .report-option:hover {
+      background-color: rgba(255, 105, 180, 0.05);
+      border-color: var(--pink);
+    }
+
+    .report-option input[type="radio"] {
+      cursor: pointer;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      resize: vertical;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
+    }
+  </style>
+</head>
+<body>
+
+<div id="app-content">
+
+  <!-- Cover photo -->
+  <div class="cover-photo" id="coverPhoto">
+    <input type="file" id="coverInput" accept="image/*" hidden />
+    <label for="coverInput" class="cover-edit material-icons">photo_camera</label>
+    <img src="https://images.unsplash.com/photo-1557683316-973673baf926?w=1200" alt="Cover" />
+  </div>
+
+  <!-- Profile header -->
+  <header class="profile-header">
+    <div class="profile-menu-container">
+      <button class="menu-toggle-btn material-icons" id="menuToggle">more_vert</button>
+      
+      <div class="menu-dropdown" id="menuDropdown">
+        <div class="footer-links" id="footerLinksSection" style="display: none;">
+          
+          <!-- Help and Support Dropdown -->
+          <div class="menu-dropdown-item">
+            <button class="dropdown-toggle" id="helpToggle">
+              <span class="material-icons">help_outline</span>
+              <span>Help & Support</span>
+              <span class="material-icons chevron">expand_more</span>
+            </button>
+            <div class="dropdown-menu" id="helpDropdown">
+              <a href="mailto:admin@fastme.org">
+                <span class="material-icons">email</span>
+                <span>Email Us</span>
+              </a>
+              <a href="/user/user_faq.html">
+                <span class="material-icons">help</span>
+                <span>FAQs</span>
+              </a>
+              <a href="/user/feedback.html">
+                <span class="material-icons">feedback</span>
+                <span>Feedback</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Settings and Privacy Dropdown -->
+          <div class="menu-dropdown-item">
+            <button class="dropdown-toggle" id="settingsToggle">
+              <span class="material-icons">settings</span>
+              <span>Settings & Privacy</span>
+              <span class="material-icons chevron">expand_more</span>
+            </button>
+            <div class="dropdown-menu" id="settingsDropdown">
+              <a href="/user/user_settings.html">
+                <span class="material-icons">tune</span>
+                <span>Settings</span>
+              </a>
+              <a href="/user/user_privacy.html">
+                <span class="material-icons">privacy_tip</span>
+                <span>Privacy Policy</span>
+              </a>
+              <a href="/user/user_tems.html">
+                <span class="material-icons">description</span>
+                <span>Terms of Service</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Get Verified Badge (Standalone) -->
+          <a href="/user/user_verification.html id="getVerifiedMenuBtn" class="standalone-menu-item">
+            <span class="material-icons">verified</span>
+            <span>Get Verified Badge</span>
+          </a>
+
+          <!-- Logout -->
+          <div class="menu-dropdown-item" id="logoutMenu" style="display: none;">
+            <button class="logout-menu-item" id="logoutBtn">
+              <span class="material-icons">logout</span>
+              <span>Log Out</span>
+            </button>
+          </div>
+
+        </div>
+
+        <div id="otherUserActionsSection" style="display: none;">
+          <div class="footer-nav menu-grid">
+            <button id="blockUserBtn" class="btn btn-cancel menu-item-grid">
+              <span class="material-icons">block</span>
+              <span class="menu-label">Block</span>
+            </button>
+            <button id="report" class="btn btn-report menu-item-grid">
+              <span class="material-icons">report</span>
+              <span class="menu-label">Report</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="avatar-container">
+      <img id="avatar" src="https://ui-avatars.com/api/?name=User&background=ff69b4&color=fff" alt="Avatar" class="avatar" />
+      <label for="avatarInput" class="avatar-edit material-icons">edit</label>
+      <input type="file" id="avatarInput" accept="image/*" hidden />
+    </div>
+
+    <h1 id="fullName">Loading...</h1>
+    <div class="profile-badges" id="profileBadges"></div>
+  </header>
+
+  <main>
+    <!-- Bio Section -->
+    <div class="section bio-section">
+      <div class="bio-display" id="bioDisplay">No bio yet. Tell others about yourself...</div>
+      <div class="bio-edit-area" id="bioEditArea">
+        <textarea id="bioInput" maxlength="300" placeholder="Write something about yourself..."></textarea>
+        <div class="bio-char-count"><span id="charCount">0</span>/300</div>
+        <div class="bio-actions">
+          <button class="btn btn-primary" id="saveBioBtn">Save</button>
+          <button class="btn btn-cancel" id="cancelBioBtn">Cancel</button>
+        </div>
+      </div>
+      <button class="edit-icon material-icons" id="editBioBtn">edit</button>
+    </div>
+
+    <!-- Account Info -->
+    <div class="section" id="infoSection">
+      <h3>Account Information</h3>
+      <div class="info-row">
+        <span class="info-label">Full Name</span>
+        <span class="info-value" id="displayFullName">—</span>
+        <input type="text" class="edit-field" id="editFullName" placeholder="Full Name" />
+      </div>
+      <div class="info-row" id="emailRow">
+        <span class="info-label">Email</span>
+        <span class="info-value" id="email">—</span>
+      </div>
+      <div class="info-row" id="phoneRow">
+        <span class="info-label">Phone</span>
+        <span class="info-value" id="phone">—</span>
+        <input type="tel" class="edit-field" id="editPhone" placeholder="Phone Number" />
+      </div>
+      <div class="info-row" id="dobRow">
+        <span class="info-label">Date of Birth</span>
+        <span class="info-value" id="dob">—</span>
+        <input type="date" class="edit-field" id="editDob" />
+      </div>
+      <div class="info-row">
+        <span class="info-label">Account Type</span>
+        <span class="info-value" id="accountType">—</span>
+      </div>
+      <div class="info-row" id="genderRow">
+        <span class="info-label">Gender</span>
+        <span class="info-value" id="displayGender">—</span>
+      </div>
+      <div class="info-row" id="intentRow">
+        <span class="info-label">Looking for</span>
+        <span class="info-value" id="displayIntent">—</span>
+      </div>
+
+      <div style="margin-top: 20px; text-align: center;" id="editButtonsContainer">
+        <button class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
+        <button class="btn btn-primary" id="saveProfileBtn" style="display:none; width:100%; margin-top:10px;">Save Changes</button>
+        <button class="btn btn-cancel" id="cancelProfileBtn" style="display:none; width:100%; margin-top:10px;">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Rating -->
+    <div class="rating-box">
+      <h3>Rating</h3>
+      <div class="stars" id="stars">★★★★★</div>
+      <div class="rating-number" id="averageRating">4.8</div>
+      <div class="rating-count" id="ratingCount">Based on 42 reviews</div>
+    </div>
+
+    <!-- Posts & Stories -->
+    <div class="section">
+      <h3 id="postsTitle">My Posts & Stories</h3>
+      <div id="user-posts-grid" style="display: flex; flex-direction: column; gap: 16px;"></div>
+      <div id="no-posts" style="display:none; padding: 40px 20px; text-align:center; color:var(--gray);">
+        <p>No posts or stories yet 💭<br>Share something new!</p>
+      </div>
+    </div>
+  </main>
+
+   <nav class="bottom-nav">
+    <!-- 1. Home / Dashboard -->
+    <a href="/user/user-dashboard" class="nav-item"  >
+      <span class="material-icons">home</span>
+    </a>
+
+    <!-- 2. Chat / Messages (your current "post.png" looks like it's meant to be chat) -->
+      <a href="/user/user_chat-list.html" class="nav-item" id="chat-nav" data-link>
+
+      <span class="material-icons">chat</span>
+      <!-- Optional badge for unread messages -->
+      <!-- <span class="badge">3</span> -->
+    </a>
+
+    <!-- 3. News / Feed -->
+  <a href="/user/user_news.html" class="nav-item" data-link>
+
+      <span class="material-icons">trending_up</span>
+      <!-- Alternative popular options: -->
+      <!-- feed, article, rss_feed, public, trending_up -->
+    </a>
+
+    <!-- 4. Profile -->
+  <a href="/user/user_profile.html" class="nav-item" data-link>
+      <span class="material-icons">account_box</span>
+      <!-- Better alternatives: account_circle, manage_accounts, account_box -->
+    </a>
+  </nav>
+
+
+  <!-- Photo Viewer -->
+  <div id="photoViewer" class="photo-viewer" style="display:none;">
+    <div class="viewer-backdrop"></div>
+    <div class="viewer-content">
+      <button class="viewer-close material-icons">close</button>
+      <img id="viewerImage" class="viewer-img" src="" alt="Profile Photo" />
+    </div>
+  </div>
+
+  <!-- ===== MODALS ===== -->
+
+  <!-- Logout Modal -->
+  <div id="logoutModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="material-icons" style="color: var(--pink); font-size: 2rem;">logout</span>
+        <h2>Log Out</h2>
+        <button type="button" class="modal-close" id="logoutModalClose">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to log out? You'll need to log back in to access your account.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-cancel" id="cancelLogoutBtn">Cancel</button>
+        <button class="btn btn-danger" id="confirmLogoutBtn">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal">
+    <div class="modal-content" style="text-align: center;">
+      <div style="font-size: 3rem; color: #4caf50; margin-bottom: 16px;">✓</div>
+      <h2 id="successTitle" style="color: var(--text);">Success!</h2>
+      <p id="successMessage" style="color: var(--text); margin-top: 12px;">Your changes have been saved successfully.</p>
+      <div class="modal-actions" style="margin-top: 20px;">
+        <button class="btn btn-primary" id="closeSuccessBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Modal -->
+  <div id="errorModal" class="modal">
+    <div class="modal-content" style="text-align: center;">
+      <div style="font-size: 3rem; color: #f44336; margin-bottom: 16px;">⚠️</div>
+      <h2 id="errorTitle" style="color: var(--text);">Error</h2>
+      <p id="errorMessage" style="color: var(--text); margin-top: 12px;">Something went wrong. Please try again.</p>
+      <div class="modal-actions" style="margin-top: 20px;">
+        <button class="btn btn-primary" id="closeErrorBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Progress Modal -->
+  <div id="uploadProgressModal" class="modal">
+    <div class="modal-content">
+      <h2 style="color: var(--text); margin-bottom: 20px; text-align: center;">Uploading Avatar</h2>
+      <div style="text-align: center;">
+        <div class="spinner" style="margin: 20px auto; border: 4px solid var(--border); border-top: 4px solid var(--pink); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+        <p id="uploadStatus" style="color: var(--text);">Uploading your image...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cover Upload Modal -->
+  <div id="coverUploadModal" class="modal">
+    <div class="modal-content">
+      <h2 style="color: var(--text); margin-bottom: 20px; text-align: center;">Uploading Cover Photo</h2>
+      <div style="text-align: center;">
+        <div class="spinner" style="margin: 20px auto; border: 4px solid var(--border); border-top: 4px solid var(--pink); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+        <p style="color: var(--text);">Uploading your cover photo...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Block Modal -->
+  <div id="blockModal" class="modal">
+    <div class="modal-content" style="text-align: center;">
+      <div style="font-size: 2.5rem; color: #ff9800; margin-bottom: 16px;">🚫</div>
+      <h2 style="color: var(--text);">Block User?</h2>
+      <p style="color: var(--text); margin-top: 12px;">Are you sure you want to block this user?</p>
+      <p style="color: var(--gray); font-size: 0.9rem; margin-top: 8px;">They won't be able to see your profile or contact you.</p>
+      <div class="modal-actions" style="margin-top: 20px;">
+        <button class="btn btn-cancel" id="cancelBlockBtn">Cancel</button>
+        <button class="btn btn-danger" id="confirmBlockBtn">Block User</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report Modal -->
+  <div id="reportModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Report User</h3>
+        <button type="button" class="modal-close" id="reportModalClose">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Please select the main reason for reporting this user:</p>
+        <div class="report-options">
+          <label class="report-option">
+            <input type="radio" name="reportReason" value="scam" />
+            <span>Report Scam</span>
+          </label>
+          <label class="report-option">
+            <input type="radio" name="reportReason" value="imitation" />
+            <span>Report Imitation</span>
+          </label>
+          <label class="report-option">
+            <input type="radio" name="reportReason" value="money_no_show" />
+            <span>Money Collected - No Show</span>
+          </label>
+          <label class="report-option">
+            <input type="radio" name="reportReason" value="assault" />
+            <span>Assault/Harassment</span>
+          </label>
+          <label class="report-option">
+            <input type="radio" name="reportReason" value="other" />
+            <span>Other</span>
+          </label>
+        </div>
+        <textarea id="reportDetails" placeholder="Additional details (optional)..." rows="4" maxlength="500"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-cancel" id="cancelReportBtn">Cancel</button>
+        <button class="btn btn-danger" id="submitReportBtn" disabled>Submit Report</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Report Modal -->
+  <div id="confirmReportModal" class="modal">
+    <div class="modal-content" style="text-align: center;">
+      <div style="font-size: 2.5rem; margin-bottom: 16px;">⚠️</div>
+      <h2 style="color: var(--text);">Confirm Report</h2>
+      <p style="color: var(--text); margin-top: 12px;">Are you sure you want to submit this report?</p>
+      <p style="color: var(--gray); font-size: 0.9rem; margin-top: 8px;">Our team will review it and take appropriate action.</p>
+      <div class="modal-actions" style="margin-top: 20px;">
+        <button class="btn btn-cancel" id="cancelConfirmReportBtn">Cancel</button>
+        <button class="btn btn-danger" id="finalSubmitReportBtn">Submit Report</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Identity Warning Modal -->
+  <div id="identityWarningModal" class="modal">
+    <div class="modal-content" style="text-align: center;">
+      <div style="font-size: 2.5rem; margin-bottom: 16px;">⚠️</div>
+      <h2 style="color: #f44336;">Important Warning</h2>
+      <div class="modal-body">
+        <p style="margin-bottom: 12px;"><strong>This is a public platform.</strong></p>
+        <p style="margin-bottom: 12px;">All users must use <strong>real account information</strong>.</p>
+        <p>Fake names or AI-generated images are <strong>strictly prohibited</strong> and may result in account suspension.</p>
+      </div>
+      <div id="warningButtons" style="display: flex; gap: 12px; margin-top: 20px;">
+        <button class="btn btn-primary" id="understandBtn">I Understand</button>
+        <button class="btn btn-cancel" id="dontUnderstandBtn">Learn More</button>
+      </div>
+      <div id="readAgainMessage" style="display: none; margin-top: 20px;">
+        <p style="color: var(--gray);">Please make sure you understand the community guidelines before continuing.</p>
+        <button class="btn btn-primary" id="readAgainBtn" style="margin-top: 12px;">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" style="display: none;"></div>
+
+</div>
+
+<style>
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+
+<script type="module">
+  const supabase = window.supabase;
+
+  // Cache Configuration
+  const CACHE_CONFIG = {
+    PROFILE_CACHE_KEY: 'fastme:profile:',
+    POSTS_CACHE_KEY: 'fastme:posts:',
+    CACHE_TTL: 1000 * 60 * 5
+  };
+
+  function getCacheKey(userId, type) {
+    const key = type === 'profile' ? CACHE_CONFIG.PROFILE_CACHE_KEY : CACHE_CONFIG.POSTS_CACHE_KEY;
+    return `${key}${userId}`;
+  }
+
+  function setCache(userId, type, data) {
+    try {
+      const cache = { data, timestamp: Date.now() };
+      localStorage.setItem(getCacheKey(userId, type), JSON.stringify(cache));
+    } catch (e) {
+      console.warn('LocalStorage quota exceeded:', e);
+    }
+  }
+
+  function getCache(userId, type) {
+    try {
+      const cached = localStorage.getItem(getCacheKey(userId, type));
+      if (!cached) return null;
+      const { data, timestamp } = JSON.parse(cached);
+      if (Date.now() - timestamp > CACHE_CONFIG.CACHE_TTL) {
+        localStorage.removeItem(getCacheKey(userId, type));
+        return null;
+      }
+      return data;
+    } catch (e) {
+      console.warn('Cache retrieval error:', e);
+      return null;
+    }
+  }
+
+  function clearCache(userId, type = null) {
+    try {
+      if (type) {
+        localStorage.removeItem(getCacheKey(userId, type));
+      } else {
+        localStorage.removeItem(getCacheKey(userId, 'profile'));
+        localStorage.removeItem(getCacheKey(userId, 'posts'));
+      }
+    } catch (e) {
+      console.warn('Cache clear error:', e);
+    }
+  }
+
+  // Modal Management
+  function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.classList.add('active');
+  }
+
+  function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.classList.remove('active');
+  }
+
+  function showSuccess(title = 'Success!', message = 'Operation completed successfully.') {
+    document.getElementById('successTitle').textContent = title;
+    document.getElementById('successMessage').textContent = message;
+    openModal('successModal');
+  }
+
+  function showError(title = 'Error', message = 'Something went wrong. Please try again.') {
+    document.getElementById('errorTitle').textContent = title;
+    document.getElementById('errorMessage').textContent = message;
+    openModal('errorModal');
+  }
+
+  function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = 'toast ' + (type !== 'success' ? type : '');
+    toast.style.display = 'block';
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 3000);
+  }
+
+  // Close modal buttons
+  document.querySelectorAll('.modal-close').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const modal = e.target.closest('.modal');
+      if (modal) closeModal(modal.id);
+    });
+  });
+
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal(modal.id);
+    });
+  });
+
+  // Success modal close
+  document.getElementById('closeSuccessBtn')?.addEventListener('click', () => {
+    closeModal('successModal');
+  });
+
+  // Error modal close
+  document.getElementById('closeErrorBtn')?.addEventListener('click', () => {
+    closeModal('errorModal');
+  });
+
+  // URL & Profile Context
+  const urlParams = new URLSearchParams(window.location.search);
+  let targetUserId = urlParams.get('id');
+  let currentUserId = null;
+  let isOwnProfile = false;
+
+  const els = {
+    avatar: document.getElementById('avatar'),
+    fullName: document.getElementById('fullName'),
+    displayFullName: document.getElementById('displayFullName'),
+    email: document.getElementById('email'),
+    phone: document.getElementById('phone'),
+    dob: document.getElementById('dob'),
+    accountType: document.getElementById('accountType'),
+    bioDisplay: document.getElementById('bioDisplay'),
+    bioInput: document.getElementById('bioInput'),
+    editBioBtn: document.getElementById('editBioBtn'),
+    saveBioBtn: document.getElementById('saveBioBtn'),
+    cancelBioBtn: document.getElementById('cancelBioBtn'),
+    bioEditArea: document.getElementById('bioEditArea'),
+    charCount: document.getElementById('charCount'),
+    editProfileBtn: document.getElementById('editProfileBtn'),
+    saveProfileBtn: document.getElementById('saveProfileBtn'),
+    cancelProfileBtn: document.getElementById('cancelProfileBtn'),
+    infoSection: document.getElementById('infoSection'),
+    editFullName: document.getElementById('editFullName'),
+    editPhone: document.getElementById('editPhone'),
+    editDob: document.getElementById('editDob'),
+    avatarInput: document.getElementById('avatarInput'),
+    coverInput: document.getElementById('coverInput'),
+    menuToggle: document.getElementById('menuToggle'),
+    menuDropdown: document.getElementById('menuDropdown'),
+    logoutMenu: document.getElementById('logoutMenu'),
+    postsTitle: document.getElementById('postsTitle')
+  };
+
+  // ==================== DROPDOWN MENU HANDLERS ====================
+  const helpToggle = document.getElementById('helpToggle');
+  const helpDropdown = document.getElementById('helpDropdown');
+  const settingsToggle = document.getElementById('settingsToggle');
+  const settingsDropdown = document.getElementById('settingsDropdown');
+
+  helpToggle?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    settingsDropdown.classList.remove('active');
+    settingsToggle.classList.remove('active');
+    helpToggle.classList.toggle('active');
+    helpDropdown.classList.toggle('active');
+  });
+
+  settingsToggle?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    helpDropdown.classList.remove('active');
+    helpToggle.classList.remove('active');
+    settingsToggle.classList.toggle('active');
+    settingsDropdown.classList.toggle('active');
+  });
+
+  document.querySelectorAll('.dropdown-menu a, .dropdown-menu button').forEach(item => {
+    item.addEventListener('click', () => {
+      helpDropdown?.classList.remove('active');
+      helpToggle?.classList.remove('active');
+      settingsDropdown?.classList.remove('active');
+      settingsToggle?.classList.remove('active');
+      els.menuDropdown?.classList.remove('show');
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!helpToggle?.contains(e.target) && !helpDropdown?.contains(e.target) &&
+        !settingsToggle?.contains(e.target) && !settingsDropdown?.contains(e.target)) {
+      helpDropdown?.classList.remove('active');
+      helpToggle?.classList.remove('active');
+      settingsDropdown?.classList.remove('active');
+      settingsToggle?.classList.remove('active');
+    }
+  });
+
+  // Bio character count
+  els.bioInput?.addEventListener('input', (e) => {
+    const count = e.target.value.length;
+    els.charCount.textContent = count;
+  });
+
+  // Main menu toggle
+  els.menuToggle?.addEventListener('click', () => {
+    els.menuDropdown.classList.toggle('show');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!els.menuToggle?.contains(e.target) && !els.menuDropdown?.contains(e.target)) {
+      els.menuDropdown?.classList.remove('show');
+    }
+  });
+
+  // ========== LOGOUT HANDLER WITH MODAL ==========
+  document.getElementById('logoutBtn')?.addEventListener('click', () => {
+    openModal('logoutModal');
+  });
+
+  document.getElementById('cancelLogoutBtn')?.addEventListener('click', () => {
+    closeModal('logoutModal');
+  });
+
+  document.getElementById('confirmLogoutBtn')?.addEventListener('click', async () => {
+    try {
+      closeModal('logoutModal');
+      clearCache(currentUserId);
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      window.location.replace('/auth/login.html');
+    } catch (err) {
+      showError('Logout Failed', err.message || 'Failed to log out.');
+    }
+  });
+
+  // Calculate Age
+  function calculateAge(birthDateStr) {
+    if (!birthDateStr) return null;
+    const birth = new Date(birthDateStr);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const m = today.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+    return age;
+  }
+
+  // Load Profile
+  async function loadProfile() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return window.location.replace('/index.html');
+
+    currentUserId = session.user.id;
+    if (!targetUserId) targetUserId = currentUserId;
+    isOwnProfile = (targetUserId === currentUserId);
+
+    clearCache(targetUserId, 'profile');
+
+    let profile = getCache(targetUserId, 'profile');
+    if (!profile) {
+      const { data: dbProfile, error } = await supabase
+        .from('profiles')
+        .select('full_name, phone, date_of_birth, account_type, bio, avatar_url, email, cover_url, gender, join_intent')
+        .eq('id', targetUserId)
+        .maybeSingle();
+
+      if (error || !dbProfile) {
+        showError('Profile Error', 'Could not load profile. Please try again.');
+        return;
+      }
+      profile = dbProfile;
+      setCache(targetUserId, 'profile', profile);
+    }
+
+    const fullName = profile.full_name || 'User';
+    const avatarUrl = profile.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=ff69b4&color=fff`;
+    const coverUrl = profile.cover_url || 'https://images.unsplash.com/photo-1557683316-973673baf926?w=1200';
+
+    els.avatar.src = avatarUrl;
+    els.fullName.textContent = fullName;
+
+    const badgesContainer = document.getElementById('profileBadges');
+    badgesContainer.innerHTML = '';
+    const badges = [];
+
+    if (profile.gender) {
+      badges.push({ text: profile.gender === 'male' ? 'Man' : 'Woman', className: 'profile-badge' });
+    }
+    if (profile.join_intent) {
+      const text = profile.join_intent === 'discover_nearby' ? 'Looking to connect' : 'Be discovered by others';
+      badges.push({ text, className: 'profile-badge' });
+    }
+    if (profile.date_of_birth) {
+      const age = calculateAge(profile.date_of_birth);
+      if (age >= 18) badges.push({ text: `${age}`, className: 'profile-badge' });
+    }
+
+    badges.forEach(b => {
+      const el = document.createElement('div');
+      el.className = b.className;
+      el.textContent = b.text;
+      badgesContainer.appendChild(el);
+    });
+
+    if (badges.length === 0) {
+      badgesContainer.innerHTML = '<div class="profile-badge">Member</div>';
+    }
+
+    els.displayFullName.textContent = fullName;
+    els.phone.textContent = profile.phone || '—';
+    els.dob.textContent = profile.date_of_birth ? new Date(profile.date_of_birth).toLocaleDateString() : '—';
+    els.accountType.textContent = profile.account_type || 'User';
+
+    document.getElementById('displayGender').textContent = 
+      profile.gender === 'male' ? 'Man' :
+      profile.gender === 'female' ? 'Woman' : 
+      profile.gender === 'other' ? 'Other' : '—';
+
+    let intentText = '—';
+    if (profile.join_intent === 'discover_nearby') intentText = 'Discover people nearby';
+    else if (profile.join_intent === 'be_found') intentText = 'Be found by others';
+    document.getElementById('displayIntent').textContent = intentText;
+
+    const bioText = profile.bio || 'No bio yet.';
+    els.bioDisplay.textContent = bioText;
+    els.bioInput.value = profile.bio || '';
+    els.charCount.textContent = (profile.bio || '').length;
+
+    document.querySelector('.cover-photo img').src = coverUrl;
+    document.title = `${fullName} - Fastme`;
+    els.postsTitle.textContent = isOwnProfile ? "My Posts & Stories" : `${fullName}'s Posts & Stories`;
+
+    const footerLinksSect = document.getElementById('footerLinksSection');
+    const logoutMenuItem = document.getElementById('logoutMenu');
+    const otherUserActionsDiv = document.getElementById('otherUserActionsSection');
+
+    if (isOwnProfile) {
+      if (footerLinksSect) footerLinksSect.style.display = 'block';
+      if (logoutMenuItem) logoutMenuItem.style.display = '';
+      if (otherUserActionsDiv) otherUserActionsDiv.style.display = 'none';
+    } else {
+      if (footerLinksSect) footerLinksSect.style.display = 'none';
+      if (logoutMenuItem) logoutMenuItem.style.display = 'none';
+      if (otherUserActionsDiv) otherUserActionsDiv.style.display = 'block';
+    }
+
+    if (!isOwnProfile) {
+      document.querySelectorAll('.avatar-edit, .cover-edit, #editBioBtn, #editButtonsContainer').forEach(el => {
+        if (el) el.style.display = 'none';
+      });
+      document.getElementById('emailRow').style.display = 'none';
+      document.getElementById('phoneRow').style.display = 'none';
+      document.getElementById('dobRow').style.display = 'none';
+    }
+
+    await loadUserContent(targetUserId);
+  }
+
+  // Load User Content
+  async function loadUserContent(userId, fullReload = true) {
+    try {
+      let stories = getCache(userId, 'posts');
+      if (!stories) {
+        const { data: dbStories, error: storiesErr } = await supabase
+          .from('stories')
+          .select('id, user_id, caption, image_url, created_at, expires_at')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false });
+
+        if (storiesErr) throw storiesErr;
+        stories = dbStories || [];
+        setCache(userId, 'posts', stories);
+      }
+
+      const now = new Date();
+      const activeStories = stories.filter(s => new Date(s.expires_at) > now) || [];
+
+      const container = document.getElementById('user-posts-grid');
+      const noPostsEl = document.getElementById('no-posts');
+
+      if (fullReload) container.innerHTML = '';
+
+      if (activeStories.length === 0) {
+        noPostsEl.style.display = 'block';
+        return;
+      }
+
+      noPostsEl.style.display = 'none';
+
+      for (const story of activeStories) {
+        const expiryDate = new Date(story.expires_at);
+        const hoursLeft = Math.max(0, Math.round((expiryDate - now) / 3600000));
+        const expiryText = hoursLeft > 0 ? `Expires in ${hoursLeft} hour${hoursLeft !== 1 ? 's' : ''}` : 'Expiring soon';
+
+        const { count: likeCount = 0 } = await supabase
+          .from('story_likes')
+          .select('id', { count: 'exact', head: true })
+          .eq('story_id', story.id);
+
+        const { data: myLike } = await supabase
+          .from('story_likes')
+          .select('id')
+          .eq('story_id', story.id)
+          .eq('user_id', currentUserId)
+          .maybeSingle();
+
+        const { count: commentCount = 0 } = await supabase
+          .from('story_comments')
+          .select('id', { count: 'exact', head: true })
+          .eq('story_id', story.id);
+
+        if (!fullReload) {
+          const countEl = document.querySelector(`[data-story-id="${story.id}"] .comment-count`);
+          if (countEl) countEl.textContent = commentCount;
+          continue;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'post-card';
+        card.innerHTML = `
+          <div class="post-header">
+            <img class="post-avatar" src="${els.avatar.src}" alt="${els.fullName.textContent}" />
+            <div class="post-user-info">
+              <div class="post-name">${els.fullName.textContent}</div>
+              <div class="post-meta">${new Date(story.created_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</div>
+            </div>
+          </div>
+          <div class="post-content">
+            ${story.caption ? `<p class="post-caption">${story.caption}</p>` : ''}
+            ${story.image_url ? `<img class="post-image" src="${story.image_url}" alt="Post image" loading="lazy" />` : ''}
+          </div>
+          <div class="post-expiry">${expiryText}</div>
+          <div class="post-actions">
+            <button class="action-btn like-btn ${myLike ? 'liked' : ''}" data-story-id="${story.id}">
+              <span class="material-icons">favorite${myLike ? '' : '_border'}</span>
+              <span class="like-count">${likeCount}</span>
+            </button>
+            <button class="action-btn comment-btn" data-story-id="${story.id}">
+              <span class="material-icons">chat_bubble_outline</span>
+              <span class="comment-count">${commentCount}</span>
+            </button>
+          </div>
+          <div class="comments-section" id="comments-${story.id}">
+            <div class="comment-list"></div>
+            <div class="comment-form">
+              <input type="text" class="comment-input" placeholder="Add a comment..." maxlength="280" />
+              <button class="post-comment-btn">Send</button>
+            </div>
+          </div>
+        `;
+
+        const postAvatar = card.querySelector('.post-avatar');
+        const postName = card.querySelector('.post-name');
+
+        postAvatar.addEventListener('click', (e) => {
+          e.stopPropagation();
+          window.location.href = `/user/user_profile.html?id=${story.user_id}`;
+        });
+
+        postName.addEventListener('click', (e) => {
+          e.stopPropagation();
+          window.location.href = `/user/user_profile.html?id=${story.user_id}`;
+        });
+
+        card.querySelector('.like-btn').onclick = async (e) => {
+          e.stopPropagation();
+          const btn = e.currentTarget;
+          const icon = btn.querySelector('.material-icons');
+          const countEl = btn.querySelector('.like-count');
+          let count = parseInt(countEl.textContent) || 0;
+
+          if (btn.classList.contains('liked')) {
+            await supabase.from('story_likes').delete()
+              .eq('story_id', story.id)
+              .eq('user_id', currentUserId);
+            count = Math.max(0, count - 1);
+            btn.classList.remove('liked');
+            icon.textContent = 'favorite_border';
+          } else {
+            await supabase.from('story_likes').insert({ story_id: story.id, user_id: currentUserId });
+            count += 1;
+            btn.classList.add('liked');
+            icon.textContent = 'favorite';
+          }
+
+          countEl.textContent = count;
+        };
+
+        card.querySelector('.comment-btn').onclick = async (e) => {
+          e.stopPropagation();
+          const section = document.getElementById(`comments-${story.id}`);
+          const willShow = section.style.display !== 'block';
+          section.style.display = willShow ? 'block' : 'none';
+          if (willShow) {
+            await renderCommentsForStory(story.id, section.querySelector('.comment-list'), document.querySelector(`[data-story-id="${story.id}"] .comment-count`));
+          }
+        };
+
+        card.querySelector('.post-comment-btn').onclick = async (e) => {
+          e.stopPropagation();
+          const input = card.querySelector('.comment-input');
+          const countEl = document.querySelector(`[data-story-id="${story.id}"] .comment-count`);
+          const listEl = document.getElementById(`comments-${story.id}`)?.querySelector('.comment-list');
+          await postComment(story.id, input, countEl, listEl);
+        };
+
+        container.appendChild(card);
+      }
+    } catch (err) {
+      console.error('Load content error:', err);
+      showError('Error', 'Could not load posts.');
+    }
+  }
+
+  // Render Comments
+  async function renderCommentsForStory(storyId, commentListEl, countEl) {
+    if (!commentListEl) return;
+    const { data: comments, error } = await supabase
+      .from('story_comments')
+      .select('id, content, created_at, user_id')
+      .eq('story_id', storyId)
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      commentListEl.innerHTML = '<p style="color:#e74c3c; padding:12px;">Could not load comments</p>';
+      return;
+    }
+
+    const total = comments?.length || 0;
+    if (countEl) countEl.textContent = total;
+
+    if (total === 0) {
+      commentListEl.innerHTML = '<p style="color: var(--gray); text-align:center; padding:16px 0;">No comments yet.</p>';
+      return;
+    }
+
+    const userIds = [...new Set(comments.map(c => c.user_id))];
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, full_name, avatar_url')
+      .in('id', userIds);
+
+    const profileMap = {};
+    profiles?.forEach(p => profileMap[p.id] = p);
+
+    commentListEl.innerHTML = comments.map(c => {
+      const p = profileMap[c.user_id] || {};
+      const name = p.full_name || 'User';
+      const avatar = p.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ff69b4&color=fff`;
+      return `
+        <div class="comment-item">
+          <img class="comment-avatar" src="${avatar}" alt="${name}" />
+          <div class="comment-content">
+            <strong>${name}</strong>
+            <p>${c.content}</p>
+            <small>${new Date(c.created_at).toLocaleString([], {dateStyle:'medium', timeStyle:'short'})}</small>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Post Comment
+  async function postComment(storyId, inputEl, countEl, commentListEl) {
+    const content = inputEl?.value?.trim();
+    if (!content || !currentUserId) return;
+
+    let current = parseInt(countEl?.textContent || '0');
+    document.querySelectorAll(`[data-story-id="${storyId}"] .comment-count`).forEach(el => el.textContent = current + 1);
+
+    const { error } = await supabase.from('story_comments').insert({
+      story_id: storyId,
+      user_id: currentUserId,
+      content
+    });
+
+    if (error) {
+      showError('Comment Failed', 'Failed to post comment.');
+      document.querySelectorAll(`[data-story-id="${storyId}"] .comment-count`).forEach(el => {
+        let val = parseInt(el.textContent) || 1;
+        el.textContent = Math.max(0, val - 1);
+      });
+      return;
+    }
+
+    inputEl.value = '';
+    if (commentListEl && document.getElementById(`comments-${storyId}`)?.style.display === 'block') {
+      await renderCommentsForStory(storyId, commentListEl, countEl);
+    }
+  }
+
+  // Edit Bio
+  els.editBioBtn?.addEventListener('click', () => {
+    if (!isOwnProfile) return;
+    els.bioDisplay.classList.add('hide');
+    els.bioEditArea.classList.add('show');
+    els.editBioBtn.style.display = 'none';
+    els.bioInput.focus();
+  });
+
+  els.cancelBioBtn?.addEventListener('click', () => {
+    els.bioDisplay.classList.remove('hide');
+    els.bioEditArea.classList.remove('show');
+    els.editBioBtn.style.display = 'block';
+  });
+
+  els.saveBioBtn?.addEventListener('click', async () => {
+    if (!isOwnProfile) return;
+    const bio = els.bioInput.value.trim();
+    if (bio.length > 300) {
+      showError('Bio Too Long', 'Your bio cannot exceed 300 characters.');
+      return;
+    }
+
+    try {
+      const { error } = await supabase.from('profiles').update({ bio }).eq('id', currentUserId);
+      if (error) throw error;
+
+      els.bioDisplay.textContent = bio || 'No bio yet...';
+      els.bioDisplay.classList.remove('hide');
+      els.bioEditArea.classList.remove('show');
+      els.editBioBtn.style.display = 'block';
+      clearCache(currentUserId, 'profile');
+      showSuccess('Bio Updated', 'Your bio has been saved successfully!');
+    } catch (err) {
+      showError('Error', err.message || 'Failed to save bio.');
+    }
+  });
+
+  // Edit Profile
+  els.editProfileBtn?.addEventListener('click', () => {
+    if (!isOwnProfile) return;
+    els.infoSection.classList.add('edit-mode');
+    els.editProfileBtn.style.display = 'none';
+    els.saveProfileBtn.style.display = 'inline-block';
+    els.cancelProfileBtn.style.display = 'inline-block';
+
+    els.editFullName.value = els.displayFullName.textContent;
+    els.editPhone.value = els.phone.textContent === '—' ? '' : els.phone.textContent;
+    els.editDob.value = els.dob.textContent === '—' ? '' : new Date(els.dob.textContent).toISOString().split('T')[0];
+  });
+
+  els.cancelProfileBtn?.addEventListener('click', () => {
+    els.infoSection.classList.remove('edit-mode');
+    els.editProfileBtn.style.display = 'inline-block';
+    els.saveProfileBtn.style.display = 'none';
+    els.cancelProfileBtn.style.display = 'none';
+  });
+
+  els.saveProfileBtn?.addEventListener('click', async () => {
+    if (!isOwnProfile) return;
+    const updates = {
+      full_name: els.editFullName.value.trim() || null,
+      phone: els.editPhone.value.trim() || null,
+      date_of_birth: els.editDob.value || null
+    };
+
+    try {
+      const { error } = await supabase.from('profiles').update(updates).eq('id', currentUserId);
+      if (error) throw error;
+
+      els.displayFullName.textContent = updates.full_name || '—';
+      els.fullName.textContent = updates.full_name || els.fullName.textContent;
+      els.phone.textContent = updates.phone || '—';
+      els.dob.textContent = updates.date_of_birth ? new Date(updates.date_of_birth).toLocaleDateString() : '—';
+
+      els.infoSection.classList.remove('edit-mode');
+      els.editProfileBtn.style.display = 'inline-block';
+      els.saveProfileBtn.style.display = 'none';
+      els.cancelProfileBtn.style.display = 'none';
+
+      clearCache(currentUserId, 'profile');
+      showSuccess('Profile Updated', 'Your profile information has been saved successfully!');
+    } catch (err) {
+      showError('Error', err.message || 'Failed to save profile.');
+    }
+  });
+
+  // Avatar Upload
+  els.avatarInput?.addEventListener('change', async (e) => {
+    if (!isOwnProfile) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 4 * 1024 * 1024) {
+      showError('File Too Large', 'Avatar must be less than 4MB.');
+      return;
+    }
+
+    try {
+      openModal('uploadProgressModal');
+      els.avatar.style.opacity = '0.5';
+      
+      const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+      const path = `avatars/${currentUserId}/avatar.${ext}`;
+
+      const { error: uploadErr } = await supabase.storage.from('avatars').upload(path, file, { upsert: true });
+      if (uploadErr) throw uploadErr;
+
+      const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path);
+      els.avatar.src = publicUrl + '?t=' + Date.now();
+
+      const { error: dbErr } = await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', currentUserId);
+      if (dbErr) throw dbErr;
+
+      clearCache(currentUserId, 'profile');
+      closeModal('uploadProgressModal');
+      showSuccess('Avatar Updated', 'Your profile picture has been updated successfully!');
+    } catch (err) {
+      closeModal('uploadProgressModal');
+      showError('Upload Failed', err.message || 'Failed to upload avatar.');
+      els.avatar.style.opacity = '1';
+    } finally {
+      e.target.value = '';
+    }
+  });
+
+  // Cover Upload
+  els.coverInput?.addEventListener('change', async (e) => {
+    if (!isOwnProfile) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 6 * 1024 * 1024) {
+      showError('File Too Large', 'Cover photo must be less than 6MB.');
+      return;
+    }
+
+    try {
+      openModal('coverUploadModal');
+      const coverImg = document.querySelector('.cover-photo img');
+      coverImg.style.opacity = '0.5';
+      
+      const ext = file.name.split('.').pop() || 'jpg';
+      const path = `covers/${currentUserId}.${ext}`;
+
+      const { error: uploadErr } = await supabase.storage.from('covers').upload(path, file, { upsert: true });
+      if (uploadErr) throw uploadErr;
+
+      const { data: { publicUrl } } = supabase.storage.from('covers').getPublicUrl(path);
+      coverImg.src = publicUrl + '?t=' + Date.now();
+
+      const { error: dbErr } = await supabase.from('profiles').update({ cover_url: publicUrl }).eq('id', currentUserId);
+      if (dbErr) throw dbErr;
+
+      clearCache(currentUserId, 'profile');
+      closeModal('coverUploadModal');
+      showSuccess('Cover Updated', 'Your cover photo has been updated successfully!');
+    } catch (err) {
+      closeModal('coverUploadModal');
+      showError('Upload Failed', err.message || 'Failed to upload cover.');
+      const coverImg = document.querySelector('.cover-photo img');
+      coverImg.style.opacity = '1';
+    } finally {
+      e.target.value = '';
+    }
+  });
+
+  // Photo Viewer
+  const photoViewer = document.getElementById('photoViewer');
+  const viewerImage = document.getElementById('viewerImage');
+  const viewerClose = document.querySelector('.viewer-close');
+
+  els.avatar?.addEventListener('click', () => {
+    viewerImage.src = els.avatar.src;
+    photoViewer.style.display = 'flex';
+  });
+
+  photoViewer?.addEventListener('click', (e) => {
+    if (e.target === photoViewer || e.target === viewerClose) photoViewer.style.display = 'none';
+  });
+
+  // Block User
+  let blockUserId = null;
+  
+  async function blockUser(userId) {
+    blockUserId = userId;
+    openModal('blockModal');
+  }
+
+  document.getElementById('cancelBlockBtn')?.addEventListener('click', () => {
+    closeModal('blockModal');
+  });
+
+  document.getElementById('confirmBlockBtn')?.addEventListener('click', async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      const { error } = await supabase.from("blocked_users").insert({ blocker_id: user.id, blocked_id: blockUserId });
+      if (error) throw error;
+      
+      closeModal('blockModal');
+      showSuccess('User Blocked', 'This user has been blocked successfully.');
+      setTimeout(() => {
+        window.location.href = "/provider/provider.html";
+      }, 2000);
+    } catch (err) {
+      showError('Block Failed', err.message || 'Failed to block user.');
+    }
+  });
+
+  document.getElementById("blockUserBtn").onclick = () => blockUser(targetUserId);
+
+  // Report Modal
+  const reportRadios = document.querySelectorAll('input[name="reportReason"]');
+  const detailsField = document.getElementById('reportDetails');
+
+  document.getElementById('report')?.addEventListener('click', () => {
+    if (isOwnProfile) {
+      showError('Cannot Report', 'You cannot report your own profile.');
+      return;
+    }
+    openModal('reportModal');
+    document.getElementById('submitReportBtn').disabled = true;
+    reportRadios.forEach(r => r.checked = false);
+    detailsField.value = '';
+  });
+
+  reportRadios.forEach(radio => {
+    radio.addEventListener('change', () => {
+      document.getElementById('submitReportBtn').disabled = !document.querySelector('input[name="reportReason"]:checked');
+    });
+  });
+
+  document.getElementById('reportModalClose')?.addEventListener('click', () => {
+    closeModal('reportModal');
+  });
+
+  document.getElementById('cancelReportBtn')?.addEventListener('click', () => {
+    closeModal('reportModal');
+  });
+
+  document.getElementById('submitReportBtn')?.addEventListener('click', () => {
+    const selected = document.querySelector('input[name="reportReason"]:checked');
+    if (!selected) {
+      showError('Select Reason', 'Please select a reason for reporting.');
+      return;
+    }
+    openModal('confirmReportModal');
+  });
+
+  document.getElementById('cancelConfirmReportBtn')?.addEventListener('click', () => {
+    closeModal('confirmReportModal');
+  });
+
+  document.getElementById('finalSubmitReportBtn')?.addEventListener('click', async () => {
+    const selected = document.querySelector('input[name="reportReason"]:checked');
+    const reason = selected.value;
+    const details = detailsField.value.trim();
+
+    try {
+      const { error } = await supabase.from('reports').insert({
+        reporter_id: currentUserId,
+        reported_id: targetUserId,
+        reason_type: reason,
+        details: details || null,
+        created_at: new Date().toISOString()
+      });
+
+      if (error) throw error;
+
+      closeModal('confirmReportModal');
+      closeModal('reportModal');
+      showSuccess('Report Submitted', 'Thank you for reporting. Our team will review it.');
+    } catch (err) {
+      showError('Report Failed', err.message || 'Failed to submit report.');
+    }
+  });
+
+  // Identity Warning Modal
+  const warningModal = document.getElementById('identityWarningModal');
+  const understandBtn = document.getElementById('understandBtn');
+  const dontUnderstandBtn = document.getElementById('dontUnderstandBtn');
+  const warningButtons = document.getElementById('warningButtons');
+  const readAgainMessage = document.getElementById('readAgainMessage');
+  const readAgainBtn = document.getElementById('readAgainBtn');
+
+  const WARNING_ACCEPTED_KEY = 'fastme_identity_warning_accepted';
+
+  function showWarningPopup() {
+    if (isOwnProfile && !localStorage.getItem(WARNING_ACCEPTED_KEY)) {
+      openModal('identityWarningModal');
+    }
+  }
+
+  understandBtn?.addEventListener('click', () => {
+    localStorage.setItem(WARNING_ACCEPTED_KEY, 'true');
+    closeModal('identityWarningModal');
+    showToast('Thank you for confirming!');
+  });
+
+  dontUnderstandBtn?.addEventListener('click', () => {
+    warningButtons.style.display = 'none';
+    readAgainMessage.style.display = 'block';
+  });
+
+  readAgainBtn?.addEventListener('click', () => {
+    warningButtons.style.display = 'flex';
+    readAgainMessage.style.display = 'none';
+  });
+
+  // Real-time updates
+  supabase.channel('profile-story-likes')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'story_likes' }, () => {
+      loadUserContent(targetUserId, false);
+    })
+    .subscribe();
+
+  supabase.channel('profile-story-comments')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'story_comments' }, (payload) => {
+      const storyId = payload.new?.story_id || payload.old?.story_id;
+      if (!storyId) return;
+
+      const section = document.getElementById(`comments-${storyId}`);
+      const countEls = document.querySelectorAll(`[data-story-id="${storyId}"] .comment-count`);
+
+      if (section && section.style.display === 'block') {
+        const listEl = section.querySelector('.comment-list');
+        renderCommentsForStory(storyId, listEl, countEls[0]);
+      } else {
+        const delta = payload.eventType === 'INSERT' ? 1 : (payload.eventType === 'DELETE' ? -1 : 0);
+        if (delta !== 0) {
+          countEls.forEach(el => {
+            let val = parseInt(el.textContent) || 0;
+            el.textContent = Math.max(0, val + delta);
+          });
+        }
+      }
+    })
+    .subscribe();
+
+  // Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .catch(err => console.error('SW registration failed', err));
+  }
+
+  // Initialize
+  loadProfile().then(() => {
+    setTimeout(showWarningPopup, 1000);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fastme - You're Offline</title>
+  
+  <!-- Google Fonts (Poppins) - same as your main app -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <style>
+    
+* {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  margin:0; padding:0; box-sizing:border-box;
+}
+
+/* Allow typing + selection in inputs */
+input, textarea {
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff69b4, #e0459a);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 40px 28px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: white;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+    
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 28px;
+      opacity: 0.95;
+    }
+    
+    .emoji {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+    
+    .retry-btn {
+      padding: 14px 40px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: white;
+      color: #e0459a;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      transition: all 0.3s ease;
+    }
+    
+    .retry-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    }
+    
+    .retry-btn:active {
+      transform: translateY(0);
+    }
+    
+    .small-text {
+      margin-top: 24px;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 32px 20px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+  <body>
+<div id="app-content">
+<div id="app-content">
+
+  <div class="container">
+    <div class="emoji">📴</div>
+    
+    <h1>You're Offline</h1>
+    
+    <p>
+      Fastme needs an internet connection to help you connect, chat, and discover.<br>
+      Please check your network and try again.
+    </p>
+    
+    <button class="retry-btn" onclick="location.reload()">
+      Retry Connection
+    </button>
+    
+    <p class="small-text">
+      We'll be waiting for you! 💕
+    </p>
+  </div>
+
+</body>
+</html>

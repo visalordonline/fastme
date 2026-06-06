@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC Verification | Fast-me Software</title>
+    <link rel="icon" type="image/png" href="connect.jpg">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        :root { 
+            --admin-green: #008000; 
+            --admin-bg: #f4f7f6; 
+            --navbar-height: 70px;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+
+        body { 
+            background-color: var(--admin-bg); 
+            font-family: 'Roboto', sans-serif; 
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .admin-container { 
+            max-width: 800px; 
+            margin: 0 auto;
+            padding: calc(var(--navbar-height) + 40px) 20px 40px; 
+            box-sizing: border-box;
+        }
+
+        .form-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+
+        .form-card h2 {
+            text-align: center;
+            color: #222;
+            margin-bottom: 10px;
+        }
+
+        .status-banner {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            background: #f9f9f9;
+            cursor: pointer;
+            transition: border 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: var(--admin-green);
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            color: #28a745;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .upload-progress {
+            margin-top: 10px;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .upload-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--admin-green);
+            transition: width 0.4s ease;
+        }
+
+        button[type="submit"] {
+            background: var(--admin-green);
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        button[type="submit"]:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        .btn-loader {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            border: 3px solid #ffffff40;
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .success-message, .error-message {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="sidebar-logo">
+        <a href="/admin.html"><img style="width: 50px;" src="connect.jpg" alt="Logo"></a>
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    </div>
+    <nav class="nav-links">
+        <a href="/admin.html" class="nav-item">Dashboard Home</a>
+        <a href="/kyc.html" class="nav-item">KYC Verification</a>
+        <a href="javascript:void(0)" onclick="handleLogout()" class="nav-item" style="color:red; font-weight: bold;">Logout</a>
+    </nav>
+</header>
+
+<div class="admin-container">
+    <div class="form-card">
+        <h2 id="pageTitle">Complete Your KYC Verification</h2>
+        <div id="statusBanner"></div>
+        <p id="instructionText" style="text-align:center; color:#666; margin-bottom:30px;">
+            Please provide your business details and upload the required documents to verify your identity.
+        </p>
+
+        <form id="kycForm">
+            <div class="form-group">
+                <label for="business_name">Legal Business Name *</label>
+                <input type="text" id="business_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nin">NIN Number *</label>
+                <input type="text" id="nin" placeholder="e.g. 12345678901" maxlength="11" required>
+            </div>
+
+            <div class="form-group">
+                <label>NIN Document Upload (Slip or Card) *</label>
+                <div class="file-upload" onclick="document.getElementById('nin_file').click()">
+                    <i class="fas fa-cloud-upload-alt" style="font-size:40px; color:#ccc;"></i>
+                    <p>Click to upload NIN document (PDF/Image)</p>
+                    <input type="file" id="nin_file" accept="image/*,application/pdf" required>
+                    <div class="file-name" id="nin_name">No file chosen</div>
+                    <div class="upload-progress"><div class="upload-progress-bar" id="nin_progress"></div></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cac">CAC Registration Number (RC/BN) *</label>
+                <input type="text" id="cac" required>
+            </div>
+
+            <div class="form-group">
+                <label>CAC Certificate Upload *</label>
+                <div class="file-upload" onclick="document.getElementById('cac_file').click()">
+                    <i class="fas fa-cloud-upload-alt" style="font-size:40px; color:#ccc;"></i>
+                    <p>Click to upload CAC certificate (PDF/Image)</p>
+                    <input type="file" id="cac_file" accept="image/*,application/pdf" required>
+                    <div class="file-name" id="cac_name">No file chosen</div>
+                    <div class="upload-progress"><div class="upload-progress-bar" id="cac_progress"></div></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Business/Operation Address *</label>
+                <textarea id="address" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Proof of Address Upload * (Utility Bill, etc.)</label>
+                <div class="file-upload" onclick="document.getElementById('proof_file').click()">
+                    <i class="fas fa-cloud-upload-alt" style="font-size:40px; color:#ccc;"></i>
+                    <p>Click to upload proof of address (PDF/Image)</p>
+                    <input type="file" id="proof_file" accept="image/*,application/pdf" required>
+                    <div class="file-name" id="proof_name">No file chosen</div>
+                    <div class="upload-progress"><div class="upload-progress-bar" id="proof_progress"></div></div>
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn">
+                Submit KYC for Verification
+                <div class="btn-loader" id="btnLoader"></div>
+            </button>
+        </form>
+
+        <div class="success-message" id="successMsg">KYC submitted successfully! You will be notified once approved.</div>
+        <div class="error-message" id="errorMsg"></div>
+    </div>
+</div>
+
+<script>
+// Supabase Client
+const supabaseUrl = 'https://zskfpfxaonwnfwhfwnlw.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpza2ZwZnhhb253bmZ3aGZ3bmx3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3OTExOTksImV4cCI6MjA3NTM2NzE5OX0.BmG-TMWWEk4W2qYava7NFfqDsMdPEloqRL6hOBvQiFo';
+const { createClient } = supabase;
+const supabaseClient = createClient(supabaseUrl, supabaseKey);
+
+// Bucket name (create this in Supabase Storage)
+const BUCKET_NAME = 'kyc-documents';
+
+// File selection feedback
+['nin_file', 'cac_file', 'proof_file'].forEach(id => {
+    document.getElementById(id).addEventListener('change', function() {
+        const nameId = id.replace('_file', '_name');
+        const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+        document.getElementById(nameId).textContent = fileName;
+        document.getElementById(nameId).style.color = this.files[0] ? '#28a745' : '#666';
+    });
+});
+
+// Upload file to Supabase Storage with simulated progress
+async function uploadToSupabase(file, path, progressId) {
+    if (!file) throw new Error('No file selected');
+
+    const progressBar = document.getElementById(progressId);
+    const progressContainer = progressBar.parentElement;
+    progressContainer.style.display = 'block';
+    progressBar.style.width = '0%';
+
+    // Simulate upload progress
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.random() * 18 + 8;
+        if (progress >= 90) {
+            progress = 90;
+            clearInterval(interval);
+        }
+        progressBar.style.width = `${progress}%`;
+    }, 300);
+
+    const { data, error } = await supabaseClient.storage
+        .from(BUCKET_NAME)
+        .upload(path, file, {
+            upsert: true  // overwrite if same name
+        });
+
+    clearInterval(interval);
+    progressBar.style.width = '100%';
+
+    if (error) {
+        throw new Error(error.message || 'Upload failed');
+    }
+
+    // Get public URL
+    const { data: { publicUrl } } = supabaseClient.storage
+        .from(BUCKET_NAME)
+        .getPublicUrl(path);
+
+    setTimeout(() => { progressContainer.style.display = 'none'; }, 800);
+
+    return publicUrl;
+}
+
+// Load KYC status and pre-fill form
+async function loadKYCStatus() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    const { data, error } = await supabaseClient
+        .from('companies')
+        .select('kyc_status, business_name, phone, nin, cac_number, business_address')
+        .eq('id', session.user.id)
+        .single();
+
+    if (error && error.code !== 'PGRST116') {
+        console.error(error);
+        return;
+    }
+
+    if (!data) return;
+
+    const status = data.kyc_status;
+
+    const banner = document.getElementById('statusBanner');
+    const form = document.getElementById('kycForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const title = document.getElementById('pageTitle');
+    const instruction = document.getElementById('instructionText');
+
+    // Pre-fill text fields
+    if (data.business_name) document.getElementById('business_name').value = data.business_name;
+    if (data.phone) document.getElementById('phone').value = data.phone;
+    if (data.nin) document.getElementById('nin').value = data.nin;
+    if (data.cac_number) document.getElementById('cac').value = data.cac_number;
+    if (data.business_address) document.getElementById('address').value = data.business_address;
+
+    if (status === 'approved') {
+        banner.innerHTML = `<div class="status-banner status-approved"><i class="fas fa-check-circle"></i> Your KYC has been approved. Redirecting...</div>`;
+        form.style.display = 'none';
+        setTimeout(() => window.location.href = '/admin.html', 2000);
+    }
+    else if (status === 'pending') {
+        title.textContent = 'KYC Under Review';
+        instruction.textContent = 'Your KYC has already been submitted and is awaiting approval.';
+        banner.innerHTML = `<div class="status-banner status-pending"><i class="fas fa-hourglass-half"></i> KYC Submitted – Please wait for approval. You cannot submit again until reviewed.</div>`;
+        form.style.opacity = '0.6';
+        form.style.pointerEvents = 'none';
+        submitBtn.style.display = 'none';
+    }
+    else if (status === 'rejected') {
+        title.textContent = 'Resubmit KYC Verification';
+        instruction.textContent = 'Your previous KYC submission was rejected. Please update and resubmit.';
+        banner.innerHTML = `<div class="status-banner status-rejected"><i class="fas fa-times-circle"></i> KYC Rejected – Please resubmit with correct documents</div>`;
+        submitBtn.textContent = 'Resubmit KYC';
+    }
+}
+
+// Form submission
+document.getElementById('kycForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const submitBtn = document.getElementById('submitBtn');
+    const loader = document.getElementById('btnLoader');
+    submitBtn.disabled = true;
+    loader.style.display = 'block';
+    submitBtn.textContent = 'Uploading Documents...';
+
+    try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        const userId = session.user.id;
+
+        // Reset progress bars
+        ['nin_progress', 'cac_progress', 'proof_progress'].forEach(id => {
+            const bar = document.getElementById(id);
+            bar.style.width = '0%';
+            bar.parentElement.style.display = 'block';
+        });
+
+        const ninFile = document.getElementById('nin_file').files[0];
+        const cacFile = document.getElementById('cac_file').files[0];
+        const proofFile = document.getElementById('proof_file').files[0];
+
+        if (!ninFile || !cacFile || !proofFile) {
+            throw new Error('Please select all three documents');
+        }
+
+        // Unique paths
+        const timestamp = Date.now();
+        const ninPath = `${userId}/nin_${timestamp}_${ninFile.name}`;
+        const cacPath = `${userId}/cac_${timestamp}_${cacFile.name}`;
+        const proofPath = `${userId}/proof_${timestamp}_${proofFile.name}`;
+
+        const ninUrl = await uploadToSupabase(ninFile, ninPath, 'nin_progress');
+        const cacUrl = await uploadToSupabase(cacFile, cacPath, 'cac_progress');
+        const proofUrl = await uploadToSupabase(proofFile, proofPath, 'proof_progress');
+
+        // Update companies table
+        const { error } = await supabaseClient
+            .from('companies')
+            .update({
+            company_name: document.getElementById('business_name').value.trim(),
+            company_phone: document.getElementById('phone').value.trim(),
+            nin: document.getElementById('nin').value.trim(),
+            nin_document: ninUrl,
+            company_reg_no: document.getElementById('cac').value.trim(),
+            cac_document: cacUrl,
+            company_address: document.getElementById('address').value.trim(),
+            proof_address: proofUrl,
+            kyc_status: 'pending',
+            kyc_submitted_at: new Date().toISOString()
+            })
+            .eq('id', userId);
+
+        if (error) throw error;
+
+        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('errorMsg').style.display = 'none';
+        submitBtn.textContent = 'Submitted Successfully!';
+        setTimeout(() => window.location.href = '/admin.html', 2000);
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById('errorMsg').textContent = err.message || 'Submission failed. Please try again.';
+        document.getElementById('errorMsg').style.display = 'block';
+    } finally {
+        loader.style.display = 'none';
+        submitBtn.disabled = false;
+    }
+});
+
+function toggleMenu() {
+    document.querySelector('.nav-links').classList.toggle('active');
+}
+
+async function handleLogout() {
+    await supabaseClient.auth.signOut();
+    window.location.href = 'login.html';
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) {
+        window.location.href = 'login.html';
+        return;
+    }
+    await loadKYCStatus();
+});
+</script>
+
+</body>
+</html>

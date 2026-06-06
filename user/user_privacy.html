@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/logo.jpg" />
+
+
+  <style>
+    :root {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #fff0f5;
+      --text: #333;
+      --gray: #555;
+      --light-gray: #f5f5f5;
+    }
+
+    
+* {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  margin:0; padding:0; box-sizing:border-box;
+}
+
+/* Allow typing + selection in inputs */
+input, textarea {
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+    html, body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 20px;
+      padding-bottom: 120px;
+    }
+
+    /* Header */
+    .policy-header {
+      background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+      border-radius: 20px;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 30px rgba(255,105,180,0.3);
+    }
+
+    .policy-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .policy-header p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
+
+    .last-updated {
+      font-size: 0.9rem;
+      margin-top: 12px;
+      opacity: 0.8;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Table of Contents */
+    .toc {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      border-left: 5px solid var(--pink);
+    }
+
+    .toc h2 {
+      color: var(--pink-dark);
+      margin-bottom: 16px;
+      font-size: 1.3rem;
+    }
+
+    .toc ol {
+      margin-left: 20px;
+    }
+
+    .toc li {
+      margin-bottom: 10px;
+    }
+
+    .toc a {
+      color: var(--pink);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .toc a:hover {
+      color: var(--pink-dark);
+      text-decoration: underline;
+    }
+
+    /* Policy Sections */
+    .policy-section {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+
+    .policy-section h2 {
+      color: var(--pink-dark);
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--pink-light);
+      scroll-margin-top: 100px;
+    }
+
+    .policy-section h3 {
+      color: var(--pink);
+      font-size: 1.2rem;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+
+    .policy-section p {
+      margin-bottom: 14px;
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    .policy-section ul, .policy-section ol {
+      margin-left: 24px;
+      margin-bottom: 14px;
+    }
+
+    .policy-section li {
+      margin-bottom: 8px;
+      line-height: 1.7;
+    }
+
+    /* Highlight Box */
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(255,105,180,0.1), rgba(224,69,154,0.05));
+      border-left: 4px solid var(--pink);
+      padding: 16px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      font-weight: 500;
+      color: var(--pink-dark);
+    }
+
+  /* Nav Badge (notification counter) */
+.nav-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #f44336;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border: 1.5px solid white;
+  animation: badgePop 0.3s ease;
+  z-index: 10;
+}
+
+.nav-badge.removing {
+  animation: badgeShrink 0.3s ease forwards;
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes badgeShrink {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+/* Ensure page content doesn't hide behind nav */
+body {
+  padding-bottom: 90px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 480px) {
+  .bottom-nav {
+    height: 70px;
+  }
+
+  .nav-item {
+    padding: 4px 8px;
+  }
+
+  .nav-item .material-icons {
+    font-size: 24px;
+  }
+
+  .nav-item span:not(.material-icons) {
+    font-size: 0.6rem;
+  }
+
+  body {
+    padding-bottom: 80px;
+  }
+}
+
+/* For larger screens (optional - hide on desktop) */
+@media (min-width: 768px) {
+  
+
+  body {
+    padding-bottom: 0;
+  }
+}
+
+/* Smooth transitions */
+.nav-item {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Icon styling */
+.nav-icon {
+  width: 30px;
+  height: 30px;
+}
+.nav-text {
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+/* UI Elements */
+.card {
+    background: white;
+    padding: 40px 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    text-align: center;
+    color: #888;
+    border: 1px dashed #ccc;
+}
+
+    /* Back Button */
+    .back-btn {
+      background: white;
+      border: 2px solid var(--pink-light);
+      color: var(--pink-dark);
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 30px;
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover {
+      background: var(--pink-light);
+      border-color: var(--pink);
+    }
+
+    .back-btn .material-icons {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .policy-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .policy-section {
+        padding: 20px;
+      }
+
+      .policy-section h2 {
+        font-size: 1.3rem;
+      }
+
+      .policy-section h3 {
+        font-size: 1.05rem;
+      }
+    }
+      .nav-icon { width: 30px; height: 30px; object-fit: contain; margin-bottom: 4px; }
+
+  </style>
+</head>
+  <body>
+<div id="app-content">
+<div id="app-content">
+
+  <div class="container">
+    <button class="back-btn" onclick="window.history.back()">
+      <span class="material-icons">arrow_back</span>
+      Back
+    </button>
+
+    <div class="policy-header">
+      <h1>Privacy Policy</h1>
+      <p>Fastme - Social Connection Platform</p>
+      <div class="last-updated">Last Updated: March 11, 2026</div>
+    </div>
+
+    <!-- Table of Contents 
+    <div class="toc">
+      <h2>📋 Table of Contents</h2>
+      <ol>
+        <li><a href="#intro">Introduction</a></li>
+        <li><a href="#info-collected">Information We Collect</a></li>
+        <li><a href="#how-collected">How We Collect Information</a></li>
+        <li><a href="#how-used">How We Use Your Information</a></li>
+        <li><a href="#data-sharing">Data Sharing & Disclosure</a></li>
+        <li><a href="#user-rights">Your Rights & Choices</a></li>
+        <li><a href="#security">Data Security</a></li>
+        <li><a href="#retention">Data Retention</a></li>
+        <li><a href="#cookies">Cookies & Tracking</a></li>
+        <li><a href="#children">Children's Privacy</a></li>
+        <li><a href="#changes">Policy Changes</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ol>
+    </div>
+-->
+    <!-- Section 1 -->
+    <div class="policy-section" id="intro">
+      <h2>1. Introduction</h2>
+      <p>Welcome to Fastme ("we," "us," "our," or "Company"). We are committed to protecting your privacy and ensuring you have a positive experience on our platform. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website, mobile application, and related services (collectively, the "Service").</p>
+      
+      <p><strong>Please read this privacy policy carefully.</strong> If you do not agree with our policies and practices, please do not use our Service.</p>
+
+      <div class="highlight-box">
+        <p>💡 Your privacy is important to us. We comply with GDPR, CCPA, and other applicable data protection laws.</p>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="policy-section" id="info-collected">
+      <h2>2. Information We Collect</h2>
+
+      <h3>2.1 Information You Provide Directly</h3>
+      <ul>
+        <li><strong>Registration Data:</strong> Name, email address, phone number, date of birth, gender, sexual orientation</li>
+        <li><strong>Profile Information:</strong> Bio, profile photos, location, interests, preferences, relationship status</li>
+        <li><strong>Communication:</strong> Messages, stories, comments, ratings, and reviews you share with other users</li>
+        <li><strong>Payment Information:</strong> Billing address, payment method details (processed securely through third-party providers)</li>
+        <li><strong>Support & Feedback:</strong> Information you provide when contacting our support team or submitting feedback</li>
+      </ul>
+
+      <h3>2.2 Information Collected Automatically</h3>
+      <ul>
+        <li><strong>Device Information:</strong> Device type, operating system, unique device identifiers, mobile network information</li>
+        <li><strong>Usage Data:</strong> Features accessed, time/date of activity, IP address, referral source, pages viewed</li>
+        <li><strong>Location Data:</strong> GPS coordinates, approximate location, location history (with permission)</li>
+        <li><strong>Cookies & Similar Technologies:</strong> Session data, preferences, authentication tokens</li>
+        <li><strong>Crash Reports & Logs:</strong> Error logs, performance data, diagnostic information</li>
+      </ul>
+
+      <h3>2.3 Information from Third Parties</h3>
+      <ul>
+        <li><strong>Social Media Login:</strong> Data from Google or Facebook when you use these services to sign up/log in</li>
+        <li><strong>Other Users:</strong> Information shared about you by other users (photos, messages, reports)</li>
+        <li><strong>Service Providers:</strong> Data from payment processors, hosting providers, analytics services</li>
+      </ul>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="policy-section" id="how-collected">
+      <h2>3. How We Collect Information</h2>
+      <ul>
+        <li><strong>Direct Input:</strong> Information you voluntarily enter during registration, profile creation, and interactions</li>
+        <li><strong>Automatic Collection:</strong> Through cookies, pixels, analytics tools, and app tracking</li>
+        <li><strong>OAuth/Third-Party Services:</strong> When you link your Fastme account to social media or other platforms</li>
+        <li><strong>Device Permissions:</strong> When you grant access to location, photos, camera, microphone, or contacts</li>
+        <li><strong>Customer Support:</strong> Communications with our support team and user feedback</li>
+      </ul>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="policy-section" id="how-used">
+      <h2>4. How We Use Your Information</h2>
+      <p>We use collected information for the following purposes:</p>
+      <ul>
+        <li><strong>Service Delivery:</strong> Creating & managing your account, matching with other users, enabling messaging & content sharing</li>
+        <li><strong>account_boxalization:</strong> Tailoring recommendations, profiles, and content based on your preferences and activity</li>
+        <li><strong>Safety & Security:</strong> Detecting fraud, preventing abuse, enforcing terms of service, protecting user safety</li>
+        <li><strong>Communication:</strong> Sending service updates, notifications, promotional content (with opt-in), customer support</li>
+        <li><strong>Analytics & Improvement:</strong> Analyzing user behavior, improving features, conducting research, A/B testing</li>
+        <li><strong>Legal Compliance:</strong> Complying with laws, responding to legal requests, protecting our legal rights</li>
+        <li><strong>Marketing:</strong> Displaying account_boxalized ads, marketing our services (respecting your preferences)</li>
+      </ul>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="policy-section" id="data-sharing">
+      <h2>5. Data Sharing & Disclosure</h2>
+
+      <h3>5.1 Information Visible to Other Users</h3>
+      <p>Your public profile (name, photo, bio, interests, rating) is visible to other logged-in users on Fastme. Private messages are visible only to the recipient. You control what account_boxal information you share.</p>
+
+      <h3>5.2 Third-Party Service Providers</h3>
+      <p>We share information with service providers who help operate our platform (cloud hosting, payment processing, analytics, customer support, email services). These providers are contractually bound to protect your data.</p>
+
+      <h3>5.3 Business Transfers</h3>
+      <p>If Fastme is involved in a merger, acquisition, bankruptcy, or asset sale, your information may be transferred as part of that transaction. We will notify you of any such change.</p>
+
+      <h3>5.4 Legal Requirements</h3>
+      <p>We may disclose information if required by law, court order, government request, or to protect the safety of our users and the public. We will attempt to notify users when legally possible.</p>
+
+      <h3>5.5 With Your Consent</h3>
+      <p>We may share information with third parties when you explicitly consent to such sharing.</p>
+
+      <div class="highlight-box">
+        <p>✋ We do NOT sell your account_boxal data to advertisers or third-party marketers for their own purposes.</p>
+      </div>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="policy-section" id="user-rights">
+      <h2>6. Your Rights & Choices</h2>
+
+      <h3>6.1 Access & Portability</h3>
+      <p>You have the right to access your account_boxal data and request a portable copy of it. Contact us at privacy@fastme.org to submit a request.</p>
+
+      <h3>6.2 Correction & Updates</h3>
+      <p>You can update your profile information at any time through your account settings.</p>
+
+      <h3>6.3 Deletion</h3>
+      <p>You may request deletion of your account and associated data. Some data may be retained for legal, safety, or operational purposes.</p>
+
+      <h3>6.4 Opt-Out of Communications</h3>
+      <p>You can unsubscribe from marketing emails by clicking the "unsubscribe" link or adjusting notification settings in your account.</p>
+
+      <h3>6.5 Location Sharing</h3>
+      <p>You can disable location services in your device settings or through our app settings. Disabling location may limit certain features.</p>
+
+      <h3>6.6 Cookie Management</h3>
+      <p>You can control cookies through your browser settings. Disabling cookies may affect app functionality.</p>
+
+      <h3>6.7 GDPR & CCPA Rights</h3>
+      <p><strong>EU Residents (GDPR):</strong> You have rights including data access, correction, erasure, restriction, portability, and objection. Contact us to exercise these rights.</p>
+      <p><strong>California Residents (CCPA):</strong> You have the right to know, delete, and opt-out of the sale of account_boxal information. California residents may submit requests here.</p>
+    </div>
+
+    <!-- Section 7 -->
+    <div class="policy-section" id="security">
+      <h2>7. Data Security</h2>
+      <p>We implement industry-standard security measures to protect your information, including:</p>
+      <ul>
+        <li>SSL/TLS encryption for data in transit</li>
+        <li>Encryption of sensitive data at rest</li>
+        <li>Secure password hashing (bcrypt/Argon2)</li>
+        <li>Access controls and authentication mechanisms</li>
+        <li>Regular security audits and penetration testing</li>
+        <li>Employee training on data protection</li>
+      </ul>
+      <p><strong>However, no method of transmission over the internet is 100% secure.</strong> While we strive to protect your information, we cannot guarantee absolute security. You assume the risk of any breach.</p>
+    </div>
+
+    <!-- Section 8 -->
+    <div class="policy-section" id="retention">
+      <h2>8. Data Retention</h2>
+      <p>We retain your account_boxal data for as long as necessary to provide our services and fulfill the purposes outlined in this policy:</p>
+      <ul>
+        <li><strong>Active Accounts:</strong> Data retained while your account is active and for a reasonable period after</li>
+        <li><strong>Deleted Accounts:</strong> Account data deleted within 30 days; some data may be retained for legal/safety reasons</li>
+        <li><strong>Communications:</strong> Messages may be retained for a period to support user disputes and safety investigations</li>
+        <li><strong>Legal Requirements:</strong> Data retained as required by law (tax records, compliance documents)</li>
+      </ul>
+    </div>
+
+    <!-- Section 9 -->
+    <div class="policy-section" id="cookies">
+      <h2>9. Cookies & Tracking Technologies</h2>
+      <p>We use cookies and similar technologies to:</p>
+      <ul>
+        <li><strong>Authentication:</strong> Keep you logged in securely</li>
+        <li><strong>Preferences:</strong> Remember your settings and customizations</li>
+        <li><strong>Analytics:</strong> Understand how users interact with our platform (Google Analytics, Mixpanel)</li>
+        <li><strong>Advertising:</strong> Display account_boxalized ads and measure ad effectiveness</li>
+        <li><strong>Performance:</strong> Monitor app performance and troubleshoot issues</li>
+      </ul>
+      <p>You can control cookies through your browser or app settings. Some cookies are necessary for core functionality and cannot be disabled.</p>
+    </div>
+
+    <!-- Section 10 -->
+    <div class="policy-section" id="children">
+      <h2>10. Children's Privacy</h2>
+      <p>Fastme is not intended for users under 18 years old. We do not knowingly collect account_boxal information from minors. If we become aware that a user is under 18, we will take steps to remove their account and delete associated data.</p>
+      <p>Parents or guardians who believe a minor's information has been collected should contact us immediately at privacy@fastme.org.</p>
+    </div>
+
+    <!-- Section 11 -->
+    <div class="policy-section" id="changes">
+      <h2>11. Changes to This Privacy Policy</h2>
+      <p>We may update this Privacy Policy periodically to reflect changes in our practices, technology, legal requirements, or other factors. The "Last Updated" date at the top of this policy indicates when it was last revised.</p>
+      <p>We will notify you of material changes by:</p>
+      <ul>
+        <li>Posting the updated policy on our website</li>
+        <li>Sending you an email notification</li>
+        <li>Displaying a prominent notice in the app</li>
+      </ul>
+      <p>Your continued use of Fastme after changes indicates your acceptance of the updated policy.</p>
+    </div>
+
+    <!-- Section 12 -->
+    <div class="policy-section" id="contact">
+      <h2>12. Contact Us</h2>
+      <p>If you have questions about this Privacy Policy, your data, or our privacy practices, please contact us:</p>
+      
+      <div class="highlight-box">
+        <p>
+          <strong>📧 Email:</strong> privacy@fastme.org<br>
+          <strong>💬 Support:</strong> support@fastme.org<br>
+          <strong>🏢 Company:</strong> Fastme Software Inc.<br>
+          <strong>📍 Address:</strong> 371 Ikwerre Road, Mile 4 Port Harcourt<br>
+          <strong>📞 Phone:</strong> 2340160869969. 08021311782
+        </p>
+      </div>
+
+      <h3>Data Protection Officer</h3>
+      <p>If you have privacy concerns or wish to exercise your GDPR/CCPA rights, contact our Data Protection Officer:</p>
+      <p><strong>Email:</strong> dpo@fastme.org</p>
+
+      <h3>EU Complaints</h3>
+      <p>EU residents have the right to lodge a complaint with their local Data Protection Authority if they believe we have violated their privacy rights.</p>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="policy-section" style="text-align: center; margin-top: 40px;">
+      <p style="margin: 0; font-size: 0.9rem; color: var(--gray);">
+        © 2026 Fastme Inc. All rights reserved.<br>
+        This Privacy Policy was last updated on March 11, 2026.
+      </p>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <!-- 1. Home / Dashboard -->
+    <a href="/user/user-dashboard" class="nav-item"  >
+      <span class="material-icons">home</span>
+    </a>
+
+    <!-- 2. Chat / Messages (your current "post.png" looks like it's meant to be chat) -->
+      <a href="/user/user_chat-list.html" class="nav-item" id="chat-nav" data-link>
+
+      <span class="material-icons">chat</span>
+      <!-- Optional badge for unread messages -->
+      <!-- <span class="badge">3</span> -->
+    </a>
+
+    <!-- 3. News / Feed -->
+  <a href="/user/user_news.html" class="nav-item" data-link>
+
+      <span class="material-icons">trending_up</span>
+      <!-- Alternative popular options: -->
+      <!-- feed, article, rss_feed, public, trending_up -->
+    </a>
+
+    <!-- 4. Profile -->
+  <a href="/user/user_profile.html" class="nav-item" data-link>
+      <span class="material-icons">account_box</span>
+      <!-- Better alternatives: account_circle, manage_accounts, account_box -->
+    </a>
+  </nav>
+
+  <script>
+    // Smooth scrolling for TOC links
+    document.querySelectorAll('.toc a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Back button functionality
+    document.querySelector('.back-btn').addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '/user/user_profile.html';
+      }
+    });
+  </script>
+   
+</body>
+</html>

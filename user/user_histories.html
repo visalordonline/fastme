@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booking History - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/logo.jpg" />
+
+
+  </div>
+<script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    window.supabase = createClient(
+      'https://bwugvwbkuynncfdgwqyg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE',
+      { auth: { storage: localStorage, persistSession: true } }
+    );
+  </script>
+
+  <style>
+    :root {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #fff0f5;
+      --text: #333;
+      --gray: #555;
+      --green: #4caf50;
+      --purple: #673ab7;
+      --red: #e91e63;
+    }
+
+* {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  margin:0; padding:0; box-sizing:border-box;
+}
+
+/* Allow typing + selection in inputs */
+input, textarea {
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+    header {
+      background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+      color: white;
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(255,105,180,0.3);
+    }
+    header h1 { margin: 0; font-size: 1.8rem; }
+    main { padding: 20px 16px; max-width: 720px; margin: 0 auto; }
+    .history-card {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      display: flex;
+      gap: 16px;
+      border-left: 5px solid var(--pink);
+    }
+    .history-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--pink-light);
+    }
+    .history-content { flex: 1; }
+    .history-card h3 {
+      color: var(--pink-dark);
+      margin: 0 0 8px 0;
+      font-size: 1.25rem;
+    }
+    .role-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-left: 8px;
+    }
+    .role-hookup { background: var(--pink); color: white; }
+    .role-tb     { background: #c084fc; color: white; }
+    .history-card p {
+      margin: 5px 0;
+      color: var(--gray);
+      font-size: 0.92rem;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+    .status-pending   { background: #fff3cd; color: #856404; }
+    .status-accepted  { background: #d4edda; color: #155724; }
+    .status-rejected  { background: #f8d7da; color: #721c24; }
+    .status-fulfilled { background: #e8f5e9; color: #2e7d32; font-weight: 600; }
+    .status-completed { background: #cce5ff; color: #004085; }
+    .status-cancelled { background: #ffebee; color: #c62828; }
+
+    /* ── Action Dropdown ──────────────────────────────────────── */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      margin-top: 12px;
+    }
+    .dropdown-btn {
+      background: var(--purple);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: white;
+      min-width: 180px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 10;
+      border-radius: 8px;
+      right: 0;
+      overflow: hidden;
+    }
+    .dropdown-item {
+      display: block;
+      width: 100%;
+      padding: 10px 16px;
+      border: none;
+      background: none;
+      text-align: left;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: #333;
+    }
+    .dropdown-item:hover {
+      background: #f5f5f5;
+    }
+    .dropdown-divider {
+      height: 1px;
+      background: #eee;
+      margin: 4px 0;
+    }
+    .btn-delete { color: var(--red) !important; font-weight: 600; }
+    .btn-rebook { color: var(--green) !important; font-weight: 600; }
+
+    .empty-state {
+      text-align: center;
+      padding: 100px 20px;
+      color: var(--gray);
+      font-size: 1.15rem;
+    }
+    /* ════════════════════════════════════════════════
+   NAVIGATION BAR STYLING
+   ════════════════════════════════════════════════ */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  z-index: 80;
+  width: 100%;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+  gap: 4px;
+}
+
+.nav-item:hover {
+  background: rgba(255, 105, 180, 0.1);
+  color: #ff69b4;
+}
+
+.nav-item.active,
+.nav-item:active {
+  color: #ff69b4;
+  background: #fce4ec;
+}
+
+.nav-item .material-icons {
+  font-size: 28px;
+  margin-bottom: 2px;
+}
+
+.nav-item span:not(.material-icons) {
+  font-size: 0.65rem;
+  white-space: nowrap;
+}
+
+/* Nav Badge (notification counter) */
+.nav-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #f44336;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border: 1.5px solid white;
+  animation: badgePop 0.3s ease;
+  z-index: 10;
+}
+
+.nav-badge.removing {
+  animation: badgeShrink 0.3s ease forwards;
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes badgeShrink {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+/* Ensure page content doesn't hide behind nav */
+body {
+  padding-bottom: 90px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 480px) {
+  .bottom-nav {
+    height: 70px;
+  }
+
+  .nav-item {
+    padding: 4px 8px;
+  }
+
+  .nav-item .material-icons {
+    font-size: 24px;
+  }
+
+  .nav-item span:not(.material-icons) {
+    font-size: 0.6rem;
+  }
+
+  body {
+    padding-bottom: 80px;
+  }
+}
+
+/* For larger screens (optional - hide on desktop) */
+@media (min-width: 768px) {
+  
+
+  body {
+    padding-bottom: 0;
+  }
+}
+
+/* Smooth transitions */
+.nav-item {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Icon styling */
+.nav-icon {
+  width: 30px;
+  height: 30px;
+}
+    .material-icons { font-size: 28px; margin-bottom: 2px; }
+      .nav-icon { width: 30px; height: 28px; object-fit: contain; margin-bottom: 4px; }
+
+  </style>
+</head>
+  <body>
+<div id="app-content">
+<div id="app-content">
+
+  <header>
+    <h1>My Booking History</h1>
+  </header>
+
+  <main>
+    <div id="history-list">
+      <div class="empty-state">
+        <p>No bookings yet 💔<br>When you make a request, it'll appear here!</p>
+      </div>
+    </div>
+  </main>
+
+ <nav class="bottom-nav">
+    <!-- 1. Home / Dashboard -->
+    <a href="/user/user-dashboard" class="nav-item"  >
+      <span class="material-icons">home</span>
+    </a>
+
+    <!-- 2. Chat / Messages (your current "post.png" looks like it's meant to be chat) -->
+      <a href="/user/user_chat-list.html" class="nav-item" id="chat-nav" data-link>
+
+      <span class="material-icons">chat</span>
+      <!-- Optional badge for unread messages -->
+      <!-- <span class="badge">3</span> -->
+    </a>
+
+    <!-- 3. News / Feed -->
+  <a href="/user/user_news.html" class="nav-item" data-link>
+
+      <span class="material-icons">trending_up</span>
+      <!-- Alternative popular options: -->
+      <!-- feed, article, rss_feed, public, trending_up -->
+    </a>
+
+    <!-- 4. Profile -->
+  <a href="/user/user_profile.html" class="nav-item" data-link>
+      <span class="material-icons">account_box</span>
+      <!-- Better alternatives: account_circle, manage_accounts, account_box -->
+    </a>
+  </nav>
+
+  </div>
+<script type="module">
+    const supabase = window.supabase;
+    const historyList = document.getElementById('history-list');
+
+    async function checkAuthAndLoad() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        window.location.replace('/auth/login.html');
+
+        return;
+      }
+      const userId = session.user.id;
+      await loadHistory(userId);
+    }
+
+    async function loadHistory(userId) {
+      const { data: bookings, error } = await supabase
+        .from('bookings')
+        .select(`
+          id,
+          provider_id,
+          status,
+          type,
+          created_at,
+          updated_at,
+          profiles!provider_id (full_name, avatar_url, account_type)
+        `)
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('History error:', error);
+        historyList.innerHTML = `
+          <p style="color:#e0459a; text-align:center; padding:60px;">
+            Error loading history – please try again later
+          </p>`;
+        return;
+      }
+
+      if (!bookings?.length) {
+        historyList.innerHTML = `
+          <div class="empty-state">
+            <p>No bookings yet 💔<br>Make a request and it'll appear here!</p>
+          </div>`;
+        return;
+      }
+
+      let html = '';
+      for (const b of bookings) {
+        const provider = b.profiles || {};
+        const name = provider.full_name || 'Unknown Provider';
+        const avatar = provider.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ff69b4&color=fff`;
+        const role = provider.account_type || '—';
+        const roleClass = role === 'Hookup' ? 'role-hookup' : role === 'TB' ? 'role-tb' : '';
+
+        const statusLower = b.status?.toLowerCase() || 'pending';
+        const statusText = statusLower.charAt(0).toUpperCase() + statusLower.slice(1);
+        const statusClass = `status-${statusLower}`;
+
+        // Determine which actions to show
+        const canRebook = ['rejected', 'cancelled', 'cancelled_by_user', 'completed'].includes(statusLower);
+        const canDelete = true; // always allow delete in history
+
+        let actionItems = '';
+
+        if (canRebook) {
+          actionItems += `
+            <button class="dropdown-item btn-rebook" onclick="rebook('${b.provider_id}', '${b.type || ''}')">
+              🔄 Rebook
+            </button>
+          `;
+        }
+
+        if (canDelete) {
+          if (actionItems) actionItems += `<div class="dropdown-divider"></div>`;
+          actionItems += `
+            <button class="dropdown-item btn-delete" onclick="deleteBooking('${b.id}')">
+              🗑️ Delete
+            </button>
+          `;
+        }
+
+        html += `
+          <div class="history-card">
+            <img class="history-avatar" src="${avatar}" alt="${name}"
+                 onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name.slice(0,2))}&background=ff69b4&color=fff'" />
+            <div class="history-content">
+              <h3>
+                ${name}
+                ${role ? `<span class="role-badge ${roleClass}">${role}</span>` : ''}
+              </h3>
+              <p><strong>Requested:</strong> ${new Date(b.created_at).toLocaleString()}</p>
+              ${b.updated_at ? `<p><strong>Updated:</strong> ${new Date(b.updated_at).toLocaleString()}</p>` : ''}
+              <p><strong>Status:</strong> 
+                <span class="status-badge ${statusClass}">${statusText}</span>
+              </p>
+
+              ${actionItems ? `
+                <div class="dropdown">
+                  <button class="dropdown-btn">Actions ▼</button>
+                  <div class="dropdown-content">
+                    ${actionItems}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }
+
+      historyList.innerHTML = html;
+
+      // Dropdown behavior
+      document.querySelectorAll('.dropdown').forEach(dropdown => {
+        const btn = dropdown.querySelector('.dropdown-btn');
+        const content = dropdown.querySelector('.dropdown-content');
+
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          document.querySelectorAll('.dropdown-content').forEach(c => {
+            if (c !== content) c.style.display = 'none';
+          });
+          content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        };
+
+        document.addEventListener('click', (e) => {
+          if (!dropdown.contains(e.target)) {
+            content.style.display = 'none';
+          }
+        });
+      });
+    }
+
+    // ── Delete booking ──────────────────────────────────────────────
+    window.deleteBooking = async (bookingId) => {
+      if (!confirm("Delete this booking from history?\nThis cannot be undone.")) return;
+
+      const { error } = await supabase
+        .from('bookings')
+        .delete()
+        .eq('id', bookingId);
+
+      if (error) {
+        alert("Could not delete booking: " + error.message);
+      } else {
+        alert("Booking deleted from history.");
+        checkAuthAndLoad(); // refresh list
+      }
+    };
+
+    // ── Rebook same provider ────────────────────────────────────────
+    window.rebook = async (providerId, type = '') => {
+      if (!confirm("Send a new booking request to this provider?")) return;
+
+      const { data: { session } } = await supabase.auth.getSession();
+      const userId = session.user.id;
+
+      // Optional: get current user location if you want to include it
+      let lat = null, lng = null;
+      try {
+        const { data: profile } = await supabase.from('profiles')
+          .select('latitude, longitude')
+          .eq('id', userId)
+          .maybeSingle();
+        if (profile?.latitude && profile?.longitude) {
+          lat = profile.latitude;
+          lng = profile.longitude;
+        }
+      } catch (e) {}
+
+      const { error } = await supabase
+        .from('bookings')
+        .insert({
+          user_id: userId,
+          provider_id: providerId,
+          status: 'pending',
+          type: type || 'Booking', // reuse type if existed
+          user_latitude: lat,
+          user_longitude: lng,
+          created_at: new Date().toISOString()
+        });
+
+      if (error) {
+        alert("Failed to send rebook request: " + error.message);
+      } else {
+        alert("New booking request sent! Check your Requests tab.");
+        // Optionally redirect to dashboard
+        // window.location.href = '/user/user-dashboard.html';
+      }
+    };
+
+    checkAuthAndLoad();
+    window.addEventListener('focus', () => checkAuthAndLoad());
+  </script>
+   
+</body>
+</html>

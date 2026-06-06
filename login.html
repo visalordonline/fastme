@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Supabase CDN -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    window.supabase = createClient(
+      'https://bwugvwbkuynncfdgwqyg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE',
+      {
+        auth: {
+          autoRefreshToken: true,
+          persistSession: true,
+          detectSessionInUrl: true,
+          storage: localStorage
+        }
+      }
+    );
+  </script>
+
+  <style>
+    :root {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #fff0f5;
+      --text: #333;
+      --gray: #777;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--bg), #ffffff);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-box {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(255,105,180,0.2);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: var(--pink-dark);
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--gray);
+      margin-bottom: 32px;
+      font-size: 1rem;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.25s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(255,105,180,0.15);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--gray);
+      font-size: 1.3rem;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: var(--pink);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      margin-top: 12px;
+    }
+
+    .btn-login:hover:not(:disabled) {
+      background: var(--pink-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-login:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .error-msg {
+      color: #d32f2f;
+      font-size: 0.9rem;
+      margin-top: 8px;
+      min-height: 1.2em;
+    }
+
+    .links {
+      margin-top: 24px;
+      font-size: 0.95rem;
+    }
+
+    .links a {
+      color: var(--pink-dark);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--pink);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 12px auto;
+      display: none;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 280px;
+      background: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      z-index: 10000;
+      opacity: 0;
+      transition: all 0.4s ease;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .popup.show { opacity: 1; }
+    .popup.success { border-left: 5px solid #4caf50; color: #2e7d32; }
+    .popup.error   { border-left: 5px solid #f44336; color: #c62828; }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <h1>Welcome Back</h1>
+    <p class="subtitle">Sign in to your Fastme account</p>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <input type="email" id="email" placeholder="Email" required autocomplete="email" />
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="password" placeholder="Password" required autocomplete="current-password" />
+        <span class="material-icons password-toggle" id="togglePassword">visibility_off</span>
+      </div>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <button type="submit" class="btn-login" id="loginBtn">Login</button>
+      <div class="loader" id="loader"></div>
+    </form>
+
+    <div class="links">
+      <a href="#">Forgot password?</a><br><br>
+      Don't have an account? <a href="/index.html">Sign Up</a>
+    </div>
+  </div>
+
+  <div id="popup" class="popup"></div>
+
+  <script type="module">
+    const supabase = window.supabase;
+
+    const form = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+    const loginBtn = document.getElementById('loginBtn');
+    const loader = document.getElementById('loader');
+    const errorMsg = document.getElementById('errorMsg');
+
+    // Toggle password visibility
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.type === 'password' ? 'text' : 'password';
+      passwordInput.type = type;
+      togglePassword.textContent = type === 'password' ? 'visibility_off' : 'visibility';
+    });
+
+    // Popup notification
+    function showPopup(message, type = 'success') {
+      const popup = document.getElementById('popup');
+      popup.textContent = message;
+      popup.className = `popup ${type} show`;
+      setTimeout(() => popup.classList.remove('show'), 4000);
+    }
+
+    // Check if user is already logged in
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        showPopup('You are already logged in! Redirecting...', 'success');
+        setTimeout(() => redirectBasedOnRole(session), 1500);
+      }
+    })();
+
+    // Form submit handler
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!email || !password) {
+        errorMsg.textContent = 'Please fill in all fields';
+        showPopup('Please fill in all fields', 'error');
+        return;
+      }
+
+      // Basic email format check
+      if (!email.includes('@') || !email.includes('.')) {
+        errorMsg.textContent = 'Please enter a valid email';
+        showPopup('Please enter a valid email', 'error');
+        return;
+      }
+
+      errorMsg.textContent = '';
+      loginBtn.disabled = true;
+      loader.style.display = 'block';
+      loginBtn.textContent = 'Logging in...';
+
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) throw error;
+
+        showPopup('Login successful! Redirecting...', 'success');
+
+        setTimeout(() => {
+          redirectBasedOnRole(data.session);
+        }, 1500);
+
+      } catch (err) {
+        console.error('Login error:', err);
+        let msg = 'Login failed. Please try again.';
+        
+        if (err.message?.includes('Invalid login credentials')) {
+          msg = 'Incorrect email or password';
+        } else if (err.message?.includes('rate limit') || err.status === 429) {
+          msg = 'Too many attempts — please wait a moment';
+        } else if (err.message?.includes('Invalid API key') || err.code === 401) {
+          msg = 'App configuration error — contact support';
+        } else if (err.message?.includes('confirmed')) {
+          msg = 'Please confirm your email first';
+        }
+
+        errorMsg.textContent = msg;
+        showPopup(msg, 'error');
+      } finally {
+        loginBtn.disabled = false;
+        loader.style.display = 'none';
+        loginBtn.textContent = 'Login';
+      }
+    });
+
+    // Role-based redirect after login
+    async function redirectBasedOnRole(session) {
+      if (!session) return;
+
+      let accountType = session.user.user_metadata?.account_type;
+
+      // Fallback: fetch from profiles table if not in metadata
+      if (!accountType) {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('account_type')
+          .eq('id', session.user.id)
+          .single();
+
+        if (!error && profile?.account_type) {
+          accountType = profile.account_type;
+        }
+      }
+
+      let redirectTo = '/user-dashboard.html'; // default for regular users
+
+      if (accountType === 'TB' || accountType === 'Hookup') {
+        redirectTo = '/provider.html';
+      }
+
+      window.location.replace(redirectTo);
+    }
+  </script>
+</body>
+</html>

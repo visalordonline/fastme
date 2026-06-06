@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Provider Dashboard - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Supabase CDN -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    window.supabase = createClient(
+      'https://bwugvwbkuynncfdgwqyg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE',
+      {
+        auth: {
+          autoRefreshToken: true,
+          persistSession: true,
+          detectSessionInUrl: true,
+          storage: localStorage
+        }
+      }
+    );
+  </script>
+
+  <style>
+    :root {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #fff0f5;
+      --text: #333;
+      --gray: #777;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 100px;          /* ← increased a bit because of floating button */
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+      color: white;
+      padding: 24px 16px;
+      box-shadow: 0 4px 12px rgba(255,105,180,0.3);
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+      padding-left: 8px;
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    .user-info {
+      text-align: left;
+    }
+
+    #full-name {
+      font-size: 1.9rem;
+      margin: 0;
+      color: white;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .role-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.25);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-top: 6px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .role-badge.hookup { background: linear-gradient(135deg, #ff69b4, #ff1493); }
+    .role-badge.tb     { background: linear-gradient(135deg, #c084fc, #a855f7); }
+
+    #status {
+      font-size: 1rem;
+      opacity: 0.9;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    main { padding: 20px 16px; }
+
+    .request-card {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      border-left: 5px solid var(--pink);
+      transition: transform 0.2s;
+    }
+
+    .request-card:hover { transform: translateY(-4px); }
+
+    .request-card h3 { color: var(--pink-dark); margin-bottom: 8px; }
+    .request-card p   { color: var(--gray); font-size: 0.95rem; margin: 4px 0; }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      margin-top: 12px;
+    }
+
+    .btn-accept { background: var(--pink); color: white; }
+    .btn-accept:hover { background: var(--pink-dark); transform: scale(1.04); }
+
+    .btn-reject { background: #eee; color: #555; margin-left: 12px; }
+    .btn-reject:hover { background: #ddd; }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--gray);
+      font-size: 1.1rem;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0; right: 0;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      z-index: 1000;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.75rem;
+      transition: all 0.3s;
+      padding: 6px 12px;
+      border-radius: 12px;
+    }
+
+    .nav-item.active,
+    .nav-item:hover {
+      color: var(--pink-dark);
+      background: var(--pink-light);
+    }
+
+    .material-icons { font-size: 28px; margin-bottom: 4px; }
+    .nav-text { font-weight: 500; }
+
+    /* Floating Chat Button */
+    .floating-chat {
+      position: fixed;
+      bottom: 90px;
+      right: 16px;
+      width: 64px;
+      height: 64px;
+      background: var(--pink);
+      color: white;
+      border-radius: 50%;
+      box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1100;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .floating-chat:hover {
+      background: var(--pink-dark);
+      transform: scale(1.08) translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255, 105, 180, 0.5);
+    }
+
+    .floating-chat .material-icons {
+      font-size: 32px;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="profile-header">
+      <div class="avatar-container">
+        <img 
+          id="avatar" 
+          src="https://ui-avatars.com/api/?name=Provider&background=ff69b4&color=fff" 
+          alt="Profile Avatar" 
+          class="avatar"
+        />
+      </div>
+      
+      <div class="user-info">
+        <h1 id="full-name">Loading...</h1>
+        <span id="role-badge" class="role-badge">Loading role...</span>
+      </div>
+    </div>
+    
+    <p id="status">Waiting for incoming requests...</p>
+  </header>
+
+  <main>
+    <div id="requests-list">
+      <div class="empty-state">
+        <p>No requests yet 💕<br>They'll appear here when someone books you!</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Floating chat button -->
+  <button class="floating-chat" onclick="window.location.href='chat.html'" aria-label="Open messages">
+    <span class="material-icons">chat_bubble</span>
+  </button>
+
+  <nav class="bottom-nav">
+    <a href="provider.html" class="nav-item active">
+      <span class="material-icons">favorite</span>
+      <span class="nav-text">Requests</span>
+    </a>
+    <a href="history.html" class="nav-item">
+      <span class="material-icons">history</span>
+      <span class="nav-text">History</span>
+    </a>
+    <a href="news.html" class="nav-item">
+      <span class="material-icons">campaign</span>
+      <span class="nav-text">News</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <span class="material-icons">person</span>
+      <span class="nav-text">Profile</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    const supabase = window.supabase;
+
+    const requestsList = document.getElementById('requests-list');
+    const statusEl = document.getElementById('status');
+
+    // ── Immediate session check at page load ───────────────────────────
+    (async function protectPage() {
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        console.warn('No session found on page load → redirecting to login');
+        window.location.replace('/login.html');
+        return;
+      }
+
+      console.log('Session found → staying on provider dashboard');
+      init();
+    })();
+
+    async function init() {
+      let { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+      if (sessionError || !session) {
+        statusEl.textContent = 'Session lost 💔 Please log in again';
+        requestsList.innerHTML = `<p style="text-align:center; color:#e0459a; padding:40px;">Session issue — redirecting...</p>`;
+        setTimeout(() => window.location.replace('/login.html'), 2000);
+        return;
+      }
+
+      const providerId = session.user.id;
+      console.log('Logged in as provider:', providerId);
+
+      await supabase.auth.setSession({
+        access_token: session.access_token,
+        refresh_token: session.refresh_token
+      });
+
+      supabase.realtime.setAuth(session.access_token);
+
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('full_name, avatar_url, account_type')
+        .eq('id', providerId)
+        .single();
+
+      let displayName = 'Provider';
+      let avatarUrl = `https://ui-avatars.com/api/?name=Provider&background=ff69b4&color=fff`;
+      let role = 'Unknown';
+      let roleClass = '';
+
+      if (!profileError && profile) {
+        displayName = profile.full_name || session.user.email?.split('@')[0] || 'Provider';
+        avatarUrl = profile.avatar_url || avatarUrl;
+        role = profile.account_type || 'Unknown';
+      } else {
+        console.warn('Profile fetch issue:', profileError);
+        const meta = session.user.user_metadata || {};
+        displayName = meta.full_name || session.user.email?.split('@')[0] || 'Provider';
+        avatarUrl = meta.avatar_url || avatarUrl;
+        role = meta.account_type || 'Unknown';
+      }
+
+      if (role === 'Hookup') roleClass = 'hookup';
+      else if (role === 'TB') roleClass = 'tb';
+
+      document.getElementById('full-name').textContent = displayName;
+      const avatarImg = document.getElementById('avatar');
+      avatarImg.src = avatarUrl;
+      avatarImg.onerror = () => {
+        avatarImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=ff69b4&color=fff`;
+      };
+
+      const badge = document.getElementById('role-badge');
+      badge.textContent = role;
+      if (roleClass) badge.classList.add(roleClass);
+
+      await loadRequests(providerId);
+
+      const channel = supabase.channel(`bookings:provider:${providerId}`)
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'bookings',
+          filter: `provider_id=eq.${providerId}`
+        }, (payload) => {
+          console.log('Realtime change:', payload);
+          loadRequests(providerId);
+        })
+        .subscribe((status) => {
+          console.log('Realtime status:', status);
+          if (status === 'SUBSCRIBED') {
+            statusEl.textContent = 'Connected • Waiting for bookings... 💖';
+          } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+            statusEl.textContent = 'Realtime connection issue – try refreshing 💔';
+          }
+        });
+
+      supabase.auth.onAuthStateChange((_event, newSession) => {
+        if (newSession?.access_token) {
+          supabase.realtime.setAuth(newSession.access_token);
+        }
+      });
+
+      window.addEventListener('beforeunload', () => {
+        supabase.removeChannel(channel);
+      });
+    }
+
+    async function loadRequests(providerId) {
+      const { data, error } = await supabase
+        .from('bookings')
+        .select('*')
+        .eq('provider_id', providerId)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Bookings error:', error);
+        let msg = 'Error loading requests';
+        if (error.status === 401 || error.message?.includes('Unauthorized') || error.message?.includes('Invalid API key')) {
+          msg = 'Authentication issue – please log out and log in again';
+          setTimeout(() => window.location.replace('/login.html'), 3000);
+        }
+        requestsList.innerHTML = `<p style="color:#e0459a; text-align:center; padding:40px;">${msg}</p>`;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        requestsList.innerHTML = `
+          <div class="empty-state">
+            <p>No requests yet 💕<br>Share your profile and wait for bookings!</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      data.forEach(req => {
+        const isPending = req.status === 'pending';
+        html += `
+          <div class="request-card">
+            <h3>${req.type || 'Booking'}</h3>
+            <p><strong>From user:</strong> ${req.user_id.substring(0,8)}...</p>
+            <p><strong>Requested:</strong> ${new Date(req.created_at).toLocaleString()}</p>
+            <p><strong>Status:</strong> ${req.status}</p>
+            ${isPending ? `
+              <button class="btn btn-accept" onclick="acceptRequest('${req.id}')">Accept 💖</button>
+              <button class="btn btn-reject" onclick="updateRequest('${req.id}', 'rejected')">Reject</button>
+            ` : ''}
+          </div>
+        `;
+      });
+      requestsList.innerHTML = html;
+    }
+
+    window.acceptRequest = async (id) => {
+      if (!confirm('Accept this booking?')) return;
+      const { error } = await supabase
+        .from('bookings')
+        .update({ status: 'accepted', updated_at: new Date().toISOString() })
+        .eq('id', id);
+      if (error) {
+        alert('Failed: ' + (error.message || 'Unknown error'));
+      } else {
+        alert('Booking accepted! 💕');
+        loadRequests(window.supabase.auth.getSession().then(s => s.data.session?.user.id));
+      }
+    };
+
+    window.updateRequest = async (id, status) => {
+      if (!confirm(`Set to ${status}?`)) return;
+      const { error } = await supabase
+        .from('bookings')
+        .update({ status, updated_at: new Date().toISOString() })
+        .eq('id', id);
+      if (error) {
+        alert('Failed: ' + (error.message || 'Unknown error'));
+      } else {
+        loadRequests(window.supabase.auth.getSession().then(s => s.data.session?.user.id));
+      }
+    }
+  </script>
+</body>
+</html>

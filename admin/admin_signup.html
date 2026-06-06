@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Fast-me - Admin Registration</title>
+  <link rel="icon" type="image/png" href="/logo.jpg" />
+
+  </div>
+<script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    window.createSupabaseClient = createClient;
+  </script>
+
+  <style>
+    :root { --pink: #ff69b4; --pink-dark: #e0459a; --bg: #fff0f5; }
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background: linear-gradient(135deg, var(--bg), #ffffff); 
+      min-height: 100vh; 
+      display: flex; 
+      flex-direction: column; 
+      margin: 0;
+    }
+    
+    main { 
+      flex: 1; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      padding: 40px 20px; 
+    }
+
+    .register-box { 
+      background: white; 
+      padding: 40px 30px; 
+      border-radius: 24px; 
+      box-shadow: 0 15px 40px rgba(255,105,180,0.15); 
+      width: 100%; 
+      max-width: 420px; 
+      text-align: center; 
+    }
+    
+    .logo-area { margin-bottom: 20px; }
+    .logo-area img { width: 80px; height: 80px; border-radius: 20px; box-shadow: 0 8px 16px rgba(255,105,180,0.2); }
+
+    h2 { margin-bottom: 8px; color: #2c3e50; font-size: 1.8rem; }
+    .subtitle { color: #888; margin-bottom: 24px; font-size: 0.95rem; }
+
+    input, select { 
+      width: 100%; 
+      padding: 15px; 
+      margin: 8px 0; 
+      border: 2px solid #eee; 
+      border-radius: 12px; 
+      font-size: 1rem; 
+      box-sizing: border-box; 
+      transition: 0.3s; 
+    }
+    input:focus, select:focus { outline: none; border-color: var(--pink); background: #fff; }
+
+    button { 
+      width: 100%; 
+      padding: 16px; 
+      background: var(--pink); 
+      color: white; 
+      border: none; 
+      border-radius: 12px; 
+      font-size: 1.1rem; 
+      font-weight: 600; 
+      cursor: pointer; 
+      margin-top: 16px; 
+      transition: 0.3s; 
+    }
+    button:hover:not(:disabled) { background: var(--pink-dark); }
+    button:disabled { background: #ccc; }
+
+    .loader { 
+      border: 4px solid #f3f3f3; 
+      border-top: 4px solid var(--pink); 
+      border-radius: 50%; 
+      width: 32px; 
+      height: 32px; 
+      animation: spin 1s linear infinite; 
+      margin: 15px auto; 
+      display: none; 
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    p { margin-top: 20px; font-size: 0.9rem; color: #555; }
+    p a { color: var(--pink-dark); text-decoration: none; font-weight: 600; }
+
+    .popup { 
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%); 
+      padding: 16px 24px; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.15); 
+      z-index: 1000; opacity: 0; transition: all 0.4s; background: white; 
+      border-left: 5px solid var(--pink); 
+    }
+    .popup.show { opacity: 1; }
+    .popup.error { border-left-color: #e74c3c; background: #ffebee; color: #c0392b; }
+    .popup.success { border-left-color: #27ae60; background: #e8f5e9; color: #2e7d32; }
+
+    .warning {
+      background: #fff3cd;
+      color: #856404;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 16px 0;
+      font-size: 0.9rem;
+      border-left: 4px solid #ffc107;
+    }
+  </style>
+</head>
+  <body>
+<div id="app-content">
+<div id="app-content">
+
+  <div id="popup" class="popup"></div>
+
+  <main>
+    <div class="register-box">
+      <div class="logo-area">
+        <img src="/logo.jpg" alt="Logo">
+      </div>
+      <h2>Create Admin Account</h2>
+      <p class="subtitle">Restricted access — only for administrators</p>
+
+      <div class="warning">
+        After signup, go to Supabase Dashboard → Authentication → Users →<br>
+        find this account and set <strong>"role": "admin"</strong> in App Metadata.
+      </div>
+      
+      <input type="text" id="fullname" placeholder="Full Name" />
+      <input type="date" id="dob" placeholder="Date of Birth" />
+      <input type="tel" id="phone" placeholder="Phone Number" />
+      <input type="email" id="email" placeholder="Admin Email" />
+      <input type="password" id="password" placeholder="Password (min 6 chars)" />
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" />
+      
+      <button id="registerBtn">Create Admin Account</button>
+      <div class="loader" id="loader"></div>
+
+      <p>Already have admin access? <a href="admin-login.html">Login here</a></p>
+    </div>
+  </main>
+
+</div>
+<script type="module">
+  const supabase = window.createSupabaseClient(
+    'https://bwugvwbkuynncfdgwqyg.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE'
+  );
+
+  function showPopup(message, type = "success") {
+    const p = document.getElementById("popup");
+    p.textContent = message;
+    p.className = `popup ${type} show`;
+    setTimeout(() => p.classList.remove("show"), 5000);
+  }
+
+  async function getUserLocation() {
+    return new Promise((resolve) => {
+      if (!navigator.geolocation) return resolve({ latitude: null, longitude: null });
+      navigator.geolocation.getCurrentPosition(
+        (pos) => resolve({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }),
+        () => resolve({ latitude: null, longitude: null }),
+        { timeout: 5000 }
+      );
+    });
+  }
+
+  const registerBtn = document.getElementById("registerBtn");
+  const loader = document.getElementById("loader");
+
+  registerBtn.addEventListener("click", async () => {
+    const data = {
+      fullname: document.getElementById("fullname").value.trim(),
+      dob: document.getElementById("dob").value,
+      phone: document.getElementById("phone").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      password: document.getElementById("password").value.trim(),
+      confirm: document.getElementById("confirmPassword").value.trim()
+    };
+
+    if (Object.values(data).some(v => !v)) return showPopup("Please fill all fields", "error");
+    if (data.password.length < 6) return showPopup("Password must be at least 6 characters", "error");
+    if (data.password !== data.confirm) return showPopup("Passwords do not match", "error");
+
+    // Optional: warn if email doesn't look admin-like
+    if (!data.email.includes("admin") && !data.email.includes("@yourdomain.com")) {
+      if (!confirm("This email doesn't look like an admin email. Continue anyway?")) {
+        return;
+      }
+    }
+
+    loader.style.display = "block";
+    registerBtn.disabled = true;
+
+    try {
+      const location = await getUserLocation();
+
+      const { data: signUpData, error: authError } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          data: {
+            full_name: data.fullname,
+            account_type: "Admin",           // fixed value for clarity
+            phone: data.phone,
+            date_of_birth: data.dob,
+            latitude: location.latitude,
+            longitude: location.longitude,
+            is_admin_signup: true            // optional marker
+          }
+        }
+      });
+
+      if (authError) throw authError;
+
+      showPopup("Admin account created! Now set role in Supabase dashboard.", "success");
+
+      // Optional: auto sign-in after creation
+      setTimeout(async () => {
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: data.email,
+          password: data.password
+        });
+
+        if (!signInError) {
+          window.location.href = "/admin/admin.html";  // or your admin page
+        } else {
+          window.location.href = "/admin/admin.html";     // fallback
+        }
+      }, 2200);
+
+    } catch (err) {
+      showPopup(err.message || "Signup failed", "error");
+      console.error(err);
+    } finally {
+      loader.style.display = "none";
+      registerBtn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Verified - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/profile.css">
+  <link rel="stylesheet" href="/user/price-pop.css">
+
+  <style>
+    body {
+      background: #f8f9fa;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .verification-page {
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 20px;
+      padding-bottom: 90px; /* space for bottom nav */
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      color: #e0459a;
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+    }
+
+    .header p {
+      color: #555;
+      font-size: 15px;
+      margin: 0;
+    }
+
+    .benefits-list {
+      margin: 30px 0 40px;
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .benefit-item:last-child {
+      border-bottom: none;
+    }
+
+    .benefit-item .material-icons {
+      color: #e0459a;
+      font-size: 26px;
+    }
+
+    .benefit-item span {
+      font-size: 15.5px;
+      color: #333;
+    }
+
+    .coming-soon-box {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .coming-soon-title {
+      font-weight: 600;
+      color: #b37e00;
+      margin-bottom: 8px;
+    }
+
+    .coming-soon-box p {
+      color: #856404;
+      font-size: 14.5px;
+      line-height: 1.5;
+    }
+
+    .price-section {
+      margin-bottom: 40px;
+    }
+
+    .price-card {
+      display: block;
+      background: white;
+      border: 2px solid #eee;
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .price-card:hover {
+      border-color: #e0459a;
+    }
+
+    .price-card input[type="radio"] {
+      display: none;
+    }
+
+    .price-card:has(input:checked) {
+      border-color: #e0459a;
+      box-shadow: 0 0 0 4px rgba(224, 69, 154, 0.15);
+    }
+
+    .price-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .price-duration {
+      font-size: 17px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .price-amount {
+      font-size: 24px;
+      font-weight: 700;
+      color: #e0459a;
+    }
+
+    .best-value {
+      background: #e0459a;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .premium-continue-btn {
+      width: 100%;
+      background: #e0459a;
+      color: white;
+      border: none;
+      padding: 16px;
+      font-size: 17px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: not-allowed;
+      margin-bottom: 16px;
+    }
+
+    .info-text {
+      text-align: center;
+      font-size: 0.82rem;
+      color: #777;
+    }
+
+    /* Bottom Nav */
+  /* ════════════════════════════════════════════════
+   NAVIGATION BAR STYLING
+   ════════════════════════════════════════════════ */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  z-index: 80;
+  width: 100%;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+  gap: 4px;
+}
+
+.nav-item:hover {
+  background: rgba(255, 105, 180, 0.1);
+  color: #ff69b4;
+}
+
+.nav-item.active,
+.nav-item:active {
+  color: #ff69b4;
+  background: #fce4ec;
+}
+
+.nav-item .material-icons {
+  font-size: 28px;
+  margin-bottom: 2px;
+}
+
+.nav-item span:not(.material-icons) {
+  font-size: 0.65rem;
+  white-space: nowrap;
+}
+
+/* Nav Badge (notification counter) */
+.nav-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #f44336;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border: 1.5px solid white;
+  animation: badgePop 0.3s ease;
+  z-index: 10;
+}
+
+.nav-badge.removing {
+  animation: badgeShrink 0.3s ease forwards;
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes badgeShrink {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+/* Ensure page content doesn't hide behind nav */
+body {
+  padding-bottom: 90px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 480px) {
+  .bottom-nav {
+    height: 70px;
+  }
+
+  .nav-item {
+    padding: 4px 8px;
+  }
+
+  .nav-item .material-icons {
+    font-size: 24px;
+  }
+
+  .nav-item span:not(.material-icons) {
+    font-size: 0.6rem;
+  }
+
+  body {
+    padding-bottom: 80px;
+  }
+}
+
+/* For larger screens (optional - hide on desktop) */
+@media (min-width: 768px) {
+  
+
+  body {
+    padding-bottom: 0;
+  }
+}
+
+/* Smooth transitions */
+.nav-item {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Icon styling */
+.nav-icon {
+  width: 30px;
+  height: 30px;
+}
+  </style>
+</head>
+  <body>
+<div id="app-content">
+<div id="app-content">
+
+  <div class="verification-page">
+
+    <!-- Header -->
+    <div class="header">
+      <h1>Get Verified Badge</h1>
+      <p>Unlock official verification + premium benefits</p>
+    </div>
+
+    <!-- Benefits -->
+    <div class="benefits-list">
+      <div class="benefit-item">
+        <span class="material-icons">verified</span>
+        <span>Official Verification Badge</span>
+      </div>
+      <div class="benefit-item">
+        <span class="material-icons">star</span>
+        <span>Priority in search & listings</span>
+      </div>
+      <div class="benefit-item">
+        <span class="material-icons">lock_open</span>
+        <span>Be found by Premium others</span>
+      </div>
+      <div class="benefit-item">
+        <span class="material-icons">visibility</span>
+        <span>More profile visibility</span>
+      </div>
+    </div>
+
+    <!-- Coming Soon Notice -->
+    <div class="coming-soon-box">
+      <div class="coming-soon-title">Payment Integration</div>
+      <p>Paystack integration is coming very soon!<br>We'll notify you as soon as it's live.</p>
+    </div>
+
+    <!-- Price Plans -->
+    <div class="price-section">
+      <label class="price-card">
+        <input type="radio" name="plan" value="2weeks">
+        <div class="price-content">
+          <div class="price-duration">2 weeks</div>
+          <div class="price-amount">₦2,999</div>
+        </div>
+      </label>
+
+      <label class="price-card">
+        <input type="radio" name="plan" value="1month" checked>
+        <div class="price-content">
+          <div class="price-duration">1 month</div>
+          <div class="price-amount">₦4,999</div>
+          <div class="best-value">Best Value</div>
+        </div>
+      </label>
+
+      <label class="price-card disabled">
+        <input type="radio" name="plan" value="3months" disabled>
+        <div class="price-content">
+          <div class="price-duration">3 months</div>
+          <div class="price-amount">₦47,999</div>
+        </div>
+      </label>
+    </div>
+
+    <button class="premium-continue-btn" disabled>
+      Continue → Coming Soon
+    </button>
+
+    <p class="info-text">
+      Secure payment via Paystack • Cancel anytime
+    </p>
+
+  </div>
+
+  <nav class="bottom-nav">
+    <!-- 1. Home / Dashboard -->
+    <a href="/provider/provider.html" class="nav-item ">
+      <span class="material-icons">home</span>
+    </a>
+
+    <!-- 2. Chat / Messages (your current "post.png" looks like it's meant to be chat) -->
+    <a href="/provider/chat_list.html" class="nav-item" id="chat-nav" style="position: relative;">
+      <span class="material-icons">chat</span>
+      <!-- Optional badge for unread messages -->
+      <!-- <span class="badge">3</span> -->
+    </a>
+
+    <!-- 3. News / Feed -->
+    <a href="/provider/news.html" class="nav-item">
+      <span class="material-icons">trending_up</span>
+      <!-- Alternative popular options: -->
+      <!-- feed, article, rss_feed, public, trending_up -->
+    </a>
+
+    <!-- 4. Profile -->
+    <a href="/provider/profile.html" class="nav-item">
+      <span class="material-icons">account_box</span>
+      <!-- Better alternatives: account_circle, manage_accounts, account_box -->
+    </a>
+  </nav>
+
+</body>
+</html>

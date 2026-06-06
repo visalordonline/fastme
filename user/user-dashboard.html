@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8022660006281675"
+     crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Providers - Fastme</title>
+  <link rel="stylesheet" href="/user/user_dash.css">
+  <link rel="icon" type="image/png" href="/logo.jpg" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/logo.jpg" />
+  <link rel="stylesheet" href="/user/price-pop.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm';
+    window.supabase = createClient(
+      'https://bwugvwbkuynncfdgwqyg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE',
+      { auth: { storage: localStorage, persistSession: true } }
+    );
+  </script>
+
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script defer src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+<style>
+  
+
+   /* ====================== CUSTOM POPUP FIX ====================== */
+#customPopupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.price-card.active {
+    border: 3px solid #ff8c00;
+    transform: scale(1.03);
+}
+#premiumModal {
+    z-index: 1000000 !important;
+}
+.custom-popup {
+  background: #0f0f0f;
+  border: 2px solid #ff8c00;
+  border-radius: 20px;
+  max-width: 380px;
+  width: 100%;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  animation: popupAppear 0.3s ease;
+}
+
+@keyframes popupAppear {
+  from { opacity: 0; transform: translateY(50px) scale(0.9); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.custom-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+#popupTitle {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #ff8c00;
+}
+
+.custom-popup-close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #aaa;
+  cursor: pointer;
+  padding: 0 8px;
+}
+
+.custom-popup-body {
+  margin-bottom: 20px;
+  min-height: 60px;
+}
+
+#popupMessage {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: #ddd;
+}
+
+.custom-popup-footer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Popup Buttons */
+.custom-popup-btn {
+  padding: 14px 26px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 110px;
+  border: none;
+}
+
+.custom-popup-btn-primary {
+  background: linear-gradient(45deg, #ff8c00, #ff4500);
+  color: white;
+}
+
+.custom-popup-btn-secondary {
+  background: transparent;
+  border: 2px solid #666;
+  color: white;
+}
+
+.custom-popup-btn-danger {
+  background: #f44336;
+  color: white;
+}
+  </style>
+</head>
+<body>
+
+<div id="app-content">
+  <!-- Location Modal -->
+  <div class="modal-overlay" id="locationModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Set Your Location</h2>
+        <button class="close-modal" id="closeLocationModal">&times;</button>
+      </div>
+      
+      <div class="modal-section">
+        <p class="address-display" id="address-text">Getting your location...</p>
+        
+        <input 
+          type="text" 
+          id="address-search"
+          placeholder="Search your address (autocomplete)..."
+        />
+        <div id="suggestions"></div>
+
+        <button id="save-address">Save Location</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Search Modal -->
+  <div class="modal-overlay" id="searchModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Search Users & Providers</h2>
+        <button class="close-modal" id="closeSearchModal">&times;</button>
+      </div>
+      
+      <div class="modal-section">
+        <input 
+          type="text" 
+          id="user-search-input"
+          placeholder="Search by name or location..."
+        />
+        <div id="user-search-results" style="margin-top:16px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Navigation Bar --> 
+  <header class="top-nav">
+    <div class="nav-left">
+      <h1 class="logo">Fastme</h1>
+    </div>
+    <a href="/user/user_histories.html" class="nav-btn" style="position: relative;">
+      <span class="material-icons">history_toggle_off</span>
+    </a>
+    <div class="nav-right">
+      <button class="nav-btn" id="addLocationBtn">
+        <span class="material-icons">location_on</span>
+      </button>
+
+      <button class="nav-btn" id="searchUsersBtn">
+        <span class="material-icons">search</span>
+      </button>
+      
+      <!-- Menu Button -->
+      <button class="nav-btn" id="menuBtn">
+        <span class="material-icons">notifications</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div id="active-booking-section" style="display:none; margin: 20px 12px;">
+      <div class="active-booking-card">
+        <h3 style="margin-bottom: 10px; color:#e0459a;">Active Connection</h3>
+        <p>Provider: <strong id="provider-name">...</strong></p>
+        <p>Status: <span id="booking-status" class="status-in-progress">...</span></p>
+        
+        <div id="contact-section" class="contact-section" style="display:none;">
+          <p style="margin-bottom:10px;"><strong>Contact Details:</strong></p>
+          <div id="contact-info-row" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <span id="provider-phone" style="font-size:1.1rem; font-weight:600;"></span>
+          </div>
+        </div>
+
+        <div class="dropdown" id="actions-dropdown" style="display:none;">
+          <button class="request-btn">Actions ▼</button>
+          <div class="dropdown-content" id="dropdown-content"></div>
+        </div>
+
+        <div id="live-provider-map" class="map-container" style="display:none; height:300px; margin-top:16px;"></div>
+      </div>
+    </div>
+
+    <div id="providers-list">
+      <div class="empty-state" style="text-align:center; padding:40px;">Searching for providers nearby...</div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <!-- 1. Home / Dashboard -->
+    <a href="/user/user-dashboard.html" class="nav-item active" id="home-nav" data-link>
+      <span class="material-icons">home</span>
+    </a>
+
+    <!-- 2. Chat / Messages -->
+    <a href="/user/user_chat-list.html" class="nav-item" id="chat-nav" data-link>
+      <span class="material-icons">chat</span>
+    </a>
+
+    <!-- 3. News / Feed -->
+    <a href="/user/user_news.html" class="nav-item" data-link>
+      <span class="material-icons">trending_up</span>
+    </a>
+
+    <!-- 4. Profile -->
+    <a href="/user/user_profile.html" class="nav-item" data-link>
+      <span class="material-icons">account_box</span>
+    </a>
+  </nav>
+
+  <!-- Custom PWA Install Popup -->
+  <div id="installPopup" class="privacy-modal" style="display:none;">
+    <div class="privacy-modal-content" style="max-width:420px; text-align:center;">
+      <h2 style="color:#e0459a; margin-bottom:16px;">Add Fastme to Home Screen</h2>
+      
+      <p style="margin-bottom:24px; color:#444; font-size:1.05rem;">
+        Install Fastme for faster access, offline mode<br>and the best experience!
+      </p>
+
+      <div style="display:flex; gap:16px; justify-content:center; margin-bottom:20px;">
+        <img src="/logo.jpg" alt="Fastme icon" style="width:80px; height:80px; border-radius:18px; box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+      </div>
+
+      <div class="privacy-actions" style="margin-top:0;">
+        <button id="closeInstallPopup" class="btn btn-decline">Maybe later</button>
+        <button id="triggerInstall" class="btn btn-accept">Install Now</button>
+      </div>
+
+      <p style="margin-top:20px; font-size:0.85rem; color:#777;">
+        Works on Chrome, Edge, Samsung Internet (Android)
+      </p>
+    </div>
+  </div>
+
+  <!-- Quick Profile Preview Modal -->
+  <div class="modal-overlay" id="quickProfileModal" style="display:none;">
+    <div class="modal-content quick-profile-modal">
+      <button class="close-modal material-icons" id="closeQuickProfile">close</button>
+      
+      <div class="quick-profile-header">
+        <img id="quickAvatar" src="https://ui-avatars.com/api/?name=User&background=ff69b4&color=fff" alt="Avatar" class="quick-avatar" />
+        <div class="quick-info">
+          <h2 id="quickName">Loading...</h2>
+          <div class="quick-meta">
+            <span id="quickStatus" class="status-online">Online</span>
+            <span id="quickDistance">~0.1 km</span>
+            <span id="quickLocation">Nigeria</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-stats">
+        <div class="stat-item">
+          <span class="stat-value" id="quickAge">20</span>
+          <span class="stat-label">Age</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="quickRating">4.8</span>
+          <span class="stat-label">Rating</span>
+        </div>
+        <div class="stat-item">
+          <span class="material-icons stat-icon">emoji_events</span>
+          <span class="stat-label">Honor</span>
+        </div>
+      </div>
+
+      <div class="quick-bio" id="quickBio">
+        No bio yet...
+      </div>
+
+      <div class="quick-actions">
+        <button class="action-btn primary" id="quickMessageBtn">
+          <span class="material-icons">chat</span> Message
+        </button>
+        <button class="action-btn" id="quickViewFullBtn">
+          <span class="material-icons">account_box</span> View Profile
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="photoViewer" class="photo-viewer" style="display:none;">
+    <div class="viewer-backdrop" onclick="this.parentElement.style.display='none'"></div>
+    <div class="viewer-content">
+      <button class="viewer-close material-icons">close</button>
+      <img id="viewerImage" class="viewer-img" src="" alt="Full View" />
+    </div>
+  </div>
+
+  <!-- Premium / Verification Popup -->
+  <div class="modal-overlay" id="premiumModal" style="display: none;">
+    <div class="modal-content premium-modal" 
+         style="max-width: 380px; margin: 20px; padding: 0; overflow: hidden; border-radius: 20px; position: relative;">
+
+      <!-- Header Image -->
+      <div class="premium-header">
+        <img src="https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800&auto=format&fit=crop&q=80" 
+             alt="Premium" 
+             style="width:100%; height:160px; object-fit:cover;">
+        <div class="premium-overlay">
+          <h2>Unlock Premium</h2>
+          <p>Verification + Exclusive Access</p>
+        </div>
+      </div>
+
+      <!-- Scrollable Content -->
+      <div class="premium-body" style="max-height: 65vh; overflow-y: auto; padding: 20px 24px 80px;">
+        
+        <!-- Benefits -->
+        <div class="benefits-list" style="margin: 16px 0 32px;">
+          <div class="benefit-item">
+            <span class="material-icons" style="color:#e0459a;">verified</span>
+            <span>Official Verification Badge</span>
+          </div>
+          <div class="benefit-item">
+            <span class="material-icons" style="color:#e0459a;">star</span>
+            <span>Priority in search & listings</span>
+          </div>
+          <div class="benefit-item">
+            <span class="material-icons" style="color:#e0459a;">lock_open</span>
+            <span>Be found by others Premium</span>
+          </div>
+          <div class="benefit-item">
+            <span class="material-icons" style="color:#e0459a;">visibility</span>
+            <span>More profile visibility</span>
+          </div>
+        </div>
+
+        <!-- Coming Soon -->
+        <div class="coming-soon-box" style="margin-bottom: 24px;">
+          <div class="coming-soon-title">Payment Integration</div>
+          <p>Paystack integration is coming very soon!<br>Stay tuned — we'll notify you when it's live.</p>
+        </div>
+
+        <!-- Price Options -->
+        <div class="price-options" style="margin: 24px 0;">
+          <label class="price-card disabled">
+            <input type="radio" name="plan">
+            <div class="price-content">
+              <div class="price-duration">2 weeks</div>
+              <div class="price-amount">₦2,999</div>
+            </div>
+          </label>
+
+          <label class="price-card">
+            <input type="radio" name="plan" data-plan="1month" checked>
+            <div class="price-content">
+              <div class="price-duration">1 month</div>
+              <div class="price-amount">₦4,999</div>
+              <div class="best-value">Best Value</div>
+            </div>
+          </label>
+
+          <label class="price-card disabled">
+            <input type="radio" name="plan" data-plan="3months">
+            <div class="price-content">
+              <div class="price-duration">3 months</div>
+              <div class="price-amount">₦47,999</div>
+            </div>
+          </label>
+
+          <label class="price-card disabled">
+            <input type="radio" name="plan" data-plan="6months">
+            <div class="price-content">
+              <div class="price-duration">6 months</div>
+              <div class="price-amount">₦90,999</div>
+            </div>
+          </label>
+
+          <label class="price-card disabled">
+            <input type="radio" name="plan" data-plan="1year">
+            <div class="price-content">
+              <div class="price-duration">1 year</div>
+              <div class="price-amount">₦109,999</div>
+            </div>
+          </label>
+        </div>
+
+        <button class="premium-continue-btn" id="continueToVerify" style="width: 100%; padding: 12px; background: #e0459a; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+          Continue → Get Verified
+        </button>
+
+        <p style="text-align:center; margin-top:16px; font-size:0.82rem; color:#777;">
+          Secure payment via Paystack • Cancel anytime
+        </p>
+      </div>
+
+      <!-- Close Button -->
+      <button class="close-premium" id="closePremiumModal" 
+              style="position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; 
+                     background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; 
+                     font-size: 24px; cursor: pointer; z-index: 100; display: flex; 
+                     align-items: center; justify-content: center;">
+        ×
+      </button>
+    </div>
+  </div>
+
+  <!-- Global Custom Popup -->
+  <div id="customPopupOverlay" style="display: none;">
+    <div class="custom-popup">
+      <div class="custom-popup-header">
+        <h3 id="popupTitle"></h3>
+        <button id="popupCloseBtn" class="custom-popup-close">&times;</button>
+      </div>
+     
+      <div class="custom-popup-body">
+        <p id="popupMessage"></p>
+        <div id="popupContent"></div>
+      </div>
+     
+      <div class="custom-popup-footer">
+        <div id="popupActions"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     FIREBASE MODULE SCRIPT - FIRST
+     ════════════════════════════════════════════════ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging.js";
+
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyDQY_NSthcHARv0S9rkAAikP0leF9Kl29k",
+    authDomain: "contribution-c5309.firebaseapp.com",
+    projectId: "contribution-c5309",
+    storageBucket: "contribution-c5309.firebasestorage.app",
+    messagingSenderId: "800641687170",
+    appId: "1:800641687170:web:36e0e50bdd8cf39844de9b",
+    measurementId: "G-DTJGZE3JEP"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  window.firebaseMessaging = getMessaging(app);
+
+  // ✅ Initialize FCM
+  async function initializeFCM() {
+  try {
+    const permission = await Notification.requestPermission();
+    console.log('Notification permission:', permission);
+    
+    if (permission !== 'granted') {
+      console.warn('⚠️ Notification permission denied');
+      return;
+    }
+
+    const token = await getToken(window.firebaseMessaging, {
+      vapidKey: "BEBzT5WfWz2prjLnnny6fYfeCv_6QZ1vQk7pzGribjT3ebw2HePbeHlBHTFHPM_wqnvHmKFCofqKNhLxcyGIk7c"
+    });
+
+    if (token) {
+      console.log('✅ FCM Token obtained:', token);
+      window.fcmToken = token;
+    } else {
+      console.warn('⚠️ No FCM token received');
+    }
+  } catch (err) {
+    console.error('❌ FCM initialization failed:', err);
+  }
+}
+
+  // ✅ Set up foreground message handler
+  onMessage(window.firebaseMessaging, (payload) => {
+    console.log('Foreground message received:', payload);
+
+    const title = payload.notification?.title || "Fastme Notification";
+    const body = payload.notification?.body || payload.data?.message || "";
+
+    if (window.NotificationSystem) {
+      window.NotificationSystem.playSound();
+      window.NotificationSystem.showInAppNotification(body, 'info');
+      window.NotificationSystem.showBrowserNotification(title, {
+        body: body,
+        icon: '/logo.jpg'
+      });
+    }
+
+    if (window.loadActiveBooking) window.loadActiveBooking();
+    if (window.updateNavBadges && window.currentUserId) {
+      window.updateNavBadges(window.currentUserId);
+    }
+  });
+
+  window.initializeFCM = initializeFCM;
+</script>
+
+<!-- ════════════════════════════════════════════════
+     MAIN APP SCRIPT - SECOND
+     ════════════════════════════════════════════════ -->
+<script type="module">
+  const supabase = window.supabase;
+  let currentUserId = null;
+
+  // ════════════════════════════════════════════════
+  // ✅ IMPROVED MOBILE DATA DETECTION SYSTEM
+  // ════════════════════════════════════════════════
+  const MobileDataDetector = {
+    isMobileDataActive: false,
+    connection: null,
+    isSupported: false,
+
+    init: function() {
+      if ('connection' in navigator || 'mozConnection' in navigator || 'webkitConnection' in navigator) {
+        this.connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        this.isSupported = true;
+        
+        if (this.connection) {
+          this.updateMobileDataStatus();
+          this.connection.addEventListener('change', () => this.updateMobileDataStatus());
+          console.log('✅ Network Information API supported');
+        }
+      } else {
+        this.isSupported = false;
+        console.log('⚠️ Network Information API not supported on this browser');
+      }
+    },
+
+    updateMobileDataStatus: function() {
+      if (!this.connection) {
+        this.isMobileDataActive = false;
+        return;
+      }
+
+      const effectiveType = this.connection.effectiveType;
+      const type = this.connection.type;
+      const saveData = this.connection.saveData;
+
+      this.isMobileDataActive = (
+        type === 'cellular' || 
+        type === 'mobile' ||
+        (effectiveType && ['2g', '3g', '4g'].includes(effectiveType))
+      ) && !saveData;
+
+      console.log('Mobile Data Status:', {
+        active: this.isMobileDataActive,
+        type: type,
+        effectiveType: effectiveType,
+        saveData: saveData,
+        supported: this.isSupported
+      });
+    },
+
+    isSaveDataEnabled: function() {
+      return this.connection?.saveData || false;
+    },
+
+    getMobileDataWarning: function() {
+      return `⚠️ You are using mobile data. Large requests may consume your data plan. Continue?`;
+    },
+
+    forceCheck: function() {
+      this.updateMobileDataStatus();
+      return {
+        active: this.isMobileDataActive,
+        supported: this.isSupported,
+        type: this.connection?.type || 'unknown',
+        effectiveType: this.connection?.effectiveType || 'unknown'
+      };
+    }
+  };
+
+  MobileDataDetector.init();
+
+  // ════════════════════════════════════════════════
+  // OPTIMIZED CUSTOM POPUP SYSTEM
+  // ════════════════════════════════════════════════
+  class CustomPopupManager {
+    static #cachedElements = null;
+
+    static init() {
+      this.#cachedElements = {
+        overlay: document.getElementById('customPopupOverlay'),
+        popup: document.querySelector('.custom-popup'),
+        titleEl: document.getElementById('popupTitle'),
+        messageEl: document.getElementById('popupMessage'),
+        contentEl: document.getElementById('popupContent'),
+        actionsEl: document.getElementById('popupActions'),
+        closeBtn: document.getElementById('popupCloseBtn')
+      };
+
+      const { closeBtn, overlay } = this.#cachedElements;
+
+      closeBtn?.addEventListener('click', () => this.close());
+      overlay?.addEventListener('click', (e) => {
+        if (e.target === overlay) this.close();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay?.style.display === 'flex') {
+          this.close();
+        }
+      });
+    }
+
+    static show(options = {}) {
+      return new Promise((resolve) => {
+        const {
+          title = 'Notification',
+          message = '',
+          content = null,
+          buttons = [{ label: 'OK', type: 'primary' }],
+          type = 'info'
+        } = options;
+
+        const { titleEl, messageEl, contentEl, actionsEl, overlay } = this.#cachedElements;
+
+        titleEl.textContent = title;
+        messageEl.textContent = message;
+        messageEl.style.display = message ? 'block' : 'none';
+
+        contentEl.innerHTML = '';
+        if (content) {
+          if (typeof content === 'string') {
+            contentEl.innerHTML = content;
+          } else if (content instanceof HTMLElement) {
+            contentEl.appendChild(content);
+          }
+        }
+
+        const fragment = document.createDocumentFragment();
+        buttons.forEach((btn, idx) => {
+          const button = document.createElement('button');
+          button.className = `custom-popup-btn custom-popup-btn-${btn.type || 'secondary'}`;
+          button.textContent = btn.label;
+          button.addEventListener('click', () => {
+            this.close();
+            resolve(btn.value !== undefined ? btn.value : idx);
+          });
+          fragment.appendChild(button);
+        });
+
+        actionsEl.innerHTML = '';
+        actionsEl.appendChild(fragment);
+
+        const colorMap = {
+          info: '#2196F3',
+          success: '#4CAF50',
+          warning: '#ff9800',
+          error: '#f44336'
+        };
+
+        if (colorMap[type]) {
+          titleEl.style.color = colorMap[type];
+        }
+
+        overlay.style.display = 'flex';
+
+        requestAnimationFrame(() => {
+          actionsEl.querySelector('button')?.focus();
+        });
+      });
+    }
+
+    static alert(message, title = 'Alert') {
+      return this.show({
+        title,
+        message,
+        buttons: [{ label: 'OK', type: 'primary', value: true }],
+        type: 'info'
+      });
+    }
+
+    static confirm(message, title = 'Confirm') {
+      return this.show({
+        title,
+        message,
+        buttons: [
+          { label: 'Cancel', type: 'secondary', value: false },
+          { label: 'OK', type: 'primary', value: true }
+        ],
+        type: 'info'
+      });
+    }
+
+    static success(message, title = 'Success') {
+      return this.show({
+        title,
+        message,
+        buttons: [{ label: 'OK', type: 'primary', value: true }],
+        type: 'success'
+      });
+    }
+
+    static error(message, title = 'Error') {
+      return this.show({
+        title,
+        message,
+        buttons: [{ label: 'OK', type: 'danger', value: false }],
+        type: 'error'
+      });
+    }
+
+    static close() {
+      const { overlay, contentEl, actionsEl } = this.#cachedElements;
+      if (overlay) {
+        overlay.style.display = 'none';
+        contentEl.innerHTML = '';
+        actionsEl.innerHTML = '';
+      }
+    }
+  }
+
+  CustomPopupManager.init();
+  window.CustomPopupManager = CustomPopupManager;
+
+  // ════════════════════════════════════════════════
+  // OPTIMIZED NOTIFICATION SYSTEM
+  // ════════════════════════════════════════════════
+  const NotificationSystem = {
+    soundUrl: '/sound/request-accept.mp3',
+    audioCache: null,
+
+    playSound: function() {
+      try {
+        if (!this.audioCache) {
+          this.audioCache = new Audio(this.soundUrl);
+          this.audioCache.preload = 'auto';
+        }
+
+        this.audioCache.volume = 0.8;
+        this.audioCache.currentTime = 0;
+        
+        const playPromise = this.audioCache.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {});
+        }
+      } catch (err) {}
+    },
+
+    showBrowserNotification: function(title, options = {}) {
+      if ('Notification' in window && Notification.permission === 'granted') {
+        try {
+          const notification = new Notification(title, {
+            icon: '/logo.jpg',
+            badge: '/logo.jpg',
+            requireInteraction: false,
+            ...options
+          });
+
+          notification.onclick = () => {
+            window.focus();
+            notification.close();
+          };
+
+          notification.timeoutId = setTimeout(() => notification.close(), 8000);
+        } catch (e) {}
+      }
+    },
+
+    showInAppNotification: function(message, type = 'success') {
+      const notification = document.createElement('div');
+      const colors = {
+        success: 'linear-gradient(135deg, #4CAF50, #45a049)',
+        info: 'linear-gradient(135deg, #2196F3, #0b7dda)',
+        warning: 'linear-gradient(135deg, #ff9800, #e68900)',
+        error: 'linear-gradient(135deg, #f44336, #da190b)'
+      };
+
+      notification.style.cssText = `
+        position: fixed;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: ${colors[type] || colors.success};
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        z-index: 5000;
+        font-weight: 600;
+        font-size: 1rem;
+        max-width: 90%;
+        animation: slideDown 0.4s ease;
+        word-break: break-word;
+      `;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.style.animation = 'slideUp 0.4s ease forwards';
+        setTimeout(() => notification.remove(), 400);
+      }, 5000);
+    },
+
+    requestPermission: function() {
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission().catch(() => {});
+      }
+    }
+  };
+
+  window.NotificationSystem = NotificationSystem;
+
+  // ════════════════════════════════════════════════
+  // OPTIMIZED STORAGE MANAGERS
+  // ════════════════════════════════════════════════
+  const StorageCache = {
+    unreadCache: null,
+    requestsCache: null,
+    bookingsCache: null,
+
+    invalidate(type) {
+      if (type === 'unread' || type === 'all') this.unreadCache = null;
+      if (type === 'requests' || type === 'all') this.requestsCache = null;
+      if (type === 'bookings' || type === 'all') this.bookingsCache = null;
+    }
+  };
+
+  const UnreadManager = {
+    getUnreadCount: (userId, chatPartnerId) => {
+      try {
+        const key = `unread_${[userId, chatPartnerId].sort().join('_')}`;
+        return parseInt(localStorage.getItem(key) || '0', 10) || 0;
+      } catch {
+        return 0;
+      }
+    },
+
+    getTotalUnread: (userId) => {
+      if (StorageCache.unreadCache !== null) return StorageCache.unreadCache;
+
+      try {
+        let total = 0;
+        for (const [key, value] of Object.entries(localStorage)) {
+          if (key.startsWith('unread_')) {
+            total += parseInt(value || '0', 10) || 0;
+          }
+        }
+        StorageCache.unreadCache = total;
+        return total;
+      } catch {
+        return 0;
+      }
+    }
+  };
+
+  const RequestBadgeManager = {
+    getPendingRequests: () => {
+      if (StorageCache.requestsCache !== null) return StorageCache.requestsCache;
+
+      try {
+        const data = localStorage.getItem('pending_requests');
+        const result = data ? JSON.parse(data) : [];
+        StorageCache.requestsCache = result;
+        return result;
+      } catch {
+        return [];
+      }
+    },
+
+    setPendingRequests: (requests) => {
+      try {
+        localStorage.setItem('pending_requests', JSON.stringify(requests));
+        StorageCache.requestsCache = requests;
+      } catch (e) {}
+    },
+
+    addRequest: (requestId) => {
+      const requests = RequestBadgeManager.getPendingRequests();
+      if (!requests.includes(requestId)) {
+        requests.push(requestId);
+        RequestBadgeManager.setPendingRequests(requests);
+      }
+    },
+
+    removeRequest: (requestId) => {
+      const requests = RequestBadgeManager.getPendingRequests();
+      const idx = requests.indexOf(requestId);
+      if (idx > -1) {
+        requests.splice(idx, 1);
+        RequestBadgeManager.setPendingRequests(requests);
+      }
+    },
+
+    getTotalRequests: () => {
+      return RequestBadgeManager.getPendingRequests().length;
+    }
+  };
+
+  // ════════════════════════════════════════════════
+  // OPTIMIZED NAV BADGES
+  // ════════════════════════════════════════════════
+  let badgeUpdateTimeout;
+
+  function updateNavBadges(userId) {
+    clearTimeout(badgeUpdateTimeout);
+    badgeUpdateTimeout = setTimeout(() => {
+      updateChatBadge(userId);
+      updateRequestBadge();
+    }, 50);
+  }
+  window.updateNavBadges = updateNavBadges;
+
+  function updateChatBadge(userId) {
+    const chatNav = document.getElementById('chat-nav');
+    if (!chatNav) return;
+
+    const total = UnreadManager.getTotalUnread(userId);
+    let badge = chatNav.querySelector('.nav-badge');
+
+    if (total > 0) {
+      if (!badge) {
+        badge = document.createElement('div');
+        badge.className = 'nav-badge';
+        chatNav.appendChild(badge);
+      }
+      badge.textContent = total > 99 ? '99+' : total;
+      badge.classList.remove('removing');
+    } else if (badge) {
+      badge.classList.add('removing');
+      badge.addEventListener('animationend', () => badge.remove(), { once: true });
+    }
+  }
+
+  function updateRequestBadge() {
+    const menuBtn = document.getElementById('menuBtn');
+    if (!menuBtn) return;
+
+    const total = RequestBadgeManager.getTotalRequests();
+    let badge = menuBtn.querySelector('.nav-badge');
+
+    if (total > 0) {
+      if (!badge) {
+        badge = document.createElement('div');
+        badge.className = 'nav-badge';
+        menuBtn.appendChild(badge);
+      }
+      badge.textContent = total > 99 ? '99+' : total;
+      badge.classList.remove('removing');
+    } else if (badge) {
+      badge.classList.add('removing');
+      badge.addEventListener('animationend', () => badge.remove(), { once: true });
+    }
+  }
+
+  // Inject styles once
+  const style = document.createElement('style');
+  style.textContent = `
+    .nav-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #e91e63;
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      animation: pulse 0.3s ease-out;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1.3); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .nav-badge.removing {
+      animation: fadeOut 0.3s ease-out forwards;
+    }
+
+    @keyframes fadeOut {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(0.8); opacity: 0; }
+    }
+
+    @keyframes slideDown {
+      from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+      to { transform: translateX(-50%) translateY(0); opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateX(-50%) translateY(0); opacity: 1; }
+      to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // ════════════════════════════════════════════════
+  // OPTIMIZED LOCALSTORAGE MANAGEMENT
+  // ════════════════════════════════════════════════
+  const BookingStorage = {
+    getBookings: () => {
+      if (StorageCache.bookingsCache !== null) return StorageCache.bookingsCache;
+
+      try {
+        const data = localStorage.getItem('user_bookings');
+        const result = data ? JSON.parse(data) : [];
+        StorageCache.bookingsCache = result;
+        return result;
+      } catch {
+        return [];
+      }
+    },
+
+    setBookings: (bookings) => {
+      try {
+        localStorage.setItem('user_bookings', JSON.stringify(bookings));
+        StorageCache.bookingsCache = bookings;
+      } catch (e) {}
+    },
+
+    addBooking: (booking) => {
+      const bookings = BookingStorage.getBookings();
+      bookings.push(booking);
+      BookingStorage.setBookings(bookings);
+    },
+
+    removeBooking: (bookingId) => {
+      const bookings = BookingStorage.getBookings();
+      const idx = bookings.findIndex(b => b.id === bookingId);
+      if (idx > -1) {
+        bookings.splice(idx, 1);
+        BookingStorage.setBookings(bookings);
+      }
+    },
+
+    hasBookingWithProvider: (providerId) => {
+      const bookings = BookingStorage.getBookings();
+      return bookings.some(b => b.provider_id === providerId);
+    },
+
+    getBookingIdForProvider: (providerId) => {
+      const bookings = BookingStorage.getBookings();
+      return bookings.find(b => b.provider_id === providerId)?.id || null;
+    },
+
+    clear: () => {
+      localStorage.removeItem('user_bookings');
+      StorageCache.bookingsCache = null;
+    }
+  };
+
+  // ════════════════════════════════════════════════
+  // OPTIMIZED MODAL CONTROLS
+  // ════════════════════════════════════════════════
+  const modals = {
+    location: document.getElementById('locationModal'),
+    search: document.getElementById('searchModal')
+  };
+
+  const modalButtons = {
+    addLocation: document.getElementById('addLocationBtn'),
+    searchUsers: document.getElementById('searchUsersBtn'),
+    closeLocation: document.getElementById('closeLocationModal'),
+    closeSearch: document.getElementById('closeSearchModal')
+  };
+
+  function openModal(modal) {
+    modal.style.display = 'flex';
+  }
+
+  function closeModal(modal) {
+    modal.style.display = 'none';
+  }
+
+  modalButtons.addLocation?.addEventListener('click', () => openModal(modals.location));
+  modalButtons.searchUsers?.addEventListener('click', () => openModal(modals.search));
+  modalButtons.closeLocation?.addEventListener('click', () => closeModal(modals.location));
+  modalButtons.closeSearch?.addEventListener('click', () => closeModal(modals.search));
+
+  [modals.location, modals.search].forEach(modal => {
+    modal?.addEventListener('click', e => {
+      if (e.target === modal) closeModal(modal);
+    });
+  });
+
+  // ════════════════════════════════════════════════
+  // DOM ELEMENT CACHE
+  // ════════════════════════════════════════════════
+  const els = {
+    providersList: document.getElementById('providers-list'),
+    addressText: document.getElementById('address-text'),
+    searchInput: document.getElementById('address-search'),
+    suggestions: document.getElementById('suggestions'),
+    saveBtn: document.getElementById('save-address'),
+    userSearchInput: document.getElementById('user-search-input'),
+    userSearchResults: document.getElementById('user-search-results'),
+    activeSection: document.getElementById('active-booking-section'),
+    providerName: document.getElementById('provider-name'),
+    bookingStatus: document.getElementById('booking-status'),
+    providerPhone: document.getElementById('provider-phone'),
+    contactSection: document.getElementById('contact-section'),
+    actionsDropdown: document.getElementById('actions-dropdown'),
+    dropdownContent: document.getElementById('dropdown-content'),
+    liveMapContainer: document.getElementById('live-provider-map')
+  };
+
+  let userLocation = { lat: null, lng: null };
+  let currentBooking = null;
+  let liveMap = null;
+  let liveProviderMarker = null;
+  let routingControl = null;
+
+  // ════════════════════════════════════════════════
+  // OPTIMIZED UTILITY FUNCTIONS
+  // ════════════════════════════════════════════════
+  function renderLocation(msg, isSaved = false) {
+    if (!els.addressText) return;
+    els.addressText.textContent = msg;
+    if (isSaved) {
+      els.addressText.innerHTML = `<strong>${msg}</strong> (saved)`;
+    }
+  }
+
+  async function loadSavedLocation(userId) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('latitude, longitude, address')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (!profile?.latitude || !profile?.longitude) return false;
+
+    userLocation.lat = profile.latitude;
+    userLocation.lng = profile.longitude;
+    renderLocation(profile.address?.trim() || `${profile.latitude.toFixed(4)}, ${profile.longitude.toFixed(4)}`, profile.address?.trim());
+    return true;
+  }
+
+  // ════════════════════════════════════════════════
+  // OPTIMIZED SEARCH WITH DEBOUNCING
+  // ════════════════════════════════════════════════
+  function debounce(fn, ms) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => fn(...args), ms);
+    };
+  }
+
+  if (els.searchInput && els.suggestions) {
+    els.searchInput.addEventListener("input", debounce(async (e) => {
+      const query = e.target.value.trim();
+      if (query.length < 3) {
+        els.suggestions.style.display = "none";
+        return;
+      }
+
+      els.suggestions.innerHTML = "";
+
+      try {
+        let res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=6`);
+        let data = await res.json();
+
+        if (data.features?.length) {
+          const fragment = document.createDocumentFragment();
+          data.features.forEach(place => {
+            const props = place.properties;
+            const full = [props.name, props.street, props.city || props.locality, props.country]
+              .filter(Boolean).join(', ');
+
+            const div = document.createElement("div");
+            div.className = "suggestion-item";
+            div.textContent = full;
+            div.onclick = () => {
+              userLocation.lat = place.geometry.coordinates[1];
+              userLocation.lng = place.geometry.coordinates[0];
+              els.searchInput.value = full;
+              renderLocation(full);
+              els.suggestions.style.display = "none";
+            };
+            fragment.appendChild(div);
+          });
+          els.suggestions.appendChild(fragment);
+        } else {
+          res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&countrycodes=ng`);
+          const places = await res.json();
+
+          const fragment = document.createDocumentFragment();
+          places.forEach(place => {
+            const div = document.createElement("div");
+            div.className = "suggestion-item";
+            div.textContent = place.display_name;
+            div.onclick = () => {
+              userLocation.lat = parseFloat(place.lat);
+              userLocation.lng = parseFloat(place.lon);
+              els.searchInput.value = place.display_name;
+              renderLocation(place.display_name);
+              els.suggestions.style.display = "none";
+            };
+            fragment.appendChild(div);
+          });
+          els.suggestions.appendChild(fragment);
+        }
+
+        els.suggestions.style.display = els.suggestions.children.length ? "block" : "none";
+      } catch (err) {}
+    }, 300));
+  }
+
+  els.saveBtn?.addEventListener("click", async () => {
+    if (!userLocation.lat || !userLocation.lng) {
+      await CustomPopupManager.alert("Please select a location first.", "Location Required");
+      return;
+    }
+
+    const fullAddress = els.searchInput?.value?.trim() || els.addressText?.textContent?.replace(/\s*\(saved\)$/g, "").replace(/<[^>]*>/g, "").trim() || "";
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user?.id) {
+      await CustomPopupManager.alert("You are not logged in. Please log in first.", "Not Logged In");
+      return;
+    }
+
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        latitude: userLocation.lat,
+        longitude: userLocation.lng,
+        address: fullAddress
+      })
+      .eq("id", session.user.id);
+
+    if (error) {
+      await CustomPopupManager.error("Failed to save location: " + error.message, "Save Error");
+      return;
+    }
+
+    renderLocation(fullAddress, true);
+    await CustomPopupManager.success("Your location has been saved successfully!", "Location Saved");
+    closeModal(modals.location);
+    loadProviders(session.user.id);
+  });
+
+  els.userSearchInput?.addEventListener('input', debounce(async (e) => {
+    const query = e.target.value.trim().toLowerCase();
+
+    if (query.length < 2) {
+      els.userSearchResults.style.display = 'none';
+      els.userSearchResults.innerHTML = '';
+      return;
+    }
+
+    els.userSearchResults.innerHTML = '<p style="text-align:center; padding:20px;">Searching...</p>';
+    els.userSearchResults.style.display = 'block';
+
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, full_name, avatar_url, address, role, email')
+        .eq('role', 'creator')
+        .or(`full_name.ilike.%${query}%,address.ilike.%${query}%,email.ilike.%${query}%`)
+        .limit(15);
+
+      if (error) {
+        els.userSearchResults.innerHTML = '<p style="color:red; text-align:center; padding:20px;">Error searching</p>';
+        return;
+      }
+
+      if (!data?.length) {
+        els.userSearchResults.innerHTML = '<p style="text-align:center; padding:20px; color:#777;">No providers found</p>';
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+      data.forEach(user => {
+        const avatar = user.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name || 'User')}&background=ff69b4&color=fff`;
+        const locationDisplay = user.address ? user.address.substring(0, 50) + (user.address.length > 50 ? '...' : '') : 'No location set';
+
+        const div = document.createElement('div');
+        div.className = 'search-result-item';
+        div.onclick = () => showQuickProfile(user.id);
+        div.innerHTML = `
+          <img src="${avatar}" class="search-result-avatar" onerror="this.src='https://ui-avatars.com/api/?name=User&background=ff69b4&color=fff'" />
+          <div class="search-result-info">
+            <div class="search-result-name">${user.full_name || 'Unnamed User'}</div>
+            <div class="search-result-meta">${locationDisplay}</div>
+          </div>
+          <div class="search-result-badge">Provider</div>
+        `;
+        fragment.appendChild(div);
+      });
+
+      els.userSearchResults.innerHTML = '';
+      els.userSearchResults.appendChild(fragment);
+    } catch (err) {
+      els.userSearchResults.innerHTML = '<p style="color:red; text-align:center; padding:20px;">An error occurred</p>';
+    }
+  }, 300));
+
+  function calculateDistanceKm(lat1, lon1, lat2, lon2) {
+    if (!lat1 || !lon1 || !lat2 || !lon2) return null;
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  async function tryGetCurrentLocation(userId) {
+    if (await loadSavedLocation(userId)) {
+      loadProviders(userId);
+      return;
+    }
+
+    navigator.geolocation?.getCurrentPosition(
+      async pos => {
+        userLocation.lat = pos.coords.latitude;
+        userLocation.lng = pos.coords.longitude;
+        renderLocation(`${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`);
+        await supabase.from('profiles').update({
+          latitude: userLocation.lat,
+          longitude: userLocation.lng
+        }).eq('id', userId);
+        loadProviders(userId);
+      },
+      () => renderLocation("Location access denied. Please search manually."),
+      { enableHighAccuracy: false, timeout: 8000 }
+    );
+  }
+
+  // ════════════════════════════════════════════════
+  // OPTIMIZED PROVIDER LOADING
+  // ════════════════════════════════════════════════
+  async function loadProviders(userId) {
+    if (!els.providersList) return;
+
+    try {
+      const [{ data: providers }, { data: dbBookings }] = await Promise.all([
+        supabase
+          .from('profiles')
+          .select('id,full_name,avatar_url,latitude,longitude,role,address')
+          .eq('role', 'creator')
+          .neq('id', userId),
+        supabase
+          .from('bookings')
+          .select('provider_id,status,id')
+          .eq('user_id', userId)
+          .in('status', ['pending', 'accepted'])
+      ]);
+
+      if (!providers?.length) {
+        els.providersList.innerHTML = '<p>No providers found nearby.</p>';
+        return;
+      }
+
+      const bookingsMap = new Map();
+      dbBookings?.forEach(b => bookingsMap.set(b.provider_id, b));
+      BookingStorage.getBookings().forEach(b => bookingsMap.set(b.provider_id, b));
+
+      const fragment = document.createDocumentFragment();
+
+      providers.forEach(p => {
+        const dist = calculateDistanceKm(userLocation.lat, userLocation.lng, p.latitude, p.longitude);
+        const area = getMajorArea(p.address);
+        const booking = bookingsMap.get(p.id);
+
+        const div = document.createElement('div');
+        div.className = 'provider-card';
+        div.dataset.userId = p.id;
+        div.innerHTML = `
+          <div class="km-badge">${area} • ${dist ? dist.toFixed(0) + ' km' : 'Nearby'}</div>
+          <img class="provider-avatar" loading="lazy"
+            src="${p.avatar_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(p.full_name)}"
+            alt="${p.full_name}" />
+          <div class="card-overlay">
+            <div class="provider-name">${p.full_name.split(' ')[0]} <span class="material-icons verified-icon">check</span></div>
+            ${booking
+              ? `<button class="request-btn cancel-btn" onclick="event.stopPropagation(); handleCancel('${booking.id}', '${p.id}')">Cancel</button>`
+              : `<button class="request-btn" onclick="event.stopPropagation(); handleRequest('${p.id}')">Connect</button>`
+            }
+          </div>
+        `;
+        fragment.appendChild(div);
+      });
+
+      els.providersList.innerHTML = '';
+      els.providersList.appendChild(fragment);
+    } catch (err) {
+      els.providersList.innerHTML = '<p style="color:red">Error loading providers</p>';
+    }
+  }
+  window.loadProviders = loadProviders;
+
+  // ════════════════════════════════════════════════
+  // REQUEST HANDLER WITH MOBILE DATA CHECK
+  // ════════════════════════════════════════════════
+  window.handleRequest = async (pId) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) {
+      await CustomPopupManager.alert("Please log in first to make a request.", "Not Logged In");
+      return;
+    }
+
+    const userConfirmed = await CustomPopupManager.confirm(
+      "Do you want to send a connection request to this provider?",
+      "Send Connection Request"
+    );
+
+    if (!userConfirmed) {
+      return;
+    }
+
+    if (MobileDataDetector.isMobileDataActive) {
+      const dataConfirmed = await CustomPopupManager.confirm(
+        MobileDataDetector.getMobileDataWarning(),
+        "⚠️ Mobile Data Warning"
+      );
+
+      if (!dataConfirmed) {
+        NotificationSystem.showInAppNotification('Request cancelled - Mobile data active', 'warning');
+        return;
+      }
+    }
+
+    const bookingObj = {
+      user_id: session.user.id,
+      provider_id: pId,
+      status: 'pending',
+      user_latitude: userLocation.lat,
+      user_longitude: userLocation.lng,
+      user_address: els.addressText?.textContent?.replace(/\s*\(saved\)$/, "").replace(/<[^>]*>/g, "").trim() || "",
+      temp_id: Date.now()
+    };
+
+    BookingStorage.addBooking(bookingObj);
+    RequestBadgeManager.addRequest(pId);
+    updateNavBadges(session.user.id);
+    loadProviders(session.user.id);
+
+    const { data: insertedBooking, error } = await supabase
+      .from('bookings')
+      .insert({
+        user_id: session.user.id,
+        provider_id: pId,
+        status: 'pending',
+        user_latitude: userLocation.lat,
+        user_longitude: userLocation.lng,
+        user_address: bookingObj.user_address
+      })
+      .select();
+
+    if (error) {
+      BookingStorage.removeBooking(bookingObj.temp_id);
+      RequestBadgeManager.removeRequest(pId);
+      updateNavBadges(session.user.id);
+      await CustomPopupManager.error("Failed to send request: " + error.message, "Request Failed");
+      loadProviders(session.user.id);
+      return;
+    }
+
+    if (insertedBooking?.[0]) {
+      const bookings = BookingStorage.getBookings();
+      const tempBooking = bookings.find(b => b.temp_id === bookingObj.temp_id);
+      if (tempBooking) {
+        tempBooking.id = insertedBooking[0].id;
+        delete tempBooking.temp_id;
+        BookingStorage.setBookings(bookings);
+      }
+    }
+
+    await CustomPopupManager.success("Your request has been sent successfully! 🎉", "Request Sent");
+    loadProviders(session.user.id);
+  };
+
+  window.handleCancel = async (bookingId, providerId) => {
+    const confirmed = await CustomPopupManager.confirm(
+      "Are you sure you want to cancel this request? This action cannot be undone.",
+      "Cancel Request"
+    );
+
+    if (!confirmed) return;
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) {
+      await CustomPopupManager.alert("You are not logged in.", "Not Logged In");
+      return;
+    }
+
+    try {
+      const { error: deleteError } = await supabase
+        .from('bookings')
+        .delete()
+        .eq('id', bookingId)
+        .eq('user_id', session.user.id);
+
+      if (deleteError) throw deleteError;
+
+      BookingStorage.removeBooking(bookingId);
+      RequestBadgeManager.removeRequest(providerId);
+      updateNavBadges(session.user.id);
+
+      await loadProviders(session.user.id);
+      await CustomPopupManager.success("Request cancelled successfully!", "Cancelled");
+    } catch (error) {
+      await CustomPopupManager.error("Failed to cancel request: " + error.message, "Error");
+    }
+  };
+
+  async function loadActiveBooking() {
+    if (!els.activeSection) return;
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) return;
+
+    const { data } = await supabase
+      .from('bookings')
+      .select('*, profiles!provider_id(full_name, phone, latitude, longitude)')
+      .eq('user_id', session.user.id)
+      .in('status', ['accepted', 'fulfilled'])
+      .order('updated_at', { ascending: false })
+      .limit(1);
+
+    if (!data?.length) {
+      els.activeSection.style.display = 'none';
+      return;
+    }
+
+    currentBooking = data[0];
+    els.activeSection.style.display = 'block';
+
+    els.providerName && (els.providerName.textContent = currentBooking.profiles?.full_name || 'Unknown');
+    els.bookingStatus && (els.bookingStatus.textContent = currentBooking.status);
+    els.providerPhone && (els.providerPhone.textContent = currentBooking.profiles?.phone || 'No phone');
+
+    if (!els.actionsDropdown || !els.dropdownContent) return;
+
+    let items = '';
+    if (currentBooking.profiles?.phone?.trim()) {
+      items += `<a href="tel:${currentBooking.profiles.phone.trim()}" class="dropdown-item">Call</a>`;
+    }
+    items += `<a href="/user/user_chat.html?with=${currentBooking.provider_id}&name=${encodeURIComponent(currentBooking.profiles?.full_name || 'Provider')}" class="dropdown-item">Chat</a>`;
+    items += `<a href="#" class="dropdown-item" id="map-toggle-link">Show Map</a>`;
+
+    els.dropdownContent.innerHTML = items;
+    els.actionsDropdown.style.display = 'block';
+    els.contactSection && (els.contactSection.style.display = 'block');
+
+    const btn = els.actionsDropdown.querySelector('.request-btn');
+    if (btn) {
+      btn.onclick = e => {
+        e.stopPropagation();
+        const isOpen = els.dropdownContent.style.display === 'block';
+        els.dropdownContent.style.display = isOpen ? 'none' : 'block';
+      };
+    }
+
+    document.getElementById('map-toggle-link')?.addEventListener('click', e => {
+      e.preventDefault();
+      const shouldShow = els.liveMapContainer.style.display !== 'block';
+      els.liveMapContainer.style.display = shouldShow ? 'block' : 'none';
+      if (shouldShow && !liveMap) initMap();
+      els.dropdownContent.style.display = 'none';
+    }, { once: true });
+  }
+  window.loadActiveBooking = loadActiveBooking;
+
+  function initMap() {
+    if (liveMap || !currentBooking?.profiles) return;
+
+    liveMap = L.map(els.liveMapContainer).setView([userLocation.lat, userLocation.lng], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(liveMap);
+
+    const provLat = currentBooking.profiles.latitude || 0;
+    const provLng = currentBooking.profiles.longitude || 0;
+
+    routingControl = L.Routing.control({
+      waypoints: [L.latLng(userLocation.lat, userLocation.lng), L.latLng(provLat, provLng)],
+      routeWhileDragging: false,
+      addWaypoints: false,
+      draggableWaypoints: false
+    }).addTo(liveMap);
+
+    liveProviderMarker = L.marker([provLat, provLng])
+      .addTo(liveMap)
+      .bindPopup('Provider');
+
+    supabase.channel(`provider-live:${currentBooking.id}`)
+      .on('broadcast', { event: 'location-update' }, ({ payload }) => {
+        if (payload?.lat && payload?.lng) {
+                    liveProviderMarker.setLatLng([payload.lat, payload.lng]);
+          routingControl.setWaypoints([
+            L.latLng(userLocation.lat, userLocation.lng),
+            L.latLng(payload.lat, payload.lng)
+          ]);
+        }
+      })
+      .subscribe();
+  }
+
+  function getMajorArea(address) {
+    if (!address) return "Nearby";
+    const first = address.split(",")[0].trim();
+    return first.replace(/road|rd|street|st|avenue|ave|close|crescent|junction/gi, "").trim();
+  }
+
+  // ════════════════════════════════════════════════
+  // MAIN INITIALIZATION
+  // ════════════════════════════════════════════════
+  async function init() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) {
+      window.location.href = '/index.html';
+      return;
+    }
+
+    currentUserId = session.user.id;
+    window.currentUserId = currentUserId;
+    NotificationSystem.requestPermission();
+
+    // ✅ Initialize Firebase/FCM
+    await window.initializeFCM();
+
+    // Save FCM token if available
+    if (window.fcmToken) {
+      await supabase
+        .from('profiles')
+        .update({ fcm_token: window.fcmToken })
+        .eq('id', currentUserId)
+        .catch(err => console.error("Failed to save FCM token", err));
+    }
+
+    // Parallel initialization
+    await Promise.all([
+      tryGetCurrentLocation(session.user.id),
+      loadProviders(session.user.id),
+      loadActiveBooking()
+    ]);
+
+    updateNavBadges(session.user.id);
+
+    // Single consolidated channel for bookings
+    const channelName = `bookings:user:${session.user.id}`;
+
+    supabase
+      .channel(channelName)
+      .on('postgres_changes',
+        { 
+          event: '*', 
+          schema: 'public', 
+          table: 'bookings', 
+          filter: `user_id=eq.${session.user.id}`
+        },
+        (payload) => {
+          if (payload.eventType === 'INSERT') {
+            if (!BookingStorage.getBookings().find(b => b.id === payload.new.id)) {
+              BookingStorage.addBooking(payload.new);
+              RequestBadgeManager.addRequest(payload.new.provider_id);
+            }
+          } else if (payload.eventType === 'UPDATE') {
+            const bookings = BookingStorage.getBookings();
+            const idx = bookings.findIndex(b => b.id === payload.new.id);
+            if (idx !== -1) {
+              if (payload.new.status === 'accepted') {
+                RequestBadgeManager.removeRequest(payload.new.provider_id);
+
+                supabase
+                  .from('profiles')
+                  .select('full_name, avatar_url')
+                  .eq('id', payload.new.provider_id)
+                  .maybeSingle()
+                  .then(({ data: provider }) => {
+                    if (provider) {
+                      NotificationSystem.playSound();
+                      NotificationSystem.showBrowserNotification('🎉 Request Accepted!', {
+                        body: `${provider.full_name} accepted your request!`,
+                        icon: provider.avatar_url || '/logo.jpg'
+                      });
+                      NotificationSystem.showInAppNotification(`${provider.full_name} accepted your request! ���`, 'success');
+                    }
+                  });
+              }
+              bookings[idx] = { ...bookings[idx], ...payload.new };
+              BookingStorage.setBookings(bookings);
+            }
+          } else if (payload.eventType === 'DELETE') {
+            BookingStorage.removeBooking(payload.old.id);
+            RequestBadgeManager.removeRequest(payload.old.provider_id);
+          }
+
+          updateNavBadges(session.user.id);
+          loadProviders(session.user.id);
+          loadActiveBooking();
+        }
+      )
+      .subscribe();
+
+    supabase
+      .channel('chat-updates')
+      .on('postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'chat_messages' },
+        (payload) => {
+          if (payload.new.to_user === session.user.id && !payload.new.is_read) {
+            StorageCache.invalidate('unread');
+            updateNavBadges(session.user.id);
+          }
+        }
+      )
+      .subscribe();
+
+    // Reduced polling interval
+    setInterval(() => loadActiveBooking(), 30000);
+  }
+
+  init().catch(err => {
+    CustomPopupManager.error("Application failed to start.", "Initialization Error");
+  });
+
+  // ════════════════════════════════════════════════
+  // MENU & QUICK PROFILE
+  // ════════════════════════════════════════════════
+  const menuBtn = document.getElementById('menuBtn');
+  const menuDropdown = document.getElementById('menuDropdown');
+
+  menuBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menuDropdown?.classList.toggle('show');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!menuBtn?.contains(e.target) && !menuDropdown?.contains(e.target)) {
+      menuDropdown?.classList.remove('show');
+    }
+  });
+
+  const quickModal = document.getElementById('quickProfileModal');
+  const quickElements = {
+    avatar: document.getElementById('quickAvatar'),
+    name: document.getElementById('quickName'),
+    status: document.getElementById('quickStatus'),
+    distance: document.getElementById('quickDistance'),
+    location: document.getElementById('quickLocation'),
+    age: document.getElementById('quickAge'),
+    rating: document.getElementById('quickRating'),
+    bio: document.getElementById('quickBio'),
+    messageBtn: document.getElementById('quickMessageBtn'),
+    viewFullBtn: document.getElementById('quickViewFullBtn')
+  };
+
+  document.getElementById('closeQuickProfile')?.addEventListener('click', () => {
+    quickModal.style.display = 'none';
+  });
+
+  quickModal?.addEventListener('click', e => {
+    if (e.target === quickModal) quickModal.style.display = 'none';
+  });
+
+  window.showQuickProfile = async function(userId) {
+    if (!userId) return;
+
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('id, full_name, avatar_url, cover_url, bio, address, latitude, longitude, age, rating')
+        .eq('id', userId)
+        .maybeSingle();
+
+      if (!profile) {
+        await CustomPopupManager.error("Could not load profile preview.", "Load Error");
+        return;
+      }
+
+      const header = document.querySelector('.quick-profile-header');
+      header.style.backgroundImage = profile.cover_url ? `url('${profile.cover_url}')` : 'none';
+      header.style.background = profile.cover_url ? '' : 'linear-gradient(135deg, #ff69b4, #e0459a)';
+
+      quickElements.avatar.src = profile.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.full_name || 'User')}&background=ff69b4&color=fff`;
+      quickElements.name.textContent = profile.full_name || 'User';
+      quickElements.status.textContent = 'Online';
+      quickElements.distance.textContent = userLocation.lat && profile.latitude
+        ? `~${calculateDistanceKm(userLocation.lat, userLocation.lng, profile.latitude, profile.longitude)?.toFixed(1)} km`
+        : 'Nearby';
+      quickElements.location.textContent = profile.address?.split(',')[0] || 'Nigeria';
+      quickElements.age.textContent = profile.age || '—';
+      quickElements.rating.textContent = profile.rating?.toFixed(1) || '4.8';
+      quickElements.bio.textContent = profile.bio || 'No bio yet...';
+
+      quickElements.messageBtn.onclick = () => {
+        window.location.href = `/user/user_chat.html?with=${userId}&name=${encodeURIComponent(profile.full_name || 'User')}`;
+      };
+
+      quickElements.viewFullBtn.onclick = () => {
+        window.location.href = `/user/user_profile.html?id=${userId}`;
+      };
+
+      quickModal.style.display = 'flex';
+    } catch (err) {
+      // Silent fail
+    }
+  };
+
+  // Card click handler with delegation
+  document.getElementById('providers-list')?.addEventListener('click', e => {
+    const card = e.target.closest('.provider-card');
+    if (!card || e.target.closest('.request-btn, .cancel-btn')) return;
+
+    const userId = card.dataset.userId;
+    if (userId) showQuickProfile(userId);
+  });
+
+  const photoViewer = document.getElementById('photoViewer');
+  const viewerImg = document.getElementById('viewerImage');
+  const header = document.querySelector('.quick-profile-header');
+
+  header?.addEventListener('click', (e) => {
+    if (e.target === header && header.style.backgroundImage) {
+      const url = header.style.backgroundImage.replace(/url\(["']?([^"']+)["']?\)/, '$1');
+      if (url && url !== 'none') {
+        viewerImg.src = url;
+        photoViewer.style.display = 'flex';
+      }
+    }
+  });
+
+  document.getElementById('quickAvatar')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    viewerImg.src = e.target.src;
+    photoViewer.style.display = 'flex';
+  });
+
+  document.querySelector('.viewer-close')?.addEventListener('click', () => {
+    photoViewer.style.display = 'none';
+  });
+
+  // Service Worker registration (deferred)
+  if ('serviceWorker' in navigator) {
+    setTimeout(() => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }, 3000);
+  }
+</script>
+<script>
+// ==================== PREMIUM POPUP CONTROLLER ====================
+const premiumModal = document.getElementById('premiumModal');
+const continueBtn = document.getElementById('continueToVerify');
+const closePremiumBtn = document.getElementById('closePremiumModal');
+
+let isPremiumModalOpen = false;
+
+// Open function
+window.showPremiumPopup = function() {
+    if (!premiumModal) return;
+    
+    premiumModal.style.display = 'flex';
+    isPremiumModalOpen = true;
+    
+    // Auto-select the best value plan
+    const bestPlan = document.querySelector('input[data-plan="1month"]');
+    if (bestPlan) bestPlan.checked = true;
+};
+
+// Close function
+function closePremiumPopup() {
+    if (premiumModal) {
+        premiumModal.style.display = 'none';
+        isPremiumModalOpen = false;
+    }
+}
+
+// Close button
+closePremiumBtn?.addEventListener('click', closePremiumPopup);
+
+// Click outside to close
+premiumModal?.addEventListener('click', (e) => {
+    if (e.target === premiumModal) {
+        closePremiumPopup();
+    }
+});
+
+// Continue button
+continueBtn?.addEventListener('click', async () => {
+    const selectedPlan = document.querySelector('input[name="plan"]:checked');
+    
+    if (!selectedPlan) {
+        await CustomPopupManager.alert("Please select a plan", "No Plan Selected");
+        return;
+    }
+
+    const planValue = selectedPlan.dataset.plan || '1month';
+    
+    CustomPopupManager.success(`Proceeding with ${planValue} plan...`, "Processing");
+
+    // Simulate processing then close
+    setTimeout(() => {
+        closePremiumPopup();
+    }, 1800);
+});
+
+// Price card click (better UX)
+document.querySelectorAll('.price-card').forEach(card => {
+    card.addEventListener('click', function() {
+        // Remove active from all
+        document.querySelectorAll('.price-card').forEach(c => c.classList.remove('active'));
+        // Add to this one
+        this.classList.add('active');
+        
+        // Check the radio inside
+        const radio = this.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+    });
+});
+
+// For debugging: Auto open after 2 seconds (remove this later)
+setTimeout(() => {
+    if (!isPremiumModalOpen) {
+        console.log("🔄 Auto-opening premium popup for testing...");
+        window.showPremiumPopup();
+    }
+}, 2000);
+navigator.serviceWorker.register('/firebase-messaging-sw.js')
+  .then(reg => console.log('✅ SW registered:', reg))
+  .catch(err => console.error('❌ SW failed:', err));
+</script>
+</body>
+</html>

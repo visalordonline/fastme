@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gentle Saviour Sule | Full Stack Developer</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:#07111f;
+      color:#fff;
+      overflow-x:hidden;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .container{
+      width:90%;
+      max-width:1200px;
+      margin:auto;
+    }
+
+    img{
+      width:100%;
+      display:block;
+    }
+
+    /* NAVBAR */
+
+    nav{
+      position:fixed;
+      top:0;
+      width:100%;
+      z-index:1000;
+      background:rgba(5,10,20,0.92);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav-container{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:18px 0;
+    }
+
+    .logo{
+      font-size:28px;
+      font-weight:800;
+      color:#00d9ff;
+      letter-spacing:1px;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:30px;
+    }
+
+    .nav-links a{
+      color:#d1d5db;
+      font-size:15px;
+      transition:.3s;
+      position:relative;
+    }
+
+    .nav-links a:hover{
+      color:#00d9ff;
+    }
+
+    /* HERO */
+
+    .hero{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      background:
+      linear-gradient(rgba(4,8,18,0.88),rgba(4,8,18,0.92)),
+      url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop');
+
+      background-size:cover;
+      background-position:center;
+      position:relative;
+      padding-top:100px;
+    }
+
+    .hero::before{
+      content:'';
+      position:absolute;
+      width:400px;
+      height:400px;
+      background:#00d9ff20;
+      border-radius:50%;
+      filter:blur(120px);
+      top:0;
+      right:-100px;
+    }
+
+    .hero-content{
+      position:relative;
+      z-index:1;
+      max-width:760px;
+    }
+
+    .hero h1{
+      font-size:70px;
+      line-height:1.1;
+      margin-bottom:25px;
+      font-weight:800;
+    }
+
+    .hero h1 span{
+      color:#00d9ff;
+    }
+
+    .hero p{
+      color:#cbd5e1;
+      font-size:19px;
+      margin-bottom:35px;
+      max-width:650px;
+    }
+
+    .hero-badge{
+      display:inline-block;
+      padding:10px 18px;
+      background:#00d9ff15;
+      border:1px solid #00d9ff40;
+      border-radius:50px;
+      color:#00d9ff;
+      margin-bottom:25px;
+      font-size:14px;
+    }
+
+    .btns{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:15px 30px;
+      border-radius:12px;
+      font-weight:600;
+      transition:.3s;
+      display:inline-block;
+    }
+
+    .btn-primary{
+      background:#00d9ff;
+      color:#000;
+      box-shadow:0 10px 30px rgba(0,217,255,0.25);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-5px);
+    }
+
+    .btn-outline{
+      border:1px solid #00d9ff;
+      color:#00d9ff;
+    }
+
+    .btn-outline:hover{
+      background:#00d9ff;
+      color:#000;
+    }
+
+    /* GENERAL */
+
+    section{
+      padding:110px 0;
+    }
+
+    .section-title{
+      text-align:center;
+      margin-bottom:70px;
+    }
+
+    .section-title h2{
+      font-size:44px;
+      margin-bottom:15px;
+    }
+
+    .section-title p{
+      color:#94a3b8;
+      max-width:700px;
+      margin:auto;
+    }
+
+    /* ABOUT */
+
+    .about-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:30px;
+    }
+
+    .about-card{
+      background:#0f172a;
+      padding:35px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,0.05);
+      transition:.4s;
+    }
+
+    .about-card:hover{
+      transform:translateY(-10px);
+      border-color:#00d9ff50;
+    }
+
+    .about-card h3{
+      color:#00d9ff;
+      margin-bottom:18px;
+      font-size:24px;
+    }
+
+    .about-card p{
+      color:#cbd5e1;
+    }
+
+    /* SKILLS */
+
+    .skills-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:22px;
+    }
+
+    .skill-box{
+      background:#0f172a;
+      padding:30px 20px;
+      border-radius:18px;
+      text-align:center;
+      border:1px solid rgba(255,255,255,0.05);
+      transition:.3s;
+    }
+
+    .skill-box:hover{
+      transform:translateY(-8px);
+      border-color:#00d9ff;
+      background:#111c34;
+    }
+
+    .skill-box h4{
+      font-size:18px;
+      margin-top:10px;
+    }
+
+    /* PROJECTS */
+
+    .projects-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:30px;
+    }
+
+    .project-card{
+      background:#0f172a;
+      border-radius:24px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.05);
+      transition:.4s;
+    }
+
+    .project-card:hover{
+      transform:translateY(-12px);
+    }
+
+    .project-card img{
+      height:230px;
+      object-fit:cover;
+    }
+
+    .project-content{
+      padding:28px;
+    }
+
+    .project-content h3{
+      font-size:24px;
+      margin-bottom:15px;
+    }
+
+    .project-content p{
+      color:#94a3b8;
+      margin-bottom:22px;
+    }
+
+    .project-links{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .project-links a{
+      padding:12px 18px;
+      border-radius:10px;
+      background:#00d9ff;
+      color:#000;
+      font-weight:600;
+      transition:.3s;
+    }
+
+    .project-links a:hover{
+      transform:scale(1.05);
+    }
+
+    /* CONTACT */
+
+    .contact-box{
+      background:#0f172a;
+      border-radius:28px;
+      padding:60px 40px;
+      text-align:center;
+      border:1px solid rgba(255,255,255,0.05);
+      max-width:900px;
+      margin:auto;
+    }
+
+    .contact-box h3{
+      font-size:40px;
+      margin-bottom:20px;
+    }
+
+    .contact-box p{
+      color:#cbd5e1;
+      margin-bottom:30px;
+      font-size:17px;
+    }
+
+    .contact-details{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+      margin-top:40px;
+    }
+
+    .detail-card{
+      background:#111c34;
+      padding:25px;
+      border-radius:18px;
+    }
+
+    .detail-card h4{
+      color:#00d9ff;
+      margin-bottom:10px;
+    }
+
+    .detail-card p,
+    .detail-card a{
+      color:#cbd5e1;
+      word-break:break-word;
+    }
+
+    /* FOOTER */
+
+    footer{
+      background:#050b16;
+      border-top:1px solid rgba(255,255,255,0.05);
+      padding:70px 0 30px;
+      margin-top:80px;
+    }
+
+    .footer-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:40px;
+      margin-bottom:50px;
+    }
+
+    .footer-box h3{
+      color:#00d9ff;
+      margin-bottom:20px;
+      font-size:22px;
+    }
+
+    .footer-box p,
+    .footer-box a{
+      color:#94a3b8;
+      line-height:1.9;
+      transition:.3s;
+    }
+
+    .footer-box a:hover{
+      color:#00d9ff;
+    }
+
+    .footer-bottom{
+      text-align:center;
+      padding-top:25px;
+      border-top:1px solid rgba(255,255,255,0.05);
+      color:#94a3b8;
+      font-size:14px;
+    }
+
+    /* MOBILE */
+
+    @media(max-width:900px){
+
+      .hero h1{
+        font-size:50px;
+      }
+
+      .section-title h2{
+        font-size:38px;
+      }
+    }
+
+    @media(max-width:768px){
+
+      .nav-container{
+        flex-direction:column;
+        gap:15px;
+      }
+
+      .nav-links{
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:15px;
+      }
+
+      .hero{
+        text-align:center;
+      }
+
+      .hero h1{
+        font-size:42px;
+      }
+
+      .hero p{
+        font-size:16px;
+      }
+
+      .btns{
+        justify-content:center;
+      }
+
+      section{
+        padding:90px 0;
+      }
+
+      .section-title h2{
+        font-size:32px;
+      }
+
+      .contact-box{
+        padding:40px 25px;
+      }
+
+      .contact-box h3{
+        font-size:30px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+
+  <nav>
+    <div class="container nav-container">
+
+      <div class="logo">GSS.</div>
+
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="container">
+
+      <div class="hero-content">
+
+        <div class="hero-badge">
+          Director of FastMe.org • Full Stack Developer
+        </div>
+
+        <h1>
+          Building Modern <span>Web & Mobile</span> Experiences
+        </h1>
+
+        <p>
+          I am Gentle Saviour Sule, a Full Stack Developer and Director of FastMe.org,
+          a social connect platform focused on digital innovation and connectivity.
+          I specialize in PHP, Flutter, Firebase, Supabase, PostgreSQL,
+          JavaScript, React Native, and modern responsive UI development.
+        </p>
+
+        <div class="btns">
+
+          <a href="#projects" class="btn btn-primary">
+            View My Work
+          </a>
+
+          <a href="https://fastme.org" target="_blank" class="btn btn-outline">
+            Visit FastMe
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ABOUT -->
+
+  <section id="about">
+
+    <div class="container">
+
+      <div class="section-title">
+        <h2>About Me</h2>
+        <p>
+          Passionate about creating scalable websites and mobile applications
+          with beautiful user experiences.
+        </p>
+      </div>
+
+      <div class="about-grid">
+
+        <div class="about-card">
+          <h3>Professional Profile</h3>
+
+          <p>
+            I develop professional websites and mobile applications
+            for startups, businesses, and organizations.
+            My focus is building fast, scalable, responsive,
+            and modern digital solutions.
+          </p>
+        </div>
+
+        <div class="about-card">
+          <h3>Location</h3>
+
+          <p>
+            4 Chief Nsiri Street, Behind Wide Choice Supermarket,
+            Off Ikwerre Road, Mile 4 Port Harcourt,
+            Rivers State, Nigeria.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- SKILLS -->
+
+  <section id="skills">
+
+    <div class="container">
+
+      <div class="section-title">
+        <h2>My Skills</h2>
+        <p>
+          Technologies and development tools I work with professionally.
+        </p>
+      </div>
+
+      <div class="skills-grid">
+
+        <div class="skill-box"><h4>PHP</h4></div>
+        <div class="skill-box"><h4>Flutter</h4></div>
+        <div class="skill-box"><h4>JavaScript</h4></div>
+        <div class="skill-box"><h4>HTML & CSS</h4></div>
+        <div class="skill-box"><h4>Firebase</h4></div>
+        <div class="skill-box"><h4>Supabase</h4></div>
+        <div class="skill-box"><h4>PostgreSQL</h4></div>
+        <div class="skill-box"><h4>Cloudinary</h4></div>
+        <div class="skill-box"><h4>React Native</h4></div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- PROJECTS -->
+
+  <section id="projects">
+
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Featured Projects</h2>
+        <p>
+          Some recent projects and platforms I have developed.
+        </p>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- PROJECT -->
+
+        <div class="project-card">
+
+          <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=1200&auto=format&fit=crop">
+
+          <div class="project-content">
+
+            <h3>The Delivery Express</h3>
+
+            <p>
+              Professional logistics and delivery platform with responsive
+              design and backend integrations.
+            </p>
+
+            <div class="project-links">
+              <a href="https://www.thedeliveryexpress.org/" target="_blank">
+                Visit Website
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- PROJECT -->
+
+        <div class="project-card">
+
+          <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop">
+
+          <div class="project-content">
+
+            <h3>Equity Hubz</h3>
+
+            <p>
+              Investment and financial services platform with secure
+              authentication and cloud integrations.
+            </p>
+
+            <div class="project-links">
+              <a href="https://equityhubz.org" target="_blank">
+                Visit Website
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- PROJECT -->
+
+        <div class="project-card">
+
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop">
+
+          <div class="project-content">
+
+            <h3>FastMe.org</h3>
+
+            <p>
+              Social connect platform focused on communication,
+              networking, and digital social interaction.
+            </p>
+
+            <div class="project-links">
+              <a href="https://fastme.org" target="_blank">
+                Visit Website
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- PROJECT -->
+
+        <div class="project-card">
+
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop">
+
+          <div class="project-content">
+
+            <h3>Online Tutorial</h3>
+
+            <p>
+              Online learning platform for digital education,
+              tutorials, and virtual classes.
+            </p>
+
+            <div class="project-links">
+              <a href="https://onlinetutorial.us" target="_blank">
+                Visit Website
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- PROJECT -->
+
+        <div class="project-card">
+
+          <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop">
+
+          <div class="project-content">
+
+            <h3>KAANATECH COMPANY LTD</h3>
+
+            <p>
+              Corporate company platform focused on consultancy,
+              logistics, electrical installations,
+              construction, and project management.
+            </p>
+
+            <div class="project-links">
+              <a href="https://www.kaanatechcompanyltd.com/" target="_blank">
+                Company Project
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- CONTACT -->
+
+  <section id="contact">
+
+    <div class="container">
+
+      <div class="contact-box">
+
+        <h3>Let's Build Something Amazing</h3>
+
+        <p>
+          Looking for a professional developer for your website,
+          mobile app, or business platform?
+          Let's work together.
+        </p>
+
+        <div class="btns" style="justify-content:center;">
+
+          <a href="mailto:admin@fastme.org" class="btn btn-primary">
+            Send Email
+          </a>
+
+          <a href="https://fastme.org" target="_blank" class="btn btn-outline">
+            Visit FastMe
+          </a>
+
+        </div>
+
+        <div class="contact-details">
+
+          <div class="detail-card">
+            <h4>Email</h4>
+            <p>admin@fastme.org</p>
+          </div>
+
+          <div class="detail-card">
+            <h4>Phone Number</h4>
+            <p>+234 8160869969. 08021311782</p>
+          </div>
+
+          <div class="detail-card">
+            <h4>Website</h4>
+            <a href="https://fastme.org" target="_blank">
+              www.fastme.org
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div class="footer-box">
+
+          <h3>Gentle Saviour Sule</h3>
+
+          <p>
+            Full Stack Developer, Mobile App Developer,
+            and Director of FastMe.org focused on building
+            modern digital experiences.
+          </p>
+
+        </div>
+
+        <div class="footer-box">
+
+          <h3>Quick Links</h3>
+
+          <p><a href="#about">About</a></p>
+          <p><a href="#skills">Skills</a></p>
+          <p><a href="#projects">Projects</a></p>
+          <p><a href="#contact">Contact</a></p>
+
+        </div>
+
+        <div class="footer-box">
+
+          <h3>Projects</h3>
+
+          <p><a href="https://fastme.org">FastMe.org</a></p>
+          <p><a href="https://equityhubz.org">EquityHubz.org</a></p>
+          <p><a href="https://thedeliveryexpress.org">TheDeliveryExpress.org</a></p>
+
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        © 2026 Gentle Saviour Sule. All Rights Reserved.
+      </div>
+
+    </div>
+
+  </footer>
+
+  <!-- JAVASCRIPT -->
+
+  <script>
+
+    window.addEventListener("scroll", function () {
+
+      const nav = document.querySelector("nav");
+
+      if(window.scrollY > 50){
+        nav.style.background = "#050b16";
+      }else{
+        nav.style.background = "rgba(5,10,20,0.92)";
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>

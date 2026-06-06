@@ -1,0 +1,2605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Stories - Fastme</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/logo.jpg" />
+  <link rel="manifest" href="/manifest.json">
+
+  </div>
+<script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    window.supabase = createClient(
+      'https://bwugvwbkuynncfdgwqyg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE'
+    );
+  </script>
+
+  <style>
+    :root {
+      --pink: #ff69b4;
+      --pink-dark: #e0459a;
+      --pink-light: #ffe4f0;
+      --bg: #fff0f5;
+      --text: #333;
+      --gray: #555;
+      --card-bg: white;
+      --light-gray: #f9f9f9;
+      --red: #f44336;
+    }
+    
+    
+* {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  margin:0; padding:0; box-sizing:border-box;
+}
+
+/* Allow typing + selection in inputs */
+input, textarea {
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+    
+    html, body {
+      height: 100%;
+      font-family: 'Poppins', sans-serif; 
+      background: var(--bg); 
+      color: var(--text); 
+      min-height: 100vh;
+      width: 100%;
+      overscroll-behavior: none;
+      touch-action: manipulation;
+    }
+    
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100svh;
+      padding-bottom: 90px;
+    }
+    
+    header { 
+      background: linear-gradient(135deg, var(--pink), var(--pink-dark)); 
+      color: white; 
+      padding: 16px; 
+      box-shadow: 0 4px 12px rgba(255,105,180,0.3);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 { 
+      margin: 0; 
+      font-size: 1.7rem; 
+      flex: 1;
+    }
+
+    /* ===== COIN DISPLAY (Professional) ===== */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .coin-display-btn {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 24px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .coin-display-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    .coin-display-btn:active {
+      transform: scale(0.98);
+    }
+
+    .coin-icon {
+      font-size: 20px;
+      animation: coinFloat 2s ease-in-out infinite;
+    }
+
+    @keyframes coinFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    .coin-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .coin-amount {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .coin-naira {
+      font-size: 0.75rem;
+      opacity: 0.9;
+    }
+
+    .add-story-btn {
+      background: white;
+      color: var(--pink-dark);
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    .add-story-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(255, 105, 180, 0.4);
+    }
+
+    .add-story-btn:active {
+      transform: scale(0.95);
+    }
+    
+    main { 
+      flex: 1;
+      padding: 16px; 
+      max-width: 720px; 
+      margin: 0 auto;
+      width: 100%;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .story-feed { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 20px; 
+    }
+    
+    .story-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      border: 1px solid #eee;
+    }
+    
+    .story-header {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      background: var(--pink-light);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    
+    .story-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--pink);
+      margin-right: 12px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    .story-avatar:hover {
+      transform: scale(1.05);
+    }
+    
+    .story-user-info { 
+      flex: 1; 
+      min-width: 0;
+      cursor: pointer;
+    }
+    
+    .story-name { 
+      font-weight: 600; 
+      font-size: 1.05rem; 
+      word-break: break-word;
+    }
+    
+    .story-meta { 
+      font-size: 0.8rem; 
+      color: var(--gray); 
+    }
+    
+    .story-content { 
+      padding: 0 16px 12px; 
+    }
+    
+    .story-caption { 
+      margin: 12px 0; 
+      line-height: 1.5; 
+      word-break: break-word;
+    }
+    
+    .story-image { 
+      width: 100%; 
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px; 
+      display: block;
+      cursor: pointer;
+      background: #eee;
+    }
+    
+    .story-expiry { 
+      font-size: 0.85rem; 
+      color: var(--pink-dark); 
+      text-align: right; 
+      padding: 0 16px 12px; 
+      font-style: italic; 
+      flex-shrink: 0;
+    }
+    
+    .story-actions {
+      padding: 12px 16px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: flex-start;
+      gap: 32px;
+      background: var(--light-gray);
+      flex-shrink: 0;
+    }
+    
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.95rem;
+      color: var(--gray);
+      transition: color 0.2s;
+    }
+    
+    .action-btn:hover { 
+      color: var(--pink-dark); 
+    }
+    
+    .action-btn.active { 
+      color: var(--pink-dark); 
+    }
+    
+    .material-icons.like-icon { 
+      font-size: 26px; 
+    }
+    
+    .comments-section {
+      display: none;
+      padding: 16px;
+      background: var(--light-gray);
+      border-top: 1px solid #eee;
+      flex-direction: column;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    
+    .comments-section.show {
+      display: flex;
+    }
+    
+    .comment-list {
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--pink) #f0f0f0;
+    }
+    
+    .comment-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .comment-list::-webkit-scrollbar-track {
+      background: #f0f0f0;
+      border-radius: 10px;
+    }
+    
+    .comment-list::-webkit-scrollbar-thumb {
+      background: var(--pink-light);
+      border-radius: 10px;
+    }
+    
+    .comment-item {
+      display: flex;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .comment-item:last-child { 
+      border-bottom: none; 
+    }
+    
+    .comment-avatar{
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid #eee;
+    }
+    
+    .comment-content{
+      flex: 1;
+      line-height: 1.4;
+      min-width: 0;
+    }
+    
+    .comment-content strong{
+      color: var(--pink-dark);
+      font-weight: 600;
+    }
+    
+    .comment-content p{
+      margin: 4px 0;
+      word-break: break-word;
+    }
+    
+    .comment-form{
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+    
+    .comment-input{
+      flex: 1;
+      min-width: 0;
+      padding: 11px 14px;
+      border: 1px solid #ddd;
+      border-radius: 24px;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+      outline: none;
+      min-height: 42px;
+      max-height: 100px;
+      resize: none;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    
+    .comment-input:focus{
+      border-color: var(--pink);
+      box-shadow: 0 0 0 2px rgba(255,105,180,0.15);
+    }
+    
+    .post-comment-btn{
+      background: var(--pink);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 24px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 16px;
+      min-width: 48px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    
+    .post-comment-btn:hover { 
+      background: var(--pink-dark); 
+    }
+    
+    .modal{
+      position: fixed; 
+      inset: 0; 
+      background: rgba(0,0,0,0.6); 
+      display: none;
+      align-items: center; 
+      justify-content: center; 
+      z-index: 2000;
+    }
+    
+    .modal-content{
+      background: white; 
+      border-radius: 20px; 
+      width: 90%; 
+      max-width: 420px;
+      padding: 24px; 
+      max-height: 85vh; 
+      overflow-y: auto;
+    }
+    
+    .close-btn { 
+      float: right; 
+      font-size: 28px; 
+      cursor: pointer; 
+      color: var(--gray); 
+    }
+    
+    textarea, select { 
+      width: 100%; 
+      padding: 12px; 
+      margin: 12px 0; 
+      border: 1px solid #ddd; 
+      border-radius: 12px; 
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .image-preview { 
+      width: 100%; 
+      height: 200px; 
+      object-fit: cover; 
+      border-radius: 12px; 
+      margin: 12px 0; 
+      display: none; 
+    }
+    
+    .btn-post { 
+      background: var(--pink); 
+      color: white; 
+      border: none; 
+      padding: 14px; 
+      border-radius: 30px; 
+      width: 100%; 
+      font-weight: 600; 
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    .btn-post:disabled { 
+      background: #ccc; 
+      cursor: not-allowed; 
+    }
+    
+    .empty-state { 
+      text-align: center; 
+      padding: 80px 20px; 
+      color: var(--gray); 
+    }
+    
+    /* ════════════════════════════════════════════════
+   NAVIGATION BAR STYLING
+   ════════════════════════════════════════════════ */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  z-index: 80;
+  width: 100%;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+  gap: 4px;
+}
+
+.nav-item:hover {
+  background: rgba(255, 105, 180, 0.1);
+  color: #ff69b4;
+}
+
+.nav-item.active,
+.nav-item:active {
+  color: #ff69b4;
+  background: #fce4ec;
+}
+
+.nav-item .material-icons {
+  font-size: 28px;
+  margin-bottom: 2px;
+}
+
+.nav-item span:not(.material-icons) {
+  font-size: 0.65rem;
+  white-space: nowrap;
+}
+
+.nav-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #f44336;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border: 1.5px solid white;
+  animation: badgePop 0.3s ease;
+  z-index: 10;
+}
+
+.nav-badge.removing {
+  animation: badgeShrink 0.3s ease forwards;
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes badgeShrink {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+body {
+  padding-bottom: 101px;
+}
+
+@media (max-width: 480px) {
+  .bottom-nav {
+    height: 70px;
+  }
+
+  .nav-item {
+    padding: 4px 8px;
+  }
+
+  .nav-item .material-icons {
+    font-size: 24px;
+  }
+
+  .nav-item span:not(.material-icons) {
+    font-size: 0.6rem;
+  }
+
+  body {
+    padding-bottom: 80px;
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-bottom: 0;
+  }
+}
+
+.nav-item {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-icon {
+  width: 30px;
+  height: 30px;
+}
+    
+    .material-icons { 
+      font-size: 28px; 
+      margin-bottom: 3px; 
+      display: block; 
+    }
+    
+    .photo-viewer{
+      position: fixed; 
+      inset: 0; 
+      background: rgba(0,0,0,0.9);
+      display: none; 
+      align-items: center; 
+      justify-content: center;
+      z-index: 3000; 
+      padding: 20px;
+    }
+    
+    .viewer-content { 
+      position: relative; 
+      max-width: 100%; 
+      max-height: 90vh; 
+    }
+    
+    .viewer-img { 
+      max-width: 100%; 
+      max-height: 85vh; 
+      border-radius: 8px; 
+    }
+    
+    .viewer-close{
+      position: absolute; 
+      top: -40px; 
+      right: 0;
+      color: white; 
+      background: none; 
+      border: none; 
+      cursor: pointer;
+      font-size: 28px;
+    }
+    
+    .quick-profile-modal{
+      padding: 0 !important;
+      overflow: hidden !important;
+    }
+    
+    .quick-profile-header{
+      background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+      background-size: cover;
+      background-position: center;
+      height: 140px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 12px;
+      cursor: pointer;
+    }
+    
+    .quick-profile-header::before{
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.2);
+    }
+    
+    .quick-avatar{
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid white;
+      position: relative;
+      z-index: 10;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .quick-info{
+      flex: 1;
+      margin-left: 12px;
+      position: relative;
+      z-index: 10;
+      color: white;
+    }
+    
+    .quick-info h2{
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    
+    .quick-meta{
+      display: flex;
+      gap: 12px;
+      font-size: 0.85rem;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+    
+    .status-online{
+      background: #4caf50;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+    
+    .quick-stats{
+      display: flex;
+      justify-content: space-around;
+      padding: 16px 0;
+      border-bottom: 1px solid #eee;
+      background: var(--light-gray);
+    }
+    
+    .stat-item{
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .stat-value{
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--pink-dark);
+    }
+    
+    .stat-label{
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+    
+    .stat-icon{
+      font-size: 1.8rem;
+      color: var(--pink);
+    }
+    
+    .quick-bio{
+      padding: 12px;
+      background: white;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      min-height: 60px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .quick-actions{
+      padding: 16px;
+      background: var(--light-gray);
+      display: flex;
+      gap: 8px;
+    }
+    
+    .quick-actions .action-btn{
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      background: white;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    
+    .quick-actions .action-btn:hover{
+      border-color: var(--pink);
+      color: var(--pink-dark);
+    }
+    
+    .quick-actions .action-btn.primary{
+      background: var(--pink);
+      color: white;
+      border-color: var(--pink);
+    }
+    
+    .quick-actions .action-btn.primary:hover{
+      background: var(--pink-dark);
+      border-color: var(--pink-dark);
+    }
+    
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .story-header {
+        padding: 10px 12px;
+      }
+      
+      .story-avatar {
+        width: 44px;
+        height: 44px;
+        margin-right: 10px;
+      }
+      
+      .story-name {
+        font-size: 1rem;
+      }
+
+      .header-actions {
+        gap: 8px;
+      }
+
+      .coin-display-btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+      }
+
+      .add-story-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+    }
+
+    .custom-popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      backdrop-filter: blur(2px);
+      animation: fadeInOverlay 0.25s ease-in-out;
+    }
+
+    @keyframes fadeInOverlay {
+      from {
+        opacity: 0;
+        backdrop-filter: blur(0);
+      }
+      to {
+        opacity: 1;
+        backdrop-filter: blur(2px);
+      }
+    }
+
+    .custom-popup {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 420px;
+      width: 90%;
+      animation: slideUpPopup 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      overflow: hidden;
+    }
+
+    @keyframes slideUpPopup {
+      from {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .custom-popup-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .custom-popup-title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #e0459a;
+      flex: 1;
+    }
+
+    .custom-popup-close {
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #999;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .custom-popup-close:hover {
+      background: #f5f5f5;
+      color: #e0459a;
+    }
+
+    .custom-popup-body {
+      padding: 24px;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    .custom-popup-message {
+      margin: 0 0 16px 0;
+      color: #444;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .custom-popup-custom-content {
+      margin: 16px 0;
+    }
+
+    .custom-popup-footer {
+      padding: 16px 24px;
+      border-top: 1px solid #f0f0f0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .custom-popup-actions {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .custom-popup-btn {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .custom-popup-btn-primary {
+      background: linear-gradient(135deg, #e0459a, #d6247f);
+      color: white;
+    }
+
+    .custom-popup-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(224, 69, 154, 0.3);
+    }
+
+    .custom-popup-btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .custom-popup-btn-secondary {
+      background: #f5f5f5;
+      color: #444;
+      border: 1px solid #e0e0e0;
+    }
+
+    .custom-popup-btn-secondary:hover {
+      background: #efefef;
+      border-color: #d0d0d0;
+    }
+
+    .custom-popup-btn-secondary:active {
+      background: #e8e8e8;
+    }
+
+    .custom-popup-btn-danger {
+      background: linear-gradient(135deg, #f44336, #d32f2f);
+      color: white;
+    }
+
+    .custom-popup-btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(244, 67, 54, 0.3);
+    }
+
+    .custom-popup-btn-danger:active {
+      transform: translateY(0);
+    }
+
+    .custom-popup-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    @media (max-width: 480px) {
+      .custom-popup {
+        width: 95%;
+        max-width: 100%;
+      }
+
+      .custom-popup-actions {
+        flex-direction: column;
+      }
+
+      .custom-popup-btn {
+        width: 100%;
+      }
+    }
+    .nav-icon { width: 30px; height: 30px; object-fit: contain; margin-bottom: 4px; }
+
+    /* ===== COIN MODAL (Professional) ===== */
+    .coin-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 5000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .coin-modal-overlay.active {
+      display: flex;
+    }
+
+    .coin-modal {
+      background: white;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 440px;
+      padding: 28px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .coin-modal-header {
+      text-align: center;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .coin-modal-close {
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      background: var(--pink);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+    }
+
+    .coin-modal-close:hover {
+      background: var(--pink-dark);
+      transform: scale(1.1);
+    }
+
+    .coin-modal-close:active {
+      transform: scale(0.95);
+    }
+
+    .coin-modal-icon {
+      font-size: 72px;
+      margin-bottom: 16px;
+      animation: bounce 2.5s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .coin-modal-title {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .coin-modal-subtitle {
+      font-size: 1rem;
+      color: var(--gray);
+      margin-bottom: 4px;
+    }
+
+    .coin-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .coin-stat-box {
+      background: linear-gradient(135deg, #fff5f8, #ffe4f0);
+      border: 2px solid #ffccdd;
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .coin-stat-box:hover {
+      border-color: var(--pink);
+      box-shadow: 0 8px 20px rgba(255, 105, 180, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .coin-stat-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+    }
+
+    .coin-stat-label {
+      font-size: 0.9rem;
+      color: var(--gray);
+      font-weight: 600;
+    }
+
+    .coin-conversion-box {
+      background: linear-gradient(135deg, var(--pink-light), #ffe4f0);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 24px;
+      border-left: 5px solid var(--pink);
+    }
+
+    .coin-conversion-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .coin-conversion-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .coin-conversion-label {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.98rem;
+    }
+
+    .coin-conversion-value {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--pink-dark);
+    }
+
+    .coin-exchange-rate {
+      text-align: center;
+      background: linear-gradient(135deg, #f8f8ff, #f0e6ff);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px;
+      border: 2px dashed var(--pink-light);
+    }
+
+    .coin-exchange-rate p {
+      margin: 4px 0;
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .coin-exchange-rate .rate {
+      font-size: 1.4rem;
+      color: var(--pink-dark);
+      font-weight: 800;
+    }
+
+    .coin-earning-list {
+      background: #fafafa;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 24px;
+      border: 1px solid #f0f0f0;
+    }
+
+    .coin-earning-list h4 {
+      color: var(--pink-dark);
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+
+    .coin-earning-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 0.98rem;
+    }
+
+    .coin-earning-item:last-child {
+      border-bottom: none;
+    }
+
+    .coin-earning-label {
+      color: var(--text);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .coin-earning-amount {
+      background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+    }
+
+    .coin-minimum-box {
+      background: linear-gradient(135deg, #fffbf0, #fff5e6);
+      border-left: 5px solid #ffc107;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+      color: #6d4c00;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .coin-minimum-box .material-icons {
+      color: #ffc107;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .coin-action-buttons {
+      display: flex;
+      gap: 14px;
+    }
+
+    .coin-btn {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .coin-btn-primary {
+      background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+      color: white;
+      box-shadow: 0 6px 20px rgba(255, 105, 180, 0.3);
+    }
+
+    .coin-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(255, 105, 180, 0.4);
+    }
+
+    .coin-btn-primary:active {
+      transform: translateY(-1px);
+    }
+
+    .coin-btn-secondary {
+      background: #f0f0f0;
+      color: var(--text);
+      border: 1px solid #ddd;
+    }
+
+    .coin-btn-secondary:hover {
+      background: #e8e8e8;
+      border-color: var(--pink);
+      color: var(--pink);
+    }
+
+    @media (max-width: 480px) {
+      .coin-modal {
+        width: 95%;
+        padding: 20px;
+      }
+
+      .coin-stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .coin-modal-title {
+        font-size: 1.6rem;
+      }
+
+      .coin-modal-icon {
+        font-size: 56px;
+      }
+    }
+  </style>
+</head>
+  <body>
+<div id="app-content">
+
+ <header>
+  <h1>Fastme Feed</h1>
+  
+  <div class="header-actions">
+    <!-- Coin Display Button -->
+    <button class="coin-display-btn" id="coinDisplayBtn">
+      <span class="coin-icon">💰</span>
+      <div class="coin-text">
+        <span class="coin-amount" id="coinValue">0</span>
+        <span class="coin-naira" id="nairaValue">(₦0)</span>
+      </div>
+    </button>
+    
+    <!-- Add Story Button -->
+    <button id="add-story-btn" class="add-story-btn" title="Create new story">
+      <span class="material-icons">add</span>
+    </button>
+  </div>
+</header>
+
+  <main>
+    <div class="story-feed" id="stories-grid"></div>
+    <div id="no-stories" class="empty-state" style="display:none;">
+      <p>No active stories right now 💔<br>Be the first to share!</p>
+    </div>
+  </main>
+
+ 
+
+  <div class="modal" id="story-modal">
+    <div class="modal-content">
+      <span class="close-btn" id="close-modal">×</span>
+      <h2 style="color:var(--pink-dark); text-align:center;">Create Story</h2>
+      <textarea id="story-caption" placeholder="What's happening? 💭" rows="4" maxlength="280"></textarea>
+      <div style="margin:16px 0;">
+        <label style="display:block; margin-bottom:8px; color:var(--gray);">Upload photo (optional)</label>
+        <input type="file" id="story-image" accept="image/*" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:8px;" />
+        <img id="story-preview" class="image-preview" alt="Preview" />
+      </div>
+      <div style="margin:16px 0;">
+        <label style="display:block; margin-bottom:8px; color:var(--gray);">This story will disappear after:</label>
+        <select id="story-duration" required>
+          <option value="" disabled selected>Select duration</option>
+          <option value="24">24 hours</option>
+          <option value="72">3 days</option>
+          <option value="168">7 days</option>
+        </select>
+      </div>
+      <button class="btn-post" id="post-story-btn" disabled>Share Story 💖</button>
+    </div>
+  </div>
+
+  <div class="modal" id="quickProfileModal">
+    <div class="modal-content quick-profile-modal">
+      <button class="close-btn material-icons" id="closeQuickProfile">close</button>
+      <div class="quick-profile-header">
+        <img id="quickAvatar" src="https://ui-avatars.com/api/?name=User&background=ff69b4&color=fff" alt="Avatar" class="quick-avatar" />
+        <div class="quick-info">
+          <h2 id="quickName">Loading...</h2>
+          <div class="quick-meta">
+            <span id="quickStatus" class="status-online">Online</span>
+            <span id="quickLocation">Nigeria</span>
+          </div>
+        </div>
+      </div>
+      <div class="quick-stats">
+        <div class="stat-item">
+          <span class="stat-value" id="quickAge">20</span>
+          <span class="stat-label">Age</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="quickRating">4.8</span>
+          <span class="stat-label">Rating</span>
+        </div>
+        <div class="stat-item">
+          <span class="material-icons stat-icon">favorite</span>
+          <span class="stat-label">Views</span>
+        </div>
+      </div>
+      <div class="quick-bio" id="quickBio">No bio yet...</div>
+      <div class="quick-actions">
+        <button class="action-btn primary" id="quickMessageBtn">
+          <span class="material-icons">chat</span> Message
+        </button>
+        <button class="action-btn" id="quickViewFullBtn">
+          <span class="material-icons">account_box</span> View Profile
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COIN MODAL -->
+  <div class="coin-modal-overlay" id="coinModalOverlay">
+    <div class="coin-modal">
+      <div class="coin-modal-header">
+        <button class="coin-modal-close" id="coinModalClose">&times;</button>
+        <div class="coin-modal-icon">💰</div>
+        <div class="coin-modal-title">Earnings</div>
+        <div class="coin-modal-subtitle">Track your coins & withdraw</div>
+      </div>
+
+      <div class="coin-stats-grid">
+        <div class="coin-stat-box">
+          <div class="coin-stat-value" id="modalCoinBalance">0</div>
+          <div class="coin-stat-label">Total Coins</div>
+        </div>
+        <div class="coin-stat-box">
+          <div class="coin-stat-value" id="modalNairaValue">₦0</div>
+          <div class="coin-stat-label">Naira Value</div>
+        </div>
+      </div>
+
+      <div class="coin-exchange-rate">
+        <p>📊 Exchange Rate</p>
+        <p class="rate">1 Coin = ₦5</p>
+      </div>
+
+      <div class="coin-conversion-box">
+        <div class="coin-conversion-row">
+          <span class="coin-conversion-label">Minimum Withdrawal:</span>
+          <span class="coin-conversion-value">10,000 coins</span>
+        </div>
+        <div class="coin-conversion-row">
+          <span class="coin-conversion-label">Equals:</span>
+          <span class="coin-conversion-value">₦50,000</span>
+        </div>
+      </div>
+
+      <div class="coin-earning-list">
+        <h4>💡 How to Earn</h4>
+        <div class="coin-earning-item">
+          <span class="coin-earning-label">❤️ Like a Post</span>
+          <span class="coin-earning-amount">+0.1</span>
+        </div>
+        <div class="coin-earning-item">
+          <span class="coin-earning-label">💬 Comment</span>
+          <span class="coin-earning-amount">+0.1</span>
+        </div>
+        <div class="coin-earning-item">
+          <span class="coin-earning-label">🎁 Sign Up</span>
+          <span class="coin-earning-amount">+10</span>
+        </div>
+        <div class="coin-earning-item">
+          <span class="coin-earning-label">📅 Daily Login</span>
+          <span class="coin-earning-amount">+50</span>
+        </div>
+        <div class="coin-earning-item">
+          <span class="coin-earning-label">👥 Referral</span>
+          <span class="coin-earning-amount">+5</span>
+        </div>
+      </div>
+
+      <div class="coin-minimum-box">
+        <span class="material-icons">info</span>
+        <span>You must have at least 10,000 coins (₦50,000) to withdraw to your bank account.</span>
+      </div>
+
+      <div class="coin-action-buttons">
+        <button class="coin-btn coin-btn-secondary" id="coinModalCloseBtn">Close</button>
+        <button class="coin-btn coin-btn-primary" id="coinWithdrawBtn">Withdraw</button>
+      </div>
+    </div>
+  </div>
+
+   <nav class="bottom-nav">
+    <a href="/provider/provider.html" class="nav-item ">
+      <span class="material-icons">home</span>
+    </a>
+    <a href="/provider/chat_list.html" class="nav-item" id="chat-nav" style="position: relative;">
+      <span class="material-icons">chat</span>
+    </a>
+    <a href="/provider/news.html" class="nav-item active">
+      <span class="material-icons">trending_up</span>
+    </a>
+    <a href="/provider/profile.html" class="nav-item ">
+      <span class="material-icons">account_box</span>
+    </a>
+  </nav>
+
+  <div id="photoViewer" class="photo-viewer">
+    <div class="viewer-content">
+      <button class="viewer-close material-icons">close</button>
+      <img id="viewerImage" class="viewer-img" src="" alt="Full View" />
+    </div>
+  </div>
+
+  <div class="custom-popup-overlay" id="customPopupOverlay" style="display:none;">
+    <div class="custom-popup" role="dialog" aria-modal="true">
+      <div class="custom-popup-header">
+        <h3 id="popupTitle" class="custom-popup-title"></h3>
+        <button class="custom-popup-close" id="popupCloseBtn" aria-label="Close popup">&times;</button>
+      </div>
+      
+      <div class="custom-popup-body">
+        <p id="popupMessage" class="custom-popup-message"></p>
+        <div id="popupContent" class="custom-popup-custom-content"></div>
+      </div>
+      
+      <div class="custom-popup-footer">
+        <div id="popupActions" class="custom-popup-actions"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+    const supabase = window.supabase;
+    const storiesGrid = document.getElementById('stories-grid');
+    const noStories = document.getElementById('no-stories');
+    const addBtn = document.getElementById('add-story-btn');
+    const modal = document.getElementById('story-modal');
+    const closeModal = document.getElementById('close-modal');
+    const captionEl = document.getElementById('story-caption');
+    const imageEl = document.getElementById('story-image');
+    const previewEl = document.getElementById('story-preview');
+    const durationEl = document.getElementById('story-duration');
+    const postBtn = document.getElementById('post-story-btn');
+
+    const quickModal = document.getElementById('quickProfileModal');
+    const closeQuick = document.getElementById('closeQuickProfile');
+
+    const coinDisplayBtn = document.getElementById('coinDisplayBtn');
+    const coinModalOverlay = document.getElementById('coinModalOverlay');
+    const coinModalClose = document.getElementById('coinModalClose');
+    const coinModalCloseBtn = document.getElementById('coinModalCloseBtn');
+    const coinValue = document.getElementById('coinValue');
+    const nairaValue = document.getElementById('nairaValue');
+    const modalCoinBalance = document.getElementById('modalCoinBalance');
+    const modalNairaValue = document.getElementById('modalNairaValue');
+
+    let selectedImage = null;
+    let currentUserId = null;
+
+    // ════════════════════════════════════════════════
+    // CUSTOM POPUP SYSTEM
+    // ════════════════════════════════════════════════
+    class CustomPopupManager {
+      static init() {
+        this.overlay = document.getElementById('customPopupOverlay');
+        this.popup = document.querySelector('.custom-popup');
+        this.titleEl = document.getElementById('popupTitle');
+        this.messageEl = document.getElementById('popupMessage');
+        this.contentEl = document.getElementById('popupContent');
+        this.actionsEl = document.getElementById('popupActions');
+        this.closeBtn = document.getElementById('popupCloseBtn');
+
+        this.closeBtn?.addEventListener('click', () => this.close());
+        this.overlay?.addEventListener('click', (e) => {
+          if (e.target === this.overlay) this.close();
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.overlay?.style.display !== 'none') {
+            this.close();
+          }
+        });
+      }
+
+      static show(options = {}) {
+        return new Promise((resolve) => {
+          const {
+            title = 'Notification',
+            message = '',
+            content = null,
+            buttons = [{ label: 'OK', type: 'primary' }],
+            type = 'info'
+          } = options;
+
+          this.titleEl.textContent = title;
+          this.messageEl.textContent = message;
+          this.messageEl.style.display = message ? 'block' : 'none';
+
+          this.contentEl.innerHTML = '';
+          if (content) {
+            if (typeof content === 'string') {
+              this.contentEl.innerHTML = content;
+            } else if (content instanceof HTMLElement) {
+              this.contentEl.appendChild(content);
+            }
+          }
+
+          this.actionsEl.innerHTML = '';
+
+          buttons.forEach((btn, idx) => {
+            const button = document.createElement('button');
+            button.className = `custom-popup-btn custom-popup-btn-${btn.type || 'secondary'}`;
+            button.textContent = btn.label;
+            button.addEventListener('click', () => {
+              this.close();
+              resolve(btn.value !== undefined ? btn.value : idx);
+            });
+            this.actionsEl.appendChild(button);
+          });
+
+          const colorMap = {
+            info: '#2196F3',
+            success: '#4CAF50',
+            warning: '#ff9800',
+            error: '#f44336'
+          };
+
+          if (colorMap[type]) {
+            this.titleEl.style.color = colorMap[type];
+          }
+
+          this.overlay.style.display = 'flex';
+
+          setTimeout(() => {
+            const firstBtn = this.actionsEl.querySelector('button');
+            firstBtn?.focus();
+          }, 0);
+        });
+      }
+
+      static alert(message, title = 'Alert') {
+        return this.show({
+          title,
+          message,
+          buttons: [{ label: 'OK', type: 'primary', value: true }],
+          type: 'info'
+        });
+      }
+
+      static confirm(message, title = 'Confirm') {
+        return this.show({
+          title,
+          message,
+          buttons: [
+            { label: 'Cancel', type: 'secondary', value: false },
+            { label: 'OK', type: 'primary', value: true }
+          ],
+          type: 'info'
+        });
+      }
+
+      static success(message, title = 'Success') {
+        return this.show({
+          title,
+          message,
+          buttons: [{ label: 'OK', type: 'primary', value: true }],
+          type: 'success'
+        });
+      }
+
+      static error(message, title = 'Error') {
+        return this.show({
+          title,
+          message,
+          buttons: [{ label: 'OK', type: 'danger', value: false }],
+          type: 'error'
+        });
+      }
+
+      static close() {
+        if (this.overlay) {
+          this.overlay.style.display = 'none';
+          this.contentEl.innerHTML = '';
+          this.actionsEl.innerHTML = '';
+        }
+      }
+    }
+
+    CustomPopupManager.init();
+
+    // ════════════════════════════════════════════════
+    // COIN SYSTEM
+    // ════════════════════════════════════════════════
+    class CoinSystem {
+      static COIN_TO_NAIRA = 5;
+      static MIN_WITHDRAWAL = 10000;
+      
+      static async initializeUser(userId) {
+        try {
+          const { data: existing } = await supabase
+            .from('user_coins')
+            .select('*')
+            .eq('user_id', userId)
+            .maybeSingle();
+
+          if (!existing) {
+            await supabase.from('user_coins').insert({
+              user_id: userId,
+              balance: 10,
+              last_login: new Date().toISOString(),
+              total_earned: 10
+            });
+            return 10;
+          }
+
+          const lastLogin = new Date(existing.last_login);
+          const now = new Date();
+          const hoursDiff = (now - lastLogin) / (1000 * 60 * 60);
+
+          if (hoursDiff >= 24) {
+            const newBalance = existing.balance + 50;
+            await supabase
+              .from('user_coins')
+              .update({
+                balance: newBalance,
+                last_login: now.toISOString(),
+                total_earned: existing.total_earned + 50
+              })
+              .eq('user_id', userId);
+
+            return newBalance;
+          }
+
+          return existing.balance;
+        } catch (err) {
+          console.error('Coin initialization error:', err);
+          return 0;
+        }
+      }
+
+      static async addCoins(userId, amount, reason = 'action') {
+        try {
+          const { data: current } = await supabase
+            .from('user_coins')
+            .select('*')
+            .eq('user_id', userId)
+            .maybeSingle();
+
+          if (current) {
+            const newBalance = current.balance + amount;
+            await supabase
+              .from('user_coins')
+              .update({
+                balance: newBalance,
+                total_earned: current.total_earned + amount
+              })
+              .eq('user_id', userId);
+
+            await supabase.from('coin_transactions').insert({
+              user_id: userId,
+              amount,
+              reason,
+              balance_after: newBalance
+            });
+
+            return newBalance;
+          }
+        } catch (err) {
+          console.error('Add coins error:', err);
+        }
+        return 0;
+      }
+
+      static async getBalance(userId) {
+        try {
+          const { data } = await supabase
+            .from('user_coins')
+            .select('balance')
+            .eq('user_id', userId)
+            .maybeSingle();
+
+          return data?.balance || 0;
+        } catch {
+          return 0;
+        }
+      }
+    }
+
+    // ════════════════════════════════════════════════
+    // COIN DISPLAY UPDATE
+    // ════════════════════════════════════════════════
+    async function updateCoinDisplay() {
+      const balance = await CoinSystem.getBalance(currentUserId);
+      const naira = balance * CoinSystem.COIN_TO_NAIRA;
+      
+      coinValue.textContent = balance.toLocaleString('en-NG');
+      nairaValue.textContent = `(₦${naira.toLocaleString('en-NG')})`;
+
+      modalCoinBalance.textContent = balance.toLocaleString('en-NG');
+      modalNairaValue.textContent = `₦${naira.toLocaleString('en-NG')}`;
+    }
+
+    // ════════════════════════════════════════════════
+    // COIN MODAL HANDLERS
+    // ════════════════════════════════════════════════
+    coinDisplayBtn.addEventListener('click', () => {
+      updateCoinDisplay();
+      coinModalOverlay.classList.add('active');
+    });
+
+    coinModalClose.addEventListener('click', () => {
+      coinModalOverlay.classList.remove('active');
+    });
+
+    coinModalCloseBtn.addEventListener('click', () => {
+      coinModalOverlay.classList.remove('active');
+    });
+
+    coinModalOverlay.addEventListener('click', (e) => {
+      if (e.target === coinModalOverlay) {
+        coinModalOverlay.classList.remove('active');
+      }
+    });
+
+    document.getElementById('coinWithdrawBtn').addEventListener('click', async () => {
+      const balance = await CoinSystem.getBalance(currentUserId);
+
+      if (balance < CoinSystem.MIN_WITHDRAWAL) {
+        const needed = CoinSystem.MIN_WITHDRAWAL - balance;
+        await CustomPopupManager.alert(
+          `You need ${needed.toLocaleString()} more coins to withdraw.\n\nCurrent: ${balance.toLocaleString()} coins\nMinimum: ${CoinSystem.MIN_WITHDRAWAL.toLocaleString()} coins`,
+          'Insufficient Balance'
+        );
+        return;
+      }
+
+      const naira = balance * CoinSystem.COIN_TO_NAIRA;
+      const confirmed = await CustomPopupManager.confirm(
+        `Withdraw ${balance.toLocaleString()} coins (₦${naira.toLocaleString('en-NG')})?\n\nThis will transfer the amount to your bank account.`,
+        'Confirm Withdrawal'
+      );
+
+      if (confirmed) {
+        await CustomPopupManager.success(
+          'Withdrawal request submitted! You will receive the funds within 24-48 hours.',
+          'Withdrawal Successful'
+        );
+        coinModalOverlay.classList.remove('active');
+      }
+    });
+
+    // ════════════════════════════════════════════════
+    // UNREAD MESSAGE TRACKING
+    // ════════════════════════════════════════════════
+    const UnreadManager = {
+      getUnreadCount: (userId, chatPartnerId) => {
+        try {
+          const key = `unread_${[userId, chatPartnerId].sort().join('_')}`;
+          return parseInt(localStorage.getItem(key) || '0', 10) || 0;
+        } catch {
+          return 0;
+        }
+      },
+
+      getTotalUnread: (userId) => {
+        try {
+          let total = 0;
+          Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('unread_')) {
+              total += parseInt(localStorage.getItem(key) || '0', 10) || 0;
+            }
+          });
+          return total;
+        } catch {
+          return 0;
+        }
+      }
+    };
+
+    // ════════════════════════════════════════════════
+    // REQUEST BADGE TRACKING
+    // ════════════════════════════════════════════════
+    const RequestBadgeManager = {
+      getPendingRequests: () => {
+        try {
+          const data = localStorage.getItem('pending_requests');
+          return data ? JSON.parse(data) : [];
+        } catch {
+          return [];
+        }
+      },
+
+      getTotalRequests: () => {
+        return RequestBadgeManager.getPendingRequests().length;
+      }
+    };
+
+    // ════════════════════════════════════════════════
+    // UPDATE NAV BADGES
+    // ════════════════════════════════════════════════
+    function updateNavBadges(userId) {
+      updateChatBadge(userId);
+    }
+
+    function updateChatBadge(userId) {
+      const chatNav = document.getElementById('chat-nav');
+      
+      if (!chatNav) return;
+
+      const total = UnreadManager.getTotalUnread(userId);
+      let badge = chatNav.querySelector('.nav-badge');
+
+      if (total > 0) {
+        if (!badge) {
+          badge = document.createElement('div');
+          badge.className = 'nav-badge';
+          chatNav.appendChild(badge);
+        }
+        badge.textContent = total > 99 ? '99+' : total;
+        badge.classList.remove('removing');
+      } else if (badge) {
+        badge.classList.add('removing');
+        setTimeout(() => {
+          if (badge.parentNode) {
+            badge.remove();
+          }
+        }, 300);
+      }
+    }
+
+    // ════════════════════════════════════════════════
+    // LOCALSTORAGE MANAGEMENT FOR STORIES
+    // ════════════════════════════════════════════════
+    const StoryStorage = {
+      getStories: () => {
+        const data = localStorage.getItem('cached_stories');
+        return data ? JSON.parse(data) : [];
+      },
+
+      setStories: (stories) => {
+        localStorage.setItem('cached_stories', JSON.stringify(stories));
+      },
+
+      getLastFetchTime: () => {
+        return localStorage.getItem('stories_last_fetch') || null;
+      },
+
+      setLastFetchTime: (time) => {
+        localStorage.setItem('stories_last_fetch', time);
+      },
+
+      getLikes: () => {
+        const data = localStorage.getItem('story_likes_cache');
+        return data ? JSON.parse(data) : {};
+      },
+
+      setLikes: (likes) => {
+        localStorage.setItem('story_likes_cache', JSON.stringify(likes));
+      },
+
+      getComments: () => {
+        const data = localStorage.getItem('story_comments_cache');
+        return data ? JSON.parse(data) : {};
+      },
+
+      setComments: (comments) => {
+        localStorage.setItem('story_comments_cache', JSON.stringify(comments));
+      },
+
+      isExpired: () => {
+        const lastFetch = StoryStorage.getLastFetchTime();
+        if (!lastFetch) return true;
+        const age = Date.now() - parseInt(lastFetch);
+        return age > 5 * 60 * 1000;
+      },
+
+      clear: () => {
+        localStorage.removeItem('cached_stories');
+        localStorage.removeItem('stories_last_fetch');
+        localStorage.removeItem('story_likes_cache');
+        localStorage.removeItem('story_comments_cache');
+      }
+    };
+
+    async function initUser() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) {
+        window.location.href = '/index.html';
+        return;
+      }
+      currentUserId = session.user.id;
+      
+      await CoinSystem.initializeUser(currentUserId);
+      await updateCoinDisplay();
+      updateNavBadges(session.user.id);
+    }
+
+    closeQuick?.addEventListener('click', () => {
+      quickModal.style.display = 'none';
+    });
+
+    quickModal?.addEventListener('click', e => {
+      if (e.target === quickModal) quickModal.style.display = 'none';
+    });
+
+    async function showQuickProfile(userId) {
+      if (!userId || userId === currentUserId) {
+        return;
+      }
+
+      try {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('id, full_name, avatar_url, cover_url, bio, address, latitude, longitude, rating')
+          .eq('id', userId)
+          .maybeSingle();
+
+        if (error || !profile) {
+          await CustomPopupManager.error("Could not load profile preview.", "Load Error");
+          return;
+        }
+
+        const header = quickModal.querySelector('.quick-profile-header');
+        if (profile.cover_url) {
+          header.style.backgroundImage = `url('${profile.cover_url}')`;
+        } else {
+          header.style.background = 'linear-gradient(135deg, #ff69b4, #e0459a)';
+        }
+
+        document.getElementById('quickAvatar').src = profile.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.full_name)}&background=ff69b4&color=fff`;
+        document.getElementById('quickName').textContent = profile.full_name || 'User';
+        document.getElementById('quickLocation').textContent = profile.address?.split(',')[0] || 'Nigeria';
+        document.getElementById('quickBio').textContent = profile.bio || 'No bio yet...';
+
+        document.getElementById('quickMessageBtn').onclick = () => {
+          window.location.href = `/user/user_chat.html?with=${userId}&name=${encodeURIComponent(profile.full_name)}`;
+        };
+
+        document.getElementById('quickViewFullBtn').onclick = () => {
+          window.location.href = `/user/user_profile.html?id=${userId}`;
+        };
+
+        quickModal.style.display = 'flex';
+      } catch (err) {
+        console.error('Quick profile error:', err);
+      }
+    }
+
+    document.querySelector('.viewer-close')?.addEventListener('click', () => {
+      document.getElementById('photoViewer').style.display = 'none';
+    });
+
+    async function toggleLike(storyId, button) {
+      if (!currentUserId) {
+        await CustomPopupManager.alert("Please log in to like stories.", "Login Required");
+        return;
+      }
+
+      const icon = button.querySelector('.like-icon');
+      const countEl = button.querySelector('.like-count');
+
+      let count = parseInt(countEl.textContent) || 0;
+      const isActive = button.classList.contains('active');
+
+      if (isActive) {
+        button.classList.remove('active');
+        icon.textContent = 'favorite_border';
+        count = Math.max(0, count - 1);
+      } else {
+        button.classList.add('active');
+        icon.textContent = 'favorite';
+        count += 1;
+        
+        await CoinSystem.addCoins(currentUserId, 0.1, 'like');
+        await updateCoinDisplay();
+      }
+
+      countEl.textContent = count;
+
+      const { data: existing } = await supabase
+        .from('story_likes')
+        .select('id')
+        .eq('story_id', storyId)
+        .eq('user_id', currentUserId)
+        .maybeSingle();
+
+      if (existing) {
+        await supabase.from('story_likes').delete().eq('id', existing.id);
+      } else {
+        await supabase.from('story_likes').insert({
+          story_id: storyId,
+          user_id: currentUserId
+        });
+      }
+    }
+
+    async function postComment(storyId, input) {
+      const content = input.value.trim();
+      if (!content || !currentUserId) return;
+
+      const section = document.getElementById(`comments-${storyId}`);
+      const listEl = section?.querySelector('.comment-list');
+      const countEls = document.querySelectorAll(`[data-story-id="${storyId}"] .comment-count`);
+
+      let currentCount = 0;
+      countEls.forEach(el => {
+        currentCount = parseInt(el.textContent) || 0;
+        el.textContent = currentCount + 1;
+      });
+
+      let tempCommentEl = null;
+      if (section?.classList.contains('show') && listEl) {
+        const tempId = 'temp-comment-' + Date.now();
+        const tempHTML = `
+          <div class="comment-item temp-comment" data-temp-id="${tempId}">
+            <img class="comment-avatar" src="https://ui-avatars.com/api/?name=You&background=ff69b4&color=fff" alt="You" />
+            <div class="comment-content">
+              <strong>You</strong>
+              <p>${content.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
+              <small>Just now</small>
+            </div>
+          </div>
+        `;
+        listEl.insertAdjacentHTML('beforeend', tempHTML);
+        tempCommentEl = listEl.querySelector(`[data-temp-id="${tempId}"]`);
+        listEl.scrollTop = listEl.scrollHeight;
+      }
+
+      const { error } = await supabase.from('story_comments').insert({
+        story_id: storyId,
+        user_id: currentUserId,
+        content
+      });
+
+      if (error) {
+        await CustomPopupManager.error("Failed to post comment: " + error.message, "Error");
+        countEls.forEach(el => {
+          el.textContent = Math.max(0, parseInt(el.textContent) - 1);
+        });
+        if (tempCommentEl) tempCommentEl.remove();
+        return;
+      }
+
+      await CoinSystem.addCoins(currentUserId, 0.1, 'comment');
+      await updateCoinDisplay();
+
+      input.value = '';
+
+      if (section?.classList.contains('show')) {
+        await renderCommentsForStory(storyId);
+      }
+    }
+
+    async function renderCommentsForStory(storyId) {
+      const section = document.getElementById(`comments-${storyId}`);
+      if (!section) return;
+
+      const list = section.querySelector('.comment-list');
+      const countEls = document.querySelectorAll(`[data-story-id="${storyId}"] .comment-count`);
+
+      const { data: comments, error: commError } = await supabase
+        .from('story_comments')
+        .select('id, content, created_at, user_id')
+        .eq('story_id', storyId)
+        .order('created_at', { ascending: true });
+
+      if (commError) {
+        list.innerHTML = '<p style="color:#e74c3c; padding:16px;">Could not load comments</p>';
+        return;
+      }
+
+      const total = comments?.length || 0;
+      countEls.forEach(el => el.textContent = total);
+
+      if (total === 0) {
+        list.innerHTML = '<p style="color:#777; text-align:center; padding:20px 0;">No comments yet. Be the first! 💬</p>';
+        return;
+      }
+
+      const userIds = [...new Set(comments.map(c => c.user_id))];
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, full_name, avatar_url')
+        .in('id', userIds);
+
+      const profileMap = {};
+      profiles?.forEach(p => profileMap[p.id] = p);
+
+      list.innerHTML = comments.map(c => {
+        const p = profileMap[c.user_id] || {};
+        const name = p.full_name || 'User';
+        const avatar = p.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ff69b4&color=fff`;
+
+        return `
+          <div class="comment-item">
+            <img class="comment-avatar" 
+                 src="${avatar}" 
+                 alt="${name}" 
+                 onerror="this.src='https://ui-avatars.com/api/?name=U&background=ff69b4&color=fff'" />
+            <div class="comment-content">
+              <strong>${name}</strong>
+              <p>${c.content}</p>
+              <small>${new Date(c.created_at).toLocaleString([], {
+                year: 'numeric', month: 'short', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+              })}</small>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      list.scrollTop = list.scrollHeight;
+    }
+
+    window.viewFullImage = (url) => {
+      const viewer = document.getElementById('photoViewer');
+      const img = document.getElementById('viewerImage');
+      if (!viewer || !img) return;
+      img.src = url;
+      viewer.style.display = 'flex';
+    };
+
+    async function loadStories(forceRefresh = false) {
+      await initUser();
+
+      if (!forceRefresh && !StoryStorage.isExpired()) {
+        const cachedStories = StoryStorage.getStories();
+        if (cachedStories.length > 0) {
+          console.log('Loading stories from cache...');
+          renderStories(cachedStories);
+          loadStoriesFromDB();
+          return;
+        }
+      }
+
+      await loadStoriesFromDB();
+    }
+
+    async function loadStoriesFromDB() {
+      const now = new Date().toISOString();
+
+      const { data: stories, error } = await supabase
+        .from('stories')
+        .select(`
+          id, user_id, caption, image_url, expires_at, created_at,
+          story_likes(user_id),
+          story_comments(id)
+        `)
+        .gt('expires_at', now)
+        .order('created_at', { ascending: false })
+        .limit(25);
+
+      if (error) {
+        console.error('Error loading stories:', error);
+        const cachedStories = StoryStorage.getStories();
+        if (cachedStories.length === 0) {
+          storiesGrid.innerHTML = '<p style="text-align:center; color:red; padding:40px;">Error loading stories</p>';
+        }
+        return;
+      }
+
+      if (stories) {
+        StoryStorage.setStories(stories);
+        StoryStorage.setLastFetchTime(Date.now().toString());
+        renderStories(stories);
+      }
+    }
+
+    function renderStories(stories) {
+      if (stories.length === 0) {
+        storiesGrid.innerHTML = '';
+        noStories.style.display = 'block';
+        return;
+      }
+
+      noStories.style.display = 'none';
+
+      (async () => {
+        const userIds = [...new Set(stories.map(s => s.user_id))];
+        const { data: profiles } = await supabase
+          .from('profiles')
+          .select('id, full_name, avatar_url')
+          .in('id', userIds);
+
+        const profileMap = Object.fromEntries(profiles?.map(p => [p.id, p]) || []);
+
+        storiesGrid.innerHTML = '';
+
+        stories.forEach(story => {
+          const profile = profileMap[story.user_id] || {};
+          const name = profile.full_name || 'User';
+          const avatar = profile.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ff69b4&color=fff`;
+          
+          const likeCount = story.story_likes?.length || 0;
+          const isLiked = story.story_likes?.some(l => l.user_id === currentUserId);
+          const commentCount = story.story_comments?.length || 0;
+
+          const hoursLeft = Math.max(0, Math.round((new Date(story.expires_at) - new Date()) / (3600 * 1000)));
+          const expiryText = hoursLeft > 0 ? `Expires in ${hoursLeft}h` : 'Expiring soon';
+
+          const card = document.createElement('div');
+          card.className = 'story-card';
+          card.setAttribute('data-story-id', story.id);
+          card.innerHTML = `
+            <div class="story-header" data-user-id="${story.user_id}">
+              <img class="story-avatar" src="${avatar}" alt="${name}" data-user-id="${story.user_id}" />
+              <div class="story-user-info">
+                <div class="story-name">${name}</div>
+                <div class="story-meta">${new Date(story.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+              </div>
+            </div>
+            <div class="story-content">
+              ${story.caption ? `<p class="story-caption">${story.caption}</p>` : ''}
+              ${story.image_url ? `
+                <img class="story-image" 
+                     src="${story.image_url}" 
+                     onclick="viewFullImage('${story.image_url}')" 
+                     alt="Story" />` : ''}
+            </div>
+            <div class="story-expiry">${expiryText}</div>
+            <div class="story-actions">
+              <button class="action-btn like-btn ${isLiked ? 'active' : ''}" data-story-id="${story.id}">
+                <span class="material-icons like-icon">${isLiked ? 'favorite' : 'favorite_border'}</span>
+                <span class="like-count">${likeCount}</span>
+              </button>
+              <button class="action-btn comment-toggle" data-story-id="${story.id}">
+                <span class="material-icons">chat_bubble_outline</span>
+                <span class="comment-count">${commentCount}</span>
+              </button>
+            </div>
+            <div class="comments-section" id="comments-${story.id}">
+              <div class="comment-list"></div>
+              <div class="comment-form">
+                <input type="text" class="comment-input" placeholder="Add a comment..." maxlength="280" />
+                <button class="post-comment-btn">Send</button>
+              </div>
+            </div>
+          `;
+
+          card.querySelector('.story-avatar')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showQuickProfile(story.user_id);
+          });
+
+          card.querySelector('.story-user-info')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showQuickProfile(story.user_id);
+          });
+
+          card.querySelector('.like-btn').onclick = (e) => toggleLike(story.id, e.currentTarget);
+          
+          card.querySelector('.comment-toggle').onclick = () => {
+            const section = document.getElementById(`comments-${story.id}`);
+            const isShowing = section.classList.contains('show');
+            section.classList.toggle('show');
+            if (!isShowing) renderCommentsForStory(story.id);
+          };
+
+          card.querySelector('.post-comment-btn').onclick = (e) => {
+            const input = e.target.previousElementSibling;
+            postComment(story.id, input);
+          };
+
+          storiesGrid.appendChild(card);
+        });
+      })();
+    }
+
+    addBtn.onclick = () => {
+      modal.style.display = 'flex';
+      captionEl.value = '';
+      imageEl.value = '';
+      previewEl.style.display = 'none';
+      selectedImage = null;
+      durationEl.value = '';
+      postBtn.disabled = true;
+    };
+
+    closeModal.onclick = () => modal.style.display = 'none';
+    modal.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+
+    imageEl.onchange = (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        CustomPopupManager.alert("Please select an image file.", "Invalid File");
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        CustomPopupManager.alert("Image is too large. Maximum 5MB allowed.", "File Too Large");
+        return;
+      }
+      selectedImage = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        previewEl.src = reader.result;
+        previewEl.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    };
+
+    durationEl.onchange = () => {
+      postBtn.disabled = !durationEl.value;
+    };
+
+    postBtn.onclick = async () => {
+      const caption = captionEl.value.trim();
+      const duration = parseInt(durationEl.value);
+
+      if (!duration) {
+        await CustomPopupManager.alert("Please select how long the story will stay up.", "Duration Required");
+        return;
+      }
+      if (!caption && !selectedImage) {
+        await CustomPopupManager.alert("Add a caption or upload a photo to share.", "Content Required");
+        return;
+      }
+
+      postBtn.disabled = true;
+      postBtn.textContent = 'Sharing...';
+
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user) throw new Error('Not logged in');
+
+        const userId = session.user.id;
+        let imageUrl = null;
+
+        if (selectedImage) {
+          const ext = selectedImage.name.split('.').pop()?.toLowerCase() || 'jpg';
+          const path = `${userId}/${Date.now()}.${ext}`;
+          const { error: uploadErr } = await supabase.storage
+            .from('stories')
+            .upload(path, selectedImage, { cacheControl: '3600', upsert: false });
+          if (uploadErr) throw uploadErr;
+
+          const { data: urlData } = supabase.storage.from('stories').getPublicUrl(path);
+          imageUrl = urlData.publicUrl;
+        }
+
+        const expiresAt = new Date(Date.now() + duration * 60 * 60 * 1000).toISOString();
+
+        const { error } = await supabase.from('stories').insert({
+          user_id: userId,
+          caption: caption || null,
+          image_url: imageUrl,
+          duration_hours: duration,
+          expires_at: expiresAt
+        });
+
+        if (error) throw error;
+
+        await CustomPopupManager.success("Your story has been shared! 💖", "Story Posted");
+        modal.style.display = 'none';
+        StoryStorage.clear();
+        await loadStories(true);
+      } catch (err) {
+        await CustomPopupManager.error("Failed to share story: " + (err.message || 'Unknown error'), "Error");
+      } finally {
+        postBtn.disabled = false;
+        postBtn.textContent = 'Share Story 💖';
+      }
+    };
+
+    supabase
+      .channel('stories-likes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'story_likes' }, () => {
+        StoryStorage.clear();
+        loadStories(true);
+      })
+      .subscribe();
+
+    supabase
+      .channel('stories-comments')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'story_comments' }, (payload) => {
+        const storyId = payload.new?.story_id || payload.old?.story_id;
+        if (!storyId) return;
+
+        const section = document.getElementById(`comments-${storyId}`);
+        if (section && section.classList.contains('show')) {
+          renderCommentsForStory(storyId);
+        }
+      })
+      .subscribe();
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        console.log('Page is visible - refreshing stories');
+        loadStories(true);
+      }
+    });
+
+    loadStories();
+    setInterval(() => loadStories(false), 30000);
+
+    supabase.auth.onAuthStateChange((_, session) => {
+      if (!session) window.location.href = '/index.html';
+    });
+
+    document.addEventListener("input", (e) => {
+      if (e.target.classList.contains("comment-input")) {
+        e.target.style.height = "auto";
+        e.target.style.height = e.target.scrollHeight + "px";
+      }
+    });
+
+    async function setupPushNotifications() {
+      try {
+        if (!('serviceWorker' in navigator)) {
+          console.log('Service Workers not supported');
+          return;
+        }
+
+        const reg = await navigator.serviceWorker.ready;
+        console.log('✅ Service Worker ready for push notifications');
+
+        navigator.serviceWorker.addEventListener('message', (event) => {
+          if (event.data?.type === 'OPEN_CHAT') {
+            const userId = event.data.userId;
+            const name = event.data.userName || 'User';
+            window.location.href = `/user/user_chat.html?with=${userId}&name=${encodeURIComponent(name)}`;
+          }
+        });
+
+        if (Notification.permission === 'granted') {
+          console.log('Notification permission already granted');
+        } else if (Notification.permission !== 'denied') {
+          const permission = await Notification.requestPermission();
+          console.log('Notification permission:', permission);
+        }
+      } catch (error) {
+        console.error('Push notification setup error:', error);
+      }
+    }
+
+    setupPushNotifications();
+  </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("/service-worker.js")
+          .then(() => console.log("Service Worker Registered"))
+          .catch(err => console.log("Service Worker Failed:", err));
+      });
+    }
+  </script>
+</body>
+</html>
