@@ -1004,14 +1004,14 @@
   function generateReferralLink() {
     const baseUrl = window.location.origin;
     const referralCode = currentUserId.substring(0, 8).toUpperCase();
-    return `${baseUrl}/auth/signup.html?ref=${referralCode}`;
+    return `${baseUrl}auth/signup.html?ref=${referralCode}`;
   }
 
   // Initialize
   async function init() {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
-      window.location.replace('/auth/login.html');
+      window.location.replace('authlogin.html');
       return;
     }
 
@@ -1335,7 +1335,7 @@
 
         showToast('Account deleted successfully');
         setTimeout(() => {
-          window.location.replace('/auth/login.html');
+          window.location.replace('authlogin.html');
         }, 2000);
       } catch (err) {
         showToast(err.message || 'Failed to delete account', 'error');

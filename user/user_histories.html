@@ -381,7 +381,7 @@ body {
     async function checkAuthAndLoad() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        window.location.replace('/auth/login.html');
+        window.location.replace('authlogin.html');
 
         return;
       }

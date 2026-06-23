@@ -21,8 +21,8 @@ const PRECACHE_URLS = [
   '/user/user_chat.html',
   '/user/user_profile.html',
   '/user/user_news.html',
-  '/auth/signup.html',
-  '/auth/login.html'
+  'auth/signup.html',
+  'authlogin.html'
 ];
 
 // ────────────────────────────────────────────────

@@ -1032,7 +1032,7 @@
       clearCache(currentUserId);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      window.location.replace('/auth/login.html');
+      window.location.replace('authlogin.html');
     } catch (err) {
       showError('Logout Failed', err.message || 'Failed to log out.');
     }

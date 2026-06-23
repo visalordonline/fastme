@@ -1192,7 +1192,7 @@ body {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
           console.warn('No session, redirecting to login');
-          window.location.href = '/auth/login.html';
+          window.location.href = 'authlogin.html';
           return;
         }
 

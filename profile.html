@@ -457,7 +457,7 @@
 
    async function loadProfile() {
   const { data: { session } } = await supabase.auth.getSession();
-  if (!session) return window.location.replace('/login.html');
+  if (!session) return window.location.replace('login.html');
 
   currentUserId = session.user.id;
   const user = session.user;

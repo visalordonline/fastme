@@ -39,7 +39,7 @@
       "name": "Login",
       "short_name": "Login",
       "description": "Quickly access the login page",
-      "url": "/auth/login",
+      "url": "auth/login",
       "icons": [
         {
           "src": "/images/logo.png",
@@ -52,7 +52,7 @@
       "name": "Sign Up",
       "short_name": "Sign Up",
       "description": "Create a new account",
-      "url": "/auth/signup",
+      "url": "auth/signup",
       "icons": [
         {
           "src": "/images/logo.png",

@@ -677,7 +677,7 @@
     async function checkAuth() {
         const { data: { user } } = await db.auth.getUser();
         if (!user) {
-            window.location.href = "../login.html";
+            window.location.href = "..login.html";
         } else {
             await loadUserProfile();
         }
@@ -686,7 +686,7 @@
     // ---------- LOGOUT ----------
     document.getElementById('logoutBtn').addEventListener('click', async () => {
         await db.auth.signOut();
-        window.location.href = "../login.html";
+        window.location.href = "..login.html";
     });
 
     // ---------- HELPERS ----------
@@ -732,7 +732,7 @@
     async function loadContributors() {
         try {
             const { data: { user } } = await db.auth.getUser();
-            if (!user) return window.location.href = "../login.html";
+            if (!user) return window.location.href = "..login.html";
 
             const { data, error } = await db
                 .from('contribution')

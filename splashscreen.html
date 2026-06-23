@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8022660006281675"
+     crossorigin="anonymous"></script>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#ff69b4">
+  <link rel="icon" type="image/png" href="/logo.jpg" />
+  <meta name="description" content="Find and connect with trusted service providers in your area.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Fastme">
+  
+  <meta charset="UTF-8" />
+  <title>Fastme - Find Your Match</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      height: 100vh;
+      background: #000;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #bg-video {
+      position: fixed;
+      right: 0; bottom: 0;
+      min-width: 100%; min-height: 100%;
+      z-index: -1;
+      filter: brightness(0.4) blur(2px);
+      object-fit: cover;
+    }
+
+    .splash-container {
+      text-align: center;
+      z-index: 1;
+      animation: fadeInScale 1.2s ease forwards;
+    }
+    .logo {
+      font-size: 4.5rem;
+      font-weight: 800;
+      background: linear-gradient(45deg, #ff8c00, #ff4500);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+    .spinner { width: 50px; height: 50px; border: 4px solid rgba(255,140,0,0.2); border-top: 4px solid #ff8c00; border-radius: 50%; margin: 30px auto; animation: spin 1s linear infinite; }
+    .loading-text { font-size: 1.1rem; opacity: 0.9; margin-top: 30px; letter-spacing: 3px; text-transform: uppercase; }
+    .redirecting { font-size: 0.9rem; opacity: 0.7; margin-top: 40px; }
+
+    @keyframes fadeInScale { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #storeScreen {
+      display: none;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+      text-align: center;
+    }
+    #storeScreen button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 15px;
+      background: #4CAF50;
+      border: none;
+      border-radius: 30px;
+      font-size: 18px;
+      color: white;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="grok_video_2026-03-11-09-05-07.mp4" type="video/mp4">
+  </video>
+
+  <!-- Splash Screen -->
+  <div id="splashScreen" class="splash-container" style="display: none;">
+    <div class="logo">Fastme</div>
+    <div class="spinner"></div>
+    <div class="loading-text">Finding your perfect match...</div>
+    <div class="redirecting" id="redirectText">Checking account...</div>
+  </div>
+
+  <!-- Install Screen -->
+  <div id="storeScreen">
+    <div style="display:flex; align-items:center; gap:15px; justify-content:center;">
+      <img src="/logo.jpg" width="80" style="border-radius:20px;">
+      <div>
+        <h2>Fastme</h2>
+        <p style="opacity:0.7;">Fastme Inc.</p>
+        <p style="color:#ff8c00;">★ 4.6 • 2M reviews</p>
+      </div>
+    </div>
+    
+    <button id="installBtn">Install Fastme</button>
+    
+    <h3 style="margin-top:30px;">About this app</h3>
+    <p style="opacity:0.8;">
+      Find and connect with trusted service providers and matches near you.
+    </p>
+    
+    <div style="margin-top:20px; display:flex; gap:10px; overflow-x:auto; padding:10px 0;">
+      <img src="/discription/image-18.jpg" width="120" style="border-radius:12px;">
+      <img src="/discription/image-37.jpg" width="120" style="border-radius:12px;">
+      <img src="/discription/image-38.jpg" width="120" style="border-radius:12px;">
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://bwugvwbkuynncfdgwqyg.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWd2d2JrdXlubmNmZGd3cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjk2NTcsImV4cCI6MjA4Nzk0NTY1N30.FgBboBGbxq7JnI_2Mk6bi2IoS75js8YRV8csN0_s8oE';
+
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: { 
+        autoRefreshToken: true, 
+        persistSession: true, 
+        detectSessionInUrl: true, 
+        storage: localStorage 
+      }
+    });
+
+    let deferredPrompt;
+
+    // ==================== CHECK IF USER IS ALREADY LOGGED IN ====================
+    async function checkAuthAndRedirect() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+
+        if (session?.user) {
+          console.log('✅ User already logged in:', session.user.id);
+          
+          // Determine where to redirect
+          const isProvider = 
+            session.user.user_metadata?.role === 'creator' || 
+            session.user.user_metadata?.join_intent === 'be_found';
+
+          const target = isProvider ? '/provider/news.html' : '/user/user_news.html';
+          
+          document.getElementById('redirectText').textContent = 'Welcome back! Redirecting...';
+          setTimeout(() => {
+            window.location.replace(target);
+          }, 800);
+          return true; // Already redirected
+        }
+      } catch (err) {
+        console.error('Auth check error:', err);
+      }
+      return false; // Not logged in
+    }
+
+    // Mobile & PWA detection
+    function isMobile() {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent) ||
+             (window.innerWidth <= 768 && ('ontouchstart' in window));
+    }
+
+    function isInstalled() {
+      return window.matchMedia('(display-mode: standalone)').matches || 
+             window.navigator.standalone === true ||
+             localStorage.getItem("installed") === "true";
+    }
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      deferredPrompt = e;
+    });
+
+    // Main Logic
+    window.addEventListener("load", async () => {
+      const splash = document.getElementById("splashScreen");
+      const store  = document.getElementById("storeScreen");
+
+      // First: Check if user is logged in
+      const isLoggedIn = await checkAuthAndRedirect();
+
+      if (isLoggedIn) return; // Already redirected
+
+      // If not logged in, continue with normal flow
+      if (isInstalled()) {
+        splash.style.display = "block";
+        setTimeout(() => {
+          window.location.href = "authlogin.html";
+        }, 2200);
+      } 
+      else if (isMobile()) {
+        store.style.display = "block";
+      } 
+      else {
+        splash.style.display = "block";
+        setTimeout(() => {
+          window.location.href = "authlogin.html";
+        }, 2200);
+      }
+    });
+
+    // Install Button
+    document.getElementById("installBtn").addEventListener("click", async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+
+        if (outcome === "accepted") {
+          localStorage.setItem("installed", "true");
+          document.getElementById("storeScreen").style.display = "none";
+          document.getElementById("splashScreen").style.display = "block";
+          setTimeout(() => window.location.href = "auth/login", 1500);
+        }
+      } else {
+        alert("📲 Please use your browser menu to install:\n• Chrome → Install App\n• Safari → Add to Home Screen");
+      }
+    });
+  </script>
+</body>
+</html>

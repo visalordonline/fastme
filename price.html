@@ -6,7 +6,16 @@
     <title>fastme Software | Web, App Development & Tech Training</title>
     <link rel="stylesheet" href="/style1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Pricing Hero Variation */
+.pricing-hero {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2ff 100%);
+}
 
+.pricing-hero .hero-content h1 {
+    font-size: 3rem;
+}
+    </style>
 </head>
 <body>
 
@@ -16,14 +25,13 @@
             <div class="logo">fastme<span class="logo-accent">Software</span></div>
             
             <ul class="nav-links" id="nav-links">
-                <li><a href="index.html">Home</a></li>
                 <li><a href="service.html">Services</a></li>
                 <li><a href="price.html">Price</a></li>
                 <li><a href="splashscreen.html">Meet New Friend</a></li>
             </ul>
 
             <div class="nav-buttons">
-                <a href="contact.html" class="btn-secondary">Contact Us</a>
+                <a href="#contact" class="btn-secondary">Contact Us</a>
                 <a href="https://play.google.com/store" target="_blank" class="btn-primary">Get the App</a>
             </div>
 
@@ -33,146 +41,41 @@
             </div>
         </nav>
     </header>
-
-    <!-- HERO -->
-    <main class="hero-container">
+    and change it to prices section
+  <!-- SERVICES HERO -->
+  <main class="hero-container services-hero">
         <div class="hero-content">
-            <div class="badge">Next-Gen Software Solutions & Training</div>
-            <h1>Build and Scale <br><span class="gradient-text">Your Digital Future</span></h1>
-            <p>From premium website and mobile app development to expert IT training, data analysis, and advanced cybersecurity defenses. We turn complex ideas into robust digital realities.</p>
-            
+            <div class="badge">Our Expertise</div>
+            <h1>Premium <span class="gradient-text">Services</span> That Drive Growth</h1>
+            <p>We deliver world-class website development, mobile applications, cybersecurity, tech training, data analysis, graphic design, and digital printing solutions tailored to your needs.</p>
+           
             <div class="cta-group">
-                <a href="https://play.google.com/store" target="_blank" class="btn-playstore">
-                    <i class="fab fa-google-play icon-play"></i>
-                    <div class="play-text">
-                        <span>GET IT ON</span>
-                        <strong>Google Play</strong>
-                    </div>
-                </a>
-                <button onclick="document.getElementById('services').scrollIntoView({ behavior: 'smooth' })" class="btn-outline">Explore Services</button>
+                <a href="#services" class="btn-primary">Explore All Services</a>
+                <a href="index.html#pricing" class="btn-outline">View Pricing</a>
             </div>
         </div>
-
         <div class="hero-visual">
             <div class="glow-card" id="interactiveCard">
                 <div class="card-header">
                     <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-                    <span class="card-title">fastme-terminal</span>
+                    <span class="card-title">fastme-services</span>
                 </div>
                 <div class="card-body">
-                    <pre><code><span class="keyword">const</span> fastme = <span class="function">require</span>(<span class="string">'@fastme/core'</span>);
-
-<span class="comment">// Initialize premium ecosystem</span>
-<span class="keyword">const</span> app = <span class="keyword">new</span> fastme.<span class="property">AppEngine</span>({
-    <span class="property">services</span>: [<span class="string">'Web'</span>, <span class="string">'Mobile'</span>, <span class="string">'CyberSec'</span>],
-    <span class="property">optimized</span>: <span class="keyword">true</span>
-});
-
-<span class="keyword">await</span> app.<span class="property">deployTarget</span>(<span class="string">'PlayStore & Web'</span>);
-<span class="comment">// System Status: Online & Secure</span></code></pre>
+                    <pre><code><span class="keyword">const</span> services = [
+    <span class="string">'Website Development'</span>,
+    <span class="string">'Mobile App Development'</span>,
+    <span class="string">'Cyber Security'</span>,
+    <span class="string">'Tech Training'</span>,
+    <span class="string">'Data Analysis'</span>,
+    <span class="string">'Graphic Design'</span>
+];
+<span class="comment">// Ready to transform your ideas into reality</span>
+<span class="keyword">await</span> fastme.<span class="property">deliverExcellence</span>(services);</code></pre>
                 </div>
             </div>
         </div>
     </main>
-
-    <!-- ABOUT -->
-    <section class="about-section">
-        <div class="container">
-            <h2>About Fastme Software</h2>
-            <p>
-                Fastme Software is a technology company focused on website development, 
-                mobile applications, cybersecurity, data analysis, tech training, 
-                graphic design, and digital transformation solutions.
-            </p>
-        </div>
-    </section>
-
-    <!-- WHY US -->
-    <section class="why-us">
-        <div class="container">
-            <h2>Why Choose Fastme?</h2>
-            <div class="reasons">
-                <div>
-                    <i class="fas fa-bolt"></i>
-                    <h3>Fast Delivery</h3>
-                    <p>Projects delivered on schedule.</p>
-                </div>
-                <div>
-                    <i class="fas fa-shield-alt"></i>
-                    <h3>Secure Systems</h3>
-                    <p>Security-first development approach.</p>
-                </div>
-                <div>
-                    <i class="fas fa-headset"></i>
-                    <h3>24/7 Support</h3>
-                    <p>Dedicated customer assistance.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SERVICES -->
-    <section id="services" class="services-section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">What We Do</span>
-                <h2>Comprehensive Tech & Design Solutions</h2>
-                <p>From lines of code to beautiful prints, we empower your business and career with premium digital services.</p>
-            </div>
-
-            <div class="service-container">
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-code"></i></div>
-                    <h3>Website Development</h3>
-                    <p>Stunning, fast, and highly secure custom websites tailored to your brand, including e-commerce platforms and web apps.</p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
-                    <h3>App Development</h3>
-                    <p>High-performance iOS and Android applications built natively or cross-platform to provide seamless user experiences.</p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
-                    <h3>App & Web Academy</h3>
-                    <p>Hands-on coding bootcamps and classes. Learn programming languages, frameworks, and modern tools from active industry pros.</p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Cyber Security</h3>
-                    <p>Vulnerability testing, threat protection, and digital asset defense protocols to keep your company data bulletproof.</p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-laptop"></i></div>
-                    <h3>Computer Training</h3>
-                    <p>Essential to advanced IT courses covering literacy, specialized software suites, and general desktop operations.</p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-chart-bar"></i></div>
-                    <h3>Data Analysis</h3>
-                    <p>Transform raw analytics into growth. We clean, visualize, and interpret complex data to optimize your decision-making.</p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-paint-brush"></i></div>
-                    <h3>Graphic Design</h3>
-                    <p>Memorable visual brand identities, digital assets, logo configurations, and UI designs that grab immediate attention.</p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-print"></i></div>
-                    <h3>Corporate Printing</h3>
-                    <p>Premium print execution for banners, merchandise, business stationery, and marketing materials with crisp rendering.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PRICING -->
+     <!-- PRICING -->
     <section id="pricing" class="pricing-section">
         <div class="container">
             <div class="pricing-toggle-container">
@@ -333,61 +236,7 @@
             </div>
         </div>
     </section>
-
-    <!-- PORTFOLIO -->
-    <section class="portfolio">
-        <div class="container">
-            <h2>Our Recent Projects</h2>
-            <div class="portfolio-grid">
-                <div class="project-card">
-                    <h3>E-Commerce Website</h3>
-                    <p>Online shopping platform.</p>
-                </div>
-                <div class="project-card">
-                    <h3>School Portal</h3>
-                    <p>Student management system.</p>
-                </div>
-                <div class="project-card">
-                    <h3>Savings App</h3>
-                    <p>Contribution and Esusu platform.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TESTIMONIALS -->
-    <section class="testimonials">
-        <div class="container">
-            <h2>What Clients Say</h2>
-            <div class="testimonial-grid">
-                <div class="testimonial-card">
-                    <p>"Fastme Software built our business website and increased our online presence."</p>
-                    <strong>- John Enterprises</strong>
-                </div>
-                <div class="testimonial-card">
-                    <p>"Professional and reliable team."</p>
-                    <strong>- Sarah Technologies</strong>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="faq">
-        <div class="container">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-container">
-                <details>
-                    <summary>How long does website development take?</summary>
-                    <p>Typically 1-4 weeks depending on complexity.</p>
-                </details>
-                <details>
-                    <summary>Do you offer app maintenance?</summary>
-                    <p>Yes, we provide ongoing support and updates.</p>
-                </details>
-            </div>
-        </div>
-    </section>
+   
 
     <!-- CONTACT -->
     <section id="contact" class="contact-section">
