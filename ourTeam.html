@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fastme Software | Web, App Development & Tech Training</title>
+    <link rel="stylesheet" href="/style1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ====================== DIRECTOR SECTION ====================== */
+.director-section {
+    padding: 4rem 0;
+    background: #f8f9fa;
+}
+
+.director-hero {
+    background: linear-gradient(135deg, #0066ff, #00ccff);
+    color: white;
+    text-align: center;
+    padding: 4rem 2rem;
+    border-radius: 16px;
+    margin-bottom: 4rem;
+}
+
+.director-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.3rem;
+    opacity: 0.95;
+}
+
+.director-profile {
+    display: grid;
+    grid-template-columns: 1fr 1.8fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+.director-image {
+    position: relative;
+}
+
+.director-image img {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.director-badge {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: #0066ff;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+}
+
+.director-info h2 {
+    font-size: 2.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.location {
+    color: #0066ff;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.director-bio p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: #444;
+}
+
+.qualifications ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.qualifications li {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.achievement-item {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.vision {
+    background: #f0f4ff;
+    padding: 2rem;
+    border-radius: 12px;
+    font-style: italic;
+    margin: 2.5rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .director-profile {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+/* DIRECTOR SECTION - FORCE BLACK TEXT */
+.director-section {
+    background: #f8f9fa;
+}
+
+.director-info,
+.director-info h2,
+.director-info h3,
+.director-info h4,
+.director-info p,
+.director-info li,
+.achievements-grid p {
+    color: #222 !important;           /* Deep black */
+}
+
+.director-info strong {
+    color: #1a1a1a;
+}
+
+.qualifications ul li,
+.achievement-item {
+    color: #222;
+}
+
+.vision {
+    background: #f0f4ff;
+    padding: 2rem;
+    border-radius: 12px;
+    border-left: 5px solid #0066ff;
+}
+
+.vision p {
+    color: #222 !important;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.location {
+    color: #0066ff !important;
+    font-weight: 500;
+}
+
+/* Make sure icons are visible */
+.qualifications i,
+.achievement-item i {
+    color: #0066ff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .director-profile {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+
+     <!-- HEADER -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">fastme<span class="logo-accent">Software</span></div>
+            
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="service.html">Services</a></li>
+                <li><a href="price.html">Price</a></li>
+                <li><a href="ourTeam.html">Team</a></li>
+                <li><a href="splashscreen.html">Meet New Friend</a></li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a href="contact.html" class="btn-secondary">Contact Us</a>
+                <a href="https://play.google.com/store" target="_blank" class="btn-primary">Get the App</a>
+            </div>
+
+            <!-- Hamburger Menu -->
+            <div class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+<!-- ABOUT PAGE HERO -->
+<main class="hero-container about-hero">
+    <div class="hero-content">
+        <div class="badge">Leadership & Vision</div>
+        <h1>Meet Our Founder &amp; Director</h1>
+        <p>Learn about the man behind Fastme Software — a passionate technologist, educator, and visionary from Benue State dedicated to digital excellence in Nigeria.</p>
+        
+        <div class="cta-group">
+            <a href="#director" class="btn-primary">Meet Saviour Gentle Sule</a>
+            <a href="#contact" class="btn-outline">Get In Touch</a>
+        </div>
+    </div>
+
+    <div class="hero-visual">
+        <div class="glow-card" id="interactiveCard">
+            <div class="card-header">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                <span class="card-title">fastme-founder</span>
+            </div>
+            <div class="card-body">
+                <pre><code><span class="keyword">const</span> founder = {
+    <span class="property">name</span>: <span class="string">"Saviour Gentle Sule"</span>,
+    <span class="property">role</span>: <span class="string">"Founder &amp; CEO"</span>,
+    <span class="property">mission</span>: <span class="string">"Digital Empowerment Across Nigeria"</span>
+};
+
+<span class="comment">// Building the future through technology and education</span></code></pre>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- ABOUT COMPANY -->
+<section class="about-section">
+    <div class="container">
+        <h2>About Fastme Software</h2>
+        <p>
+            Fastme Software is a dynamic technology company based in Benue State, Nigeria. 
+            We specialize in premium website development, mobile applications, cybersecurity, 
+            data analysis, tech training, graphic design, and digital transformation solutions.
+        </p>
+        <p>
+            Founded with a vision to bridge the digital divide, we combine technical expertise 
+            with a passion for empowering businesses and individuals through innovative technology and quality education.
+        </p>
+    </div>
+</section>
+
+<!-- DIRECTOR / FOUNDER SECTION -->
+<section id="director" class="director-section">
+    <div class="container">
+        <div class="director-hero">
+            <div class="director-hero-content">
+                <h2>Our Founder &amp; Director</h2>
+                <p style="color: #0066ff;" class="subtitle">Saviour Gentle Sule</p>
+            </div>
+        </div>
+
+        <div class="director-profile">
+            <div class="director-image">
+                <img src="direct.png" alt="Saviour Gentle Sule - Founder & Director of Fastme Software">
+                <div class="director-badge">
+                    <span>Founder &amp; CEO</span>
+                </div>
+            </div>
+
+            <div class="director-info">
+                <h2>Saviour Gentle Sule</h2>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> Benue State, Nigeria</p>
+                
+                <div class="director-bio">
+                    <p>
+                        Saviour Gentle Sule is a passionate technologist, educator, and entrepreneur with a strong commitment to digital transformation in Nigeria. 
+                        As the Founder and Director of <strong>Fastme Software</strong>, he leads the company with a clear vision of making quality technology accessible to businesses and individuals across the country.
+                    </p>
+                    <p>
+                        With multiple professional certifications in Web Development, Mobile App Development, Cybersecurity, and a Diploma in Computer Science, Saviour brings both deep technical knowledge and practical experience to every project.
+                    </p>
+                </div>
+
+                <div class="qualifications">
+                    <h3>Professional Qualifications &amp; Certifications</h3>
+                    <ul>
+                        <li><i class="fas fa-certificate"></i> Advanced Web Development Certification</li>
+                        <li><i class="fas fa-certificate"></i> Mobile App Development (Android &amp; Cross-Platform)</li>
+                        <li><i class="fas fa-certificate"></i> Cybersecurity Professional Certificate</li>
+                        <li><i class="fas fa-certificate"></i> Diploma in Computer Science &amp; Technology</li>
+                        <li><i class="fas fa-certificate"></i> Data Analysis &amp; Visualization</li>
+                        <li><i class="fas fa-certificate"></i> Digital Marketing &amp; Graphic Design</li>
+                    </ul>
+                </div>
+
+                <div class="achievements">
+                    <h3>Key Achievements</h3>
+                    <div class="achievements-grid">
+                        <div class="achievement-item">
+                            <h4>Fastme Software</h4>
+                            <p>Founded Fastme Software to deliver high-quality websites, mobile apps, cybersecurity solutions, and tech training.</p>
+                        </div>
+                        <div class="achievement-item">
+                            <h4>Tech Education</h4>
+                            <p>Successfully trained over 50 students in web development, app development, and cybersecurity.</p>
+                        </div>
+                        <div class="achievement-item">
+                            <h4>Community Impact</h4>
+                            <p>Actively mentoring young talents in Benue State and promoting digital literacy across Nigeria.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vision">
+                    <h3>My Vision</h3>
+                    <p>
+                        "To build a technology-driven future where every business and individual in Nigeria has access to world-class digital solutions and skills. 
+                        Technology is the key to economic growth, and education is the foundation."
+                    </p>
+                    <p><strong>— Saviour Gentle Sule</strong></p>
+                </div>
+
+                <a href="#contact" class="btn-primary">Let's Collaborate</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+    <div class="container">
+        <h2>Get In Touch With The Director</h2>
+        <p>Have a project in mind or want to discuss collaboration? Reach out directly.</p>
+        <form id="contact-form">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message" rows="6" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+</section>
+
+    <!-- STATS -->
+    <section class="stats">
+        <div class="container">
+            <div>
+                <h2>100+</h2>
+                <p>Projects Completed</p>
+            </div>
+            <div>
+                <h2>50+</h2>
+                <p>Students Trained</p>
+            </div>
+            <div>
+                <h2>30+</h2>
+                <p>Business Clients</p>
+            </div>
+            <div>
+                <h2>99%</h2>
+                <p>Customer Satisfaction</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content container">
+            <div>
+                <h3>Fastme Software</h3>
+                <p>Building websites, mobile apps, cybersecurity solutions, and digital innovations.</p>
+            </div>
+
+            <div>
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3>Contact</h3>
+                <p>Email: <a href="mailto:info@fastme.org">info@fastme.org</a></p>
+                <p>Phone: 08160869969, 08021311787</p>
+                <p>277 Ikwerre Road, Mile 4, by Ocici Park <br> Port Harcourt, Rivers State</p>
+            </div>
+
+            <div>
+                <h3>Follow Us</h3>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 Fastme Software. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
