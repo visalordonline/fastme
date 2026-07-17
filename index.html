@@ -3,44 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fastme Software | Web, App Development & Tech Training</title>
+    <title>Fastme - Connect with Trusted Local Professionals</title>
     <link rel="stylesheet" href="/style1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 </head>
 <body>
-
-    <!-- HEADER -->
-    <header>
-        <nav class="navbar">
-            <div class="logo">fastme<span class="logo-accent">Software</span></div>
-            
-            <ul class="nav-links" id="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="service.html">Services</a></li>
-                <li><a href="price.html">Price</a></li>
-                <li><a href="ourTeam.html">Team</a></li>
-                <li><a href="splashscreen.html">Meet New Friend</a></li>
-            </ul>
-
-            <div class="nav-buttons">
-                <a href="contact.html" class="btn-secondary">Contact Us</a>
-                <a href="https://play.google.com/store" target="_blank" class="btn-primary">Get the App</a>
-            </div>
-
-            <!-- Hamburger Menu -->
-            <div class="hamburger" id="hamburger">
-                <i class="fas fa-bars"></i>
-            </div>
-        </nav>
-    </header>
 
     <!-- HERO -->
     <main class="hero-container">
         <div class="hero-content">
-            <div class="badge">Next-Gen Software Solutions & Training</div>
-            <h1>Build and Scale <br><span class="gradient-text">Your Digital Future</span></h1>
-            <p>From premium website and mobile app development to expert IT training, data analysis, and advanced cybersecurity defenses. We turn complex ideas into robust digital realities.</p>
+            <div class="badge">On-Demand Service Marketplace</div>
+            <h1>Find Trusted <br><span class="gradient-text">Local Professionals</span> Near You</h1>
+            <p>Fastme connects you instantly with verified plumbers, electricians, painters, cleaners, handymen, AC technicians and more. Book services, track live location, and get the job done with peace of mind.</p>
             
             <div class="cta-group">
                 <a href="https://play.google.com/store" target="_blank" class="btn-playstore">
@@ -50,7 +24,7 @@
                         <strong>Google Play</strong>
                     </div>
                 </a>
-                <button onclick="document.getElementById('services').scrollIntoView({ behavior: 'smooth' })" class="btn-outline">Explore Services</button>
+                <button onclick="document.getElementById('services').scrollIntoView({ behavior: 'smooth' })" class="btn-outline">Browse Services</button>
             </div>
         </div>
 
@@ -79,11 +53,10 @@
     <!-- ABOUT -->
     <section class="about-section">
         <div class="container">
-            <h2>About Fastme Software</h2>
+            <h2>About Fastme</h2>
             <p>
-                Fastme Software is a technology company focused on website development, 
-                mobile applications, cybersecurity, data analysis, tech training, 
-                graphic design, and digital transformation solutions.
+                Fastme is a smart service marketplace app that connects customers with trusted local professionals for everyday home and business needs. 
+                We also specialize in building high-quality websites and mobile applications for businesses.
             </p>
         </div>
     </section>
@@ -95,18 +68,18 @@
             <div class="reasons">
                 <div>
                     <i class="fas fa-bolt"></i>
-                    <h3>Fast Delivery</h3>
-                    <p>Projects delivered on schedule.</p>
+                    <h3>Instant Booking</h3>
+                    <p>Connect with nearby professionals in minutes.</p>
+                </div>
+                <div>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Live Tracking</h3>
+                    <p>Real-time location updates during service.</p>
                 </div>
                 <div>
                     <i class="fas fa-shield-alt"></i>
-                    <h3>Secure Systems</h3>
-                    <p>Security-first development approach.</p>
-                </div>
-                <div>
-                    <i class="fas fa-headset"></i>
-                    <h3>24/7 Support</h3>
-                    <p>Dedicated customer assistance.</p>
+                    <h3>Verified Professionals</h3>
+                    <p>Rated and trusted service providers.</p>
                 </div>
             </div>
         </div>
@@ -116,220 +89,46 @@
     <section id="services" class="services-section">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">What We Do</span>
-                <h2>Comprehensive Tech & Design Solutions</h2>
-                <p>From lines of code to beautiful prints, we empower your business and career with premium digital services.</p>
+                <span class="section-badge">Our Solutions</span>
+                <h2>Services You Can Trust</h2>
+                <p>From home repairs to digital solutions — we’ve got you covered.</p>
             </div>
 
             <div class="service-container">
                 <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-wrench"></i></div>
+                    <h3>Plumbing & Electrical</h3>
+                    <p>Fast response from verified plumbers and electricians near you.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-paint-roller"></i></div>
+                    <h3>Painting & Cleaning</h3>
+                    <p>Professional painters and cleaning services at your doorstep.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-tools"></i></div>
+                    <h3>Handyman & Repairs</h3>
+                    <p>General repairs, carpentry, AC servicing and more.</p>
+                </div>
+
+                <div class="service-card">
                     <div class="service-icon"><i class="fas fa-code"></i></div>
                     <h3>Website Development</h3>
-                    <p>Stunning, fast, and highly secure custom websites tailored to your brand, including e-commerce platforms and web apps.</p>
+                    <p>Custom, fast and professional websites for your business.</p>
                 </div>
 
                 <div class="service-card">
                     <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
-                    <h3>App Development</h3>
-                    <p>High-performance iOS and Android applications built natively or cross-platform to provide seamless user experiences.</p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
-                    <h3>App & Web Academy</h3>
-                    <p>Hands-on coding bootcamps and classes. Learn programming languages, frameworks, and modern tools from active industry pros.</p>
+                    <h3>Mobile App Development</h3>
+                    <p>High-quality Android & iOS applications built for your needs.</p>
                 </div>
 
                 <div class="service-card">
                     <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
                     <h3>Cyber Security</h3>
-                    <p>Vulnerability testing, threat protection, and digital asset defense protocols to keep your company data bulletproof.</p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-laptop"></i></div>
-                    <h3>Computer Training</h3>
-                    <p>Essential to advanced IT courses covering literacy, specialized software suites, and general desktop operations.</p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-chart-bar"></i></div>
-                    <h3>Data Analysis</h3>
-                    <p>Transform raw analytics into growth. We clean, visualize, and interpret complex data to optimize your decision-making.</p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-paint-brush"></i></div>
-                    <h3>Graphic Design</h3>
-                    <p>Memorable visual brand identities, digital assets, logo configurations, and UI designs that grab immediate attention.</p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-print"></i></div>
-                    <h3>Corporate Printing</h3>
-                    <p>Premium print execution for banners, merchandise, business stationery, and marketing materials with crisp rendering.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PRICING -->
-    <section id="pricing" class="pricing-section">
-        <div class="container">
-            <div class="pricing-toggle-container">
-                <button class="toggle-btn active" onclick="switchPricing('web')">Websites</button>
-                <button class="toggle-btn" onclick="switchPricing('mobile')">Mobile Apps</button>
-            </div>
-
-            <!-- Website Pricing -->
-            <div id="web-pricing" class="pricing-grid active">
-                <div class="pricing-card">
-                    <div class="card-header blue-theme">
-                        <h3>Landing Page Website</h3>
-                        <div class="price">₦50,000</div>
-                    </div>
-                    <ul class="features-list">
-                        <li>One Page Website</li>
-                        <li>Mobile Friendly</li>
-                        <li>Contact Form</li>
-                        <li>Fast Delivery</li>
-                    </ul>
-                    <button class="action-btn blue-btn">Get Started Now</button>
-                </div>
-
-                <div class="pricing-card">
-                    <div class="card-header orange-theme">
-                        <h3>Business Website</h3>
-                        <div class="price">₦100,000</div>
-                    </div>
-                    <ul class="features-list">
-                        <li>Up to 5 Pages</li>
-                        <li>Professional Design</li>
-                        <li>Contact Page</li>
-                        <li>Mobile Friendly</li>
-                    </ul>
-                    <button class="action-btn orange-btn">Get Started Now</button>
-                </div>
-
-                <div class="pricing-card">
-                    <div class="card-header blue-theme">
-                        <h3>Company Website</h3>
-                        <div class="price">₦150,000</div>
-                    </div>
-                    <ul class="features-list">
-                        <li>Up to 10 Pages</li>
-                        <li>Modern Design</li>
-                        <li>Blog/News Section</li>
-                        <li>SEO Ready</li>
-                    </ul>
-                    <button class="action-btn blue-btn">Get Started Now</button>
-                </div>
-
-                <div class="pricing-card">
-                    <div class="card-header orange-theme">
-                        <h3>E-Commerce Website</h3>
-                        <div class="price">₦250,000</div>
-                    </div>
-                    <ul class="features-list">
-                        <li>Online Store</li>
-                        <li>Payment Integration</li>
-                        <li>Product Management</li>
-                        <li>Order Tracking</li>
-                    </ul>
-                    <button class="action-btn orange-btn">Get Started Now</button>
-                </div>
-
-                <div class="pricing-card">
-                    <div class="card-header blue-theme">
-                        <h3>School Website</h3>
-                        <div class="price">₦200,000 <span class="suffix">and above</span></div>
-                    </div>
-                    <ul class="features-list">
-                        <li>Student Portal</li>
-                        <li>Result Checker</li>
-                        <li>Admission Information</li>
-                        <li>News & Announcements</li>
-                    </ul>
-                    <button class="action-btn blue-btn">Get Started Now</button>
-                </div>
-
-                <div class="pricing-card">
-                    <div class="card-header orange-theme">
-                        <h3>Custom Web Application</h3>
-                        <div class="price"><span class="prefix">From</span> ₦300,000</div>
-                    </div>
-                    <ul class="features-list">
-                        <li>User Registration</li>
-                        <li>Login System</li>
-                        <li>Dashboard</li>
-                        <li>Custom Features</li>
-                    </ul>
-                    <button class="action-btn orange-btn">Get Started Now</button>
-                </div>
-            </div>
-
-            <!-- Mobile App Pricing -->
-            <div id="mobile-pricing" class="pricing-grid">
-                <div class="pricing-card">
-                    <div class="card-header blue-theme">
-                        <h3>Basic App</h3>
-                        <div class="price"><span class="prefix">Starting From</span> ₦200,000</div>
-                    </div>
-                    <ul class="features-list">
-                        <li>Simple App</li>
-                        <li>Up to 5 Features</li>
-                        <li>User Friendly</li>
-                        <li>Android App</li>
-                        <li>Basic Design</li>
-                    </ul>
-                    <button class="action-btn blue-btn">Get Started Now</button>
-                </div>
-
-                <div class="pricing-card">
-                    <div class="card-header orange-theme">
-                        <h3>Standard App</h3>
-                        <div class="price"><span class="prefix">Starting From</span> ₦300,000</div>
-                    </div>
-                    <ul class="features-list">
-                        <li>Up to 10 Features</li>
-                        <li>Modern UI/UX</li>
-                        <li>Push Notifications</li>
-                        <li>API Integration</li>
-                        <li>Android App</li>
-                    </ul>
-                    <button class="action-btn orange-btn">Get Started Now</button>
-                </div>
-
-                <div class="pricing-card">
-                    <div class="card-header blue-theme">
-                        <h3>Premium App</h3>
-                        <div class="price"><span class="prefix">Starting From</span> ₦500,000</div>
-                    </div>
-                    <ul class="features-list">
-                        <li>Up to 20 Features</li>
-                        <li>Advanced Features</li>
-                        <li>API Integration</li>
-                        <li>Push Notifications</li>
-                        <li>Database Integration</li>
-                        <li>Android & iOS App</li>
-                    </ul>
-                    <button class="action-btn blue-btn">Get Started Now</button>
-                </div>
-
-                <div class="pricing-card">
-                    <div class="card-header orange-theme">
-                        <h3>Enterprise App</h3>
-                        <div class="price"><span class="prefix">Starting From</span> ₦700,000+</div>
-                    </div>
-                    <ul class="features-list">
-                        <li>Unlimited Features</li>
-                        <li>Custom Solutions</li>
-                        <li>Advanced Security</li>
-                        <li>Third-Party Integration</li>
-                        <li>Admin Panel</li>
-                        <li>Android & iOS App</li>
-                    </ul>
-                    <button class="action-btn orange-btn">Get Started Now</button>
+                    <p>Protect your business and digital assets with expert solutions.</p>
                 </div>
             </div>
         </div>
@@ -338,19 +137,19 @@
     <!-- PORTFOLIO -->
     <section class="portfolio">
         <div class="container">
-            <h2>Our Recent Projects</h2>
+            <h2>Our Work</h2>
             <div class="portfolio-grid">
                 <div class="project-card">
-                    <h3>E-Commerce Website</h3>
-                    <p>Online shopping platform.</p>
+                    <h3>Fastme Mobile App</h3>
+                    <p>Service booking & live tracking platform.</p>
                 </div>
                 <div class="project-card">
-                    <h3>School Portal</h3>
-                    <p>Student management system.</p>
+                    <h3>Business Websites</h3>
+                    <p>Custom websites for local businesses.</p>
                 </div>
                 <div class="project-card">
-                    <h3>Savings App</h3>
-                    <p>Contribution and Esusu platform.</p>
+                    <h3>School & Enterprise Apps</h3>
+                    <p>Management systems and portals.</p>
                 </div>
             </div>
         </div>
@@ -359,68 +158,16 @@
     <!-- TESTIMONIALS -->
     <section class="testimonials">
         <div class="container">
-            <h2>What Clients Say</h2>
+            <h2>What Our Users Say</h2>
             <div class="testimonial-grid">
                 <div class="testimonial-card">
-                    <p>"Fastme Software built our business website and increased our online presence."</p>
-                    <strong>- John Enterprises</strong>
+                    <p>"I found a reliable plumber within minutes. The live tracking feature is excellent!"</p>
+                    <strong>- Chinedu O.</strong>
                 </div>
                 <div class="testimonial-card">
-                    <p>"Professional and reliable team."</p>
-                    <strong>- Sarah Technologies</strong>
+                    <p>"Fastme built our company website and also helped us get more customers through their app."</p>
+                    <strong>- Sarah’s Boutique</strong>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="faq">
-        <div class="container">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-container">
-                <details>
-                    <summary>How long does website development take?</summary>
-                    <p>Typically 1-4 weeks depending on complexity.</p>
-                </details>
-                <details>
-                    <summary>Do you offer app maintenance?</summary>
-                    <p>Yes, we provide ongoing support and updates.</p>
-                </details>
-            </div>
-        </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <h2>Get In Touch</h2>
-            <form id="contact-form">
-                <input type="text" placeholder="Your Name" required>
-                <input type="email" placeholder="Your Email" required>
-                <textarea placeholder="Your Message" rows="5" required></textarea>
-                <button type="submit">Send Message</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- STATS -->
-    <section class="stats">
-        <div class="container">
-            <div>
-                <h2>100+</h2>
-                <p>Projects Completed</p>
-            </div>
-            <div>
-                <h2>50+</h2>
-                <p>Students Trained</p>
-            </div>
-            <div>
-                <h2>30+</h2>
-                <p>Business Clients</p>
-            </div>
-            <div>
-                <h2>99%</h2>
-                <p>Customer Satisfaction</p>
             </div>
         </div>
     </section>
@@ -429,15 +176,15 @@
     <footer class="footer">
         <div class="footer-content container">
             <div>
-                <h3>Fastme Software</h3>
-                <p>Building websites, mobile apps, cybersecurity solutions, and digital innovations.</p>
+                <h3>Fastme</h3>
+                <p>Connecting you with trusted local professionals. We also build websites and mobile apps.</p>
             </div>
 
             <div>
-                <h3>Terms and Condition</h3>
+                <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="terms.html">Terms and Condition</a></li>
-                    <li><a href="policy.html">Policy</a></li>
+                    <li><a href="terms.html">Terms and Conditions</a></li>
+                    <li><a href="policy.html">Privacy Policy</a></li>
                 </ul>
             </div>
 
@@ -445,19 +192,12 @@
                 <h3>Contact</h3>
                 <p>Email: <a href="mailto:info@fastme.org">info@fastme.org</a></p>
                 <p>Phone: 08160869969, 08021311787</p>
-                <p>277 Ikwerre Road, Mile 4, by OCC Park <br> Port Harcourt, Rivers State</p>
-            </div>
-
-            <div>
-                <h3>Follow Us</h3>
-                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <p>Port Harcourt, Rivers State</p>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <p>© 2026 Fastme Software. All Rights Reserved.</p>
+            <p>© 2026 Fastme. All Rights Reserved.</p>
         </div>
     </footer>
 
