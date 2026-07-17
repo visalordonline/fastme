@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastMe | Child Safety Standards</title>
+    <style>
+        *{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+background:#f6f7fb;
+color:#333;
+line-height:1.7;
+}
+
+.container{
+width:90%;
+max-width:1000px;
+margin:auto;
+}
+
+header{
+background:#ff1493;
+color:#fff;
+padding:35px 20px;
+text-align:center;
+}
+
+.hero{
+padding:50px 0;
+text-align:center;
+}
+
+.hero h2{
+font-size:34px;
+margin-bottom:15px;
+}
+
+.hero p{
+max-width:700px;
+margin:auto;
+color:#555;
+}
+
+.card{
+background:#fff;
+padding:30px;
+margin:25px auto;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.card h2{
+color:#ff1493;
+margin-bottom:20px;
+}
+
+.card ul{
+padding-left:20px;
+}
+
+.card li{
+margin-bottom:12px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+margin-top:20px;
+}
+
+.grid div{
+background:#fafafa;
+padding:20px;
+border-radius:10px;
+border-left:5px solid #ff1493;
+}
+
+button{
+background:#ff1493;
+color:white;
+border:none;
+padding:14px 25px;
+border-radius:8px;
+cursor:pointer;
+margin-top:20px;
+font-size:16px;
+}
+
+button:hover{
+background:#e60084;
+}
+
+a{
+color:#ff1493;
+text-decoration:none;
+}
+
+footer{
+margin-top:50px;
+padding:20px;
+text-align:center;
+background:#222;
+color:white;
+}
+
+#message{
+margin-top:15px;
+font-weight:bold;
+color:green;
+}
+
+@media(max-width:768px){
+
+.hero h2{
+font-size:28px;
+}
+
+}
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>FastMe</h1>
+        <p>Child Safety Standards</p>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <h2>Our Commitment to Child Safety</h2>
+        <p>
+            FastMe is committed to protecting children and maintaining a safe environment
+            for everyone using our platform. We have a zero-tolerance policy for child
+            sexual abuse and exploitation (CSAE).
+        </p>
+    </div>
+</section>
+
+<section class="container card">
+    <h2>Zero Tolerance Policy</h2>
+
+    <ul>
+        <li>Child sexual abuse material (CSAM) is strictly prohibited.</li>
+        <li>Any form of child exploitation, grooming, or abuse is prohibited.</li>
+        <li>Users engaging in illegal activities will be permanently banned.</li>
+        <li>We cooperate with law enforcement agencies whenever legally required.</li>
+    </ul>
+</section>
+
+<section class="container card">
+    <h2>Reporting Abuse</h2>
+
+    <p>
+        Users can report inappropriate messages, profiles, or behaviour directly through
+        the FastMe application.
+    </p>
+
+    <p>
+        Every report is reviewed promptly and appropriate action is taken.
+    </p>
+</section>
+
+<section class="container card">
+    <h2>Our Safety Measures</h2>
+
+    <div class="grid">
+        <div>
+            <h3>🛡 Account Moderation</h3>
+            <p>Accounts violating our policies are suspended or permanently removed.</p>
+        </div>
+
+        <div>
+            <h3>🚨 Abuse Reporting</h3>
+            <p>Users can easily report harmful content or suspicious behaviour.</p>
+        </div>
+
+        <div>
+            <h3>⚖ Compliance</h3>
+            <p>We comply with applicable child safety and online protection laws.</p>
+        </div>
+
+        <div>
+            <h3>🔒 Privacy</h3>
+            <p>User reports are handled confidentially and securely.</p>
+        </div>
+    </div>
+</section>
+
+<section class="container card">
+    <h2>Contact</h2>
+
+    <p>
+        If you need to report a child safety concern or contact us regarding our
+        child safety practices:
+    </p>
+
+    <p>
+        <strong>Email:</strong>
+        <a href="mailto:saviourgentlesule@gmail.com">
+            saviourgentlesule@gmail.com
+        </a>
+    </p>
+
+    <button id="copyEmail">
+        Copy Email Address
+    </button>
+
+    <p id="message"></p>
+</section>
+
+<footer>
+    © <span id="year"></span> FastMe. All Rights Reserved.
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
