@@ -35,20 +35,36 @@
             padding: 0 20px;
         }
 
-        /* HERO */
+        /* HERO - IMPROVED RESPONSIVENESS */
         .hero-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             min-height: 100vh;
             background: linear-gradient(135deg, #fff 50%, #FFF0F5 100%);
             align-items: center;
             position: relative;
             overflow: hidden;
+            padding: 80px 0;
+        }
+
+        @media (min-width: 992px) {
+            .hero-container {
+                grid-template-columns: 1fr 1fr;
+                padding: 0;
+            }
         }
 
         .hero-content {
-            padding: 60px 40px 60px 80px;
+            padding: 40px 20px;
             z-index: 2;
+            text-align: center;
+        }
+
+        @media (min-width: 992px) {
+            .hero-content {
+                padding: 60px 40px 60px 80px;
+                text-align: left;
+            }
         }
 
         .badge {
@@ -64,10 +80,22 @@
         }
 
         h1 {
-            font-size: 3.2rem;
+            font-size: 2.4rem;
             line-height: 1.1;
             margin-bottom: 24px;
             font-weight: 800;
+        }
+
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (min-width: 992px) {
+            h1 {
+                font-size: 3.2rem;
+            }
         }
 
         .gradient-text {
@@ -77,16 +105,30 @@
         }
 
         .hero-content p {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: var(--text-light);
             max-width: 520px;
-            margin-bottom: 40px;
+            margin: 0 auto 40px;
+        }
+
+        @media (min-width: 992px) {
+            .hero-content p {
+                font-size: 1.25rem;
+                margin-left: 0;
+            }
         }
 
         .cta-group {
             display: flex;
             gap: 16px;
             flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        @media (min-width: 992px) {
+            .cta-group {
+                justify-content: flex-start;
+            }
         }
 
         .btn-playstore {
@@ -95,11 +137,12 @@
             gap: 12px;
             background: #000;
             color: white;
-            padding: 12px 28px;
+            padding: 12px 24px;
             border-radius: 12px;
             text-decoration: none;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            font-size: 0.95rem;
         }
 
         .btn-playstore:hover {
@@ -108,12 +151,12 @@
         }
 
         .icon-play {
-            font-size: 2rem;
+            font-size: 1.8rem;
         }
 
         .play-text strong {
             display: block;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .btn-outline {
@@ -139,18 +182,26 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px;
+            padding: 20px;
+        }
+
+        @media (min-width: 992px) {
+            .hero-visual {
+                padding: 40px;
+            }
         }
 
         .glow-card {
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(255, 20, 147, 0.15);
-            width: 380px;
+            width: 100%;
+            max-width: 380px;
             overflow: hidden;
             border: 1px solid #eee;
         }
 
+        /* Rest of your styles remain the same */
         .card-header {
             background: #111;
             color: white;
@@ -193,15 +244,22 @@
 
         /* App Mockup Section */
         .app-showcase {
-            padding: 100px 0;
+            padding: 80px 0;
             background: var(--bg-light);
         }
 
         .app-showcase .container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            grid-template-columns: 1fr;
+            gap: 40px;
             align-items: center;
+        }
+
+        @media (min-width: 992px) {
+            .app-showcase .container {
+                grid-template-columns: 1fr 1fr;
+                gap: 60px;
+            }
         }
 
         .app-mockup {
@@ -217,9 +275,15 @@
             display: block;
         }
 
-        /* Sections */
+        /* Other sections */
         section {
-            padding: 100px 0;
+            padding: 80px 0;
+        }
+
+        @media (min-width: 768px) {
+            section {
+                padding: 100px 0;
+            }
         }
 
         .section-header {
@@ -238,17 +302,20 @@
         }
 
         h2 {
-            font-size: 2.8rem;
+            font-size: 2.4rem;
             text-align: center;
             margin-bottom: 16px;
             font-weight: 700;
         }
 
-        /* Why Us */
-        .why-us {
-            background: white;
+        @media (min-width: 768px) {
+            h2 {
+                font-size: 2.8rem;
+            }
         }
 
+        /* Keep the rest of your existing styles for other sections */
+        .why-us { background: white; }
         .reasons {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -274,7 +341,6 @@
             margin-bottom: 20px;
         }
 
-        /* Services */
         .services-section {
             background: linear-gradient(135deg, #FFF0F5, #ffffff);
         }
@@ -312,27 +378,19 @@
             color: var(--primary-pink);
         }
 
-        /* Portfolio & Testimonials */
-        .portfolio-grid,
-        .testimonial-grid {
+        .portfolio-grid, .testimonial-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 30px;
         }
 
-        .project-card,
-        .testimonial-card {
+        .project-card, .testimonial-card {
             background: white;
             padding: 32px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
         }
 
-        .testimonial-card {
-            font-style: italic;
-        }
-
-        /* Footer */
         .footer {
             background: #111;
             color: #ddd;
@@ -366,30 +424,6 @@
             padding: 30px 0;
             text-align: center;
             font-size: 0.95rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .hero-container {
-                grid-template-columns: 1fr;
-                text-align: center;
-                min-height: auto;
-            }
-            
-            .hero-content {
-                padding: 80px 20px 60px;
-            }
-            
-            .app-showcase .container {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.6rem;
-            }
         }
     </style>
 </head>
@@ -608,7 +642,7 @@
                 <ul style="list-style:none;">
                     <li><a href="terms.html">Terms and Conditions</a></li>
                     <li><a href="policy.html">Privacy Policy</a></li>
-                    <li><a href="director.html">Director</a></li>
+                    <li><a href="director.html">Meet Our Founder</a></li>
                 </ul>
             </div>
 
@@ -626,7 +660,6 @@
     </footer>
 
     <script>
-        // Simple interactivity for the glow card
         document.addEventListener('DOMContentLoaded', () => {
             const card = document.getElementById('interactiveCard');
             if (card) {
